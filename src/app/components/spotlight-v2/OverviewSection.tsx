@@ -4,7 +4,7 @@ const FONT = 'gotham, sans-serif';
 
 // ─── Overview v2 ──────────────────────────────────────────────────────────────
 // Client feedback: "too much text at the top", "I don't think this is a good way to lead"
-// Decision: one impactful hero quote + three visual programme pillars → straight to team.
+// Decision: one impactful hero quote + three visual program pillars → straight to team.
 // No dense paragraphs. Content stays high-level and scannable.
 
 const pillars = [

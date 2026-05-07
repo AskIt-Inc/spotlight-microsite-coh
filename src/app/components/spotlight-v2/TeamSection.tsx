@@ -444,6 +444,79 @@ export const TeamSection: React.FC = () => (
           </span>
         </div>
       </div>
+
+      {/* ── Affiliate Team Members ── */}
+      {/* 11-hospital network across UChicago Medicine + Endeavor Health affiliate sites */}
+      <div style={{ marginTop: '40px' }}>
+        <h2
+          style={{
+            fontSize: '24px',
+            fontWeight: 300,
+            color: '#000000',
+            margin: '0 0 4px 0',
+            lineHeight: 1.3,
+            fontFamily: FONT,
+          }}
+        >
+          Affiliate Team Members
+        </h2>
+        <p
+          style={{
+            fontSize: '14px',
+            color: '#9CA3AF',
+            margin: '0 0 16px 0',
+            fontFamily: FONT,
+          }}
+        >
+          Together with our affiliate and satellite sites, the University of Chicago
+          Amyloidosis Program serves patients across{' '}
+          <strong style={{ color: '#8B1F2D' }}>11 hospitals</strong> — including Endeavor Health.
+        </p>
+
+        {/* Placeholder cards — names to be provided by UChicago/Endeavor Health team */}
+        <div
+          style={{
+            border: '1px dashed #F0D0D3',
+            borderRadius: '8px',
+            padding: '20px',
+            background: '#FBF0F1',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+          }}
+        >
+          <Users size={18} color="#8B1F2D" style={{ flexShrink: 0, marginTop: '2px', opacity: 0.6 }} />
+          <div>
+            <div
+              style={{
+                fontSize: '12px',
+                fontWeight: 700,
+                color: '#8B1F2D',
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.5px',
+                fontFamily: FONT,
+                marginBottom: '6px',
+              }}
+            >
+              Content needed — Endeavor Health affiliate team
+            </div>
+            <p
+              style={{
+                fontSize: '13px',
+                fontWeight: 300,
+                color: '#6B7280',
+                margin: 0,
+                fontFamily: FONT,
+                lineHeight: 1.6,
+              }}
+            >
+              Awaiting names and roles from Dr. Sarswat / Endeavor Health team.
+              Once received, each affiliate member will appear as a card here.
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 );
