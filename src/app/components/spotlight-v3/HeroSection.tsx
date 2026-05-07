@@ -135,7 +135,7 @@ export const HeroSection: React.FC = () => (
         }}>
           Amyloidosis Program Spotlight Series
         </span>
-        <span style={{ color: '#C0A0A4', fontWeight: 300, flexShrink: 0 }}>·</span>
+        <span className="v3-title-dot" style={{ color: '#C0A0A4', fontWeight: 300, flexShrink: 0 }}>·</span>
         <span style={{
           fontSize: '15px',
           fontWeight: 600,

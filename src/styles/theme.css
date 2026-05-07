@@ -284,6 +284,18 @@ html, body {
     max-width: 130px !important;
   }
 
+  /* ── v3 title strip (ROW 2): stack + centre on mobile ───────────────────────── */
+  .v3-title-block {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 6px !important;
+  }
+
+  .v3-title-dot {
+    display: none !important;
+  }
+
   /* ── v3 subscribe block: stack QR below text on mobile ──────────────────────── */
   .v3-subscribe-block {
     flex-direction: column !important;
