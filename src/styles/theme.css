@@ -270,23 +270,29 @@ html, body {
     overflow-y: auto;
   }
 
-  /* ── Series strip (upper hero band) ────────────────────────────────────────── */
-  /* Stack: logo centred on top, program name + date below */
-  .series-strip-row {
+  /* ── Hero h1 — scale down ───────────────────────────────────────────────────── */
+  .hero-h1 {
+    font-size: 22px !important;
+  }
+
+  /* ── v3 logo bar: tighten gap + scale logos on mobile ───────────────────────── */
+  .v3-logo-bar {
+    gap: 20px !important;
+  }
+  .v3-logo-bar img {
+    height: 40px !important;
+    max-width: 130px !important;
+  }
+
+  /* ── v3 subscribe block: stack QR below text on mobile ──────────────────────── */
+  .v3-subscribe-block {
     flex-direction: column !important;
-    align-items: center !important;
-    gap: 10px !important;
-    text-align: center;
+    gap: 20px !important;
   }
-
-  /* Hide vertical rule — makes no sense when stacked */
-  .series-strip-divider {
-    display: none !important;
-  }
-
-  /* Scale logo down slightly on mobile */
-  .series-strip-logo-img {
-    height: 42px !important;
+  .v3-qr-block {
+    align-items: flex-start !important;
+    flex-direction: row !important;
+    gap: 12px !important;
   }
 
   /* Allow title to wrap + reduce font */

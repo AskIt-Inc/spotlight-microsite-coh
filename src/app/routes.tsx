@@ -4,6 +4,7 @@ import { SpotlightLayout } from './components/SpotlightLayout';
 import { DashboardPage } from './pages/DashboardPage';
 import { SpotlightPage } from './pages/SpotlightPage';
 import { SpotlightPageV2 } from './pages/SpotlightPageV2';
+import { SpotlightPageV3 } from './pages/SpotlightPageV3';
 
 // Placeholder for routes not yet built
 const PlaceholderPage = ({ title }: { title: string }) => (
@@ -49,5 +50,11 @@ export const router = createHashRouter([
     path: '/spotlight-v2',
     Component: SpotlightLayout,
     children: [{ index: true, Component: SpotlightPageV2 }],
+  },
+  // ── Public microsite shell — v3 (Stacey: COMING SOON hero + subscribe CTA) ──
+  {
+    path: '/spotlight-v3',
+    Component: SpotlightLayout,
+    children: [{ index: true, Component: SpotlightPageV3 }],
   },
 ]);

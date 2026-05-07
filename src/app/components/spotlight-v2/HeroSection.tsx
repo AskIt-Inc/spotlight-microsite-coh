@@ -6,7 +6,6 @@ const UOC_LOGO_URL =
   'https://edge.sitecorecloud.io/unichicagomc-81nbqnb3/media/images/ucmc/landing-pages/ucm-logo-horizontal.png';
 
 // ─── UoC logo — white pill, bigger to avoid squishing ────────────────────────
-// Client feedback: UChicago logo was getting squished — increased height + container
 const UoCLogo = () => {
   const [imgFailed, setImgFailed] = useState(false);
   return (
@@ -47,11 +46,8 @@ const UoCLogo = () => {
 };
 
 // ─── Series strip (upper band — 40% of total hero height) ────────────────────
-// Client feedback v3:
-//   • Remove "SomeBodyToTalkTo" text — STTT logo carries the brand identity
-//   • Format: [STTT logo] | [Amyloidosis Program Spotlight Series] [June 2026]
-//   • Disease-first naming enables: "Sickle Cell Disease Program Spotlight Series" etc.
-//   • Compact padding — this band should read as 40% of total hero height
+// Format: [STTT logo] | [Amyloidosis Program Spotlight Series] [June 2026]
+// Disease-first naming enables: "Sickle Cell Disease Program Spotlight Series" etc.
 const SeriesStrip: React.FC = () => (
   <div
     style={{
@@ -60,7 +56,6 @@ const SeriesStrip: React.FC = () => (
       padding: '10px 24px',
     }}
   >
-    {/* series-strip-row: flex row on desktop, stacked column on mobile */}
     <div
       className="series-strip-row"
       style={{
@@ -117,15 +112,10 @@ const SeriesStrip: React.FC = () => (
 );
 
 // ─── Hero section (lower maroon band — 60% of total hero height) ──────────────
-// Client feedback v3:
-//   • More vertical space than the strip above (60% of total)
-//   • FEATURING label kept — client likes it
-//   • UoC logo bigger, not squished
 export const HeroSection: React.FC = () => (
   <>
     <SeriesStrip />
 
-    {/* Maroon feature band — taller than strip to achieve 40/60 proportion */}
     <section
       style={{
         background: 'linear-gradient(135deg, #8B1F2D 0%, #6E1A24 100%)',
@@ -155,7 +145,7 @@ export const HeroSection: React.FC = () => (
             gap: '10px',
           }}
         >
-          {/* FEATURING label — spotlight light rays icon + warm cream text */}
+          {/* FEATURING label */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFE8A3" strokeWidth="2" strokeLinecap="round" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="10" r="3"/>
@@ -181,7 +171,7 @@ export const HeroSection: React.FC = () => (
             </span>
           </div>
 
-          {/* H1 — featured institution */}
+          {/* H1 */}
           <h1
             className="hero-h1"
             style={{
@@ -197,7 +187,7 @@ export const HeroSection: React.FC = () => (
           </h1>
         </div>
 
-        {/* Right column — UoC logo, bigger, not squished */}
+        {/* Right column — UoC logo */}
         <div className="hero-logo-col" style={{ flexShrink: 0 }}>
           <UoCLogo />
         </div>

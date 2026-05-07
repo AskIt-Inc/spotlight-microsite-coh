@@ -53,7 +53,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          "One of the Midwest's most comprehensive amyloidosis programmes — integrating cardiology,
+          "One of the Midwest's most comprehensive amyloidosis programs — integrating cardiology,
           hematology, neurology, and genetics under one roof to diagnose, treat, and prevent this
           complex disease."
         </p>
