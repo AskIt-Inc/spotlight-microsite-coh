@@ -45,7 +45,7 @@ export const Layout: React.FC = () => {
       >
         <div className="max-w-[1440px] mx-auto flex justify-between items-center">
           <span style={{ fontSize: '13px', fontWeight: 300, color: 'var(--sttt-text-secondary)' }}>
-            City of Hope
+            University of Chicago Medicine
           </span>
           <div className="flex items-center gap-4">
             <button
@@ -110,7 +110,7 @@ export const Layout: React.FC = () => {
                 width: '34px',
                 height: '34px',
                 borderRadius: '50%',
-                background: '#006E8E',
+                background: '#8B1F2D',
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',

@@ -5,8 +5,8 @@ const STTT_LOGO_URL = 'https://somebodytotalkto.com/sites/default/files/STTT%20L
 const UOC_LOGO_URL =
   'https://edge.sitecorecloud.io/unichicagomc-81nbqnb3/media/images/ucmc/landing-pages/ucm-logo-horizontal.png';
 
-// ─── COH logo — white pill, bigger to avoid squishing ────────────────────────
-const COHLogo = () => {
+// ─── UoC logo — white pill, bigger to avoid squishing ────────────────────────
+const UoCLogo = () => {
   const [imgFailed, setImgFailed] = useState(false);
   return (
     <div
@@ -23,7 +23,7 @@ const COHLogo = () => {
       {!imgFailed ? (
         <img
           src={UOC_LOGO_URL}
-          alt="City of Hope"
+          alt="University of Chicago Medicine"
           style={{ height: '52px', width: 'auto', display: 'block' }}
           onError={() => setImgFailed(true)}
         />
@@ -38,7 +38,7 @@ const COHLogo = () => {
             lineHeight: 1.3,
           }}
         >
-          City of Hope
+          University of Chicago Medicine
         </span>
       )}
     </div>
@@ -46,7 +46,7 @@ const COHLogo = () => {
 };
 
 // ─── Series strip (upper band — 40% of total hero height) ────────────────────
-// Format: [STTT logo] | [Amyloidosis Program Spotlight Series] [July 2026]
+// Format: [STTT logo] | [Amyloidosis Program Spotlight Series] [June 2026]
 // Disease-first naming enables: "Sickle Cell Disease Program Spotlight Series" etc.
 const SeriesStrip: React.FC = () => (
   <div
@@ -104,7 +104,7 @@ const SeriesStrip: React.FC = () => (
             letterSpacing: '0.04em',
           }}
         >
-          July 2026
+          June 2026
         </div>
       </div>
     </div>
@@ -183,13 +183,13 @@ export const HeroSection: React.FC = () => (
               fontFamily: FONT,
             }}
           >
-            City of Hope Amyloidosis Program
+            University of Chicago Amyloidosis Program
           </h1>
         </div>
 
-        {/* Right column — COH logo */}
+        {/* Right column — UoC logo */}
         <div className="hero-logo-col" style={{ flexShrink: 0 }}>
-          <COHLogo />
+          <UoCLogo />
         </div>
       </div>
     </section>

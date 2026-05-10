@@ -9,7 +9,7 @@
   /* Backgrounds */
   --oav-page-bg: #F5F5F5;
   --oav-card-bg: #ffffff;
-  --oav-utility-bg: #E7F5F8;
+  --oav-utility-bg: #FBF0F1;
   --oav-icon-bg: #F5F5F5;
   --oav-input-bg: #ffffff;
   --oav-stripe-row: #fafafa;
@@ -22,12 +22,12 @@
   /* Borders */
   --oav-border: #E5E5E5;
   --oav-border-light: #EEEEEE;
-  --oav-utility-border: #B9DEE6;
+  --oav-utility-border: #F0D0D3;
 
   /* Brand tokens */
-  --oav-brand: #006E8E;
-  --oav-brand-hover: #004F66;
-  --oav-brand-light: #E7F5F8;
+  --oav-brand: #8B1F2D;
+  --oav-brand-hover: #6E1A24;
+  --oav-brand-light: #FBF0F1;
 
   /* Accent (links) */
   --oav-accent: #005EB8;
@@ -159,7 +159,7 @@
 
   p, li {
     font-weight: var(--fw-body);
-    text-align: left;
+    text-align: justify;
     hyphens: auto;
   }
 
@@ -315,7 +315,7 @@ html, body {
   }
 
   /* ── Hero maroon band ───────────────────────────────────────────────────────── */
-  /* Stack: text column above City of Hope identity */
+  /* Stack: text column above UoC logo */
   .hero-content-row {
     flex-direction: column !important;
     align-items: center !important;
@@ -335,7 +335,7 @@ html, body {
     font-size: 22px !important;
   }
 
-  /* City of Hope identity: legible size, centred pill */
+  /* UoC logo: legible size, centred pill */
   .hero-logo-col {
     display: flex !important;
     justify-content: center;

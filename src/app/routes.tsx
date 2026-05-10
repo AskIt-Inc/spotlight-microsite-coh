@@ -5,6 +5,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SpotlightPage } from './pages/SpotlightPage';
 import { SpotlightPageV2 } from './pages/SpotlightPageV2';
 import { SpotlightPageV3 } from './pages/SpotlightPageV3';
+import { SpotlightPageCOH } from './pages/SpotlightPageCOH';
 
 // Placeholder for routes not yet built
 const PlaceholderPage = ({ title }: { title: string }) => (
@@ -39,19 +40,11 @@ export const router = createHashRouter([
       { path: 'reporting', element: <PlaceholderPage title="Reporting" /> },
     ],
   },
-  // ── Public microsite shell — current City of Hope version ──
+  // ── Public microsite shell — v1 (original, untouched) ──
   {
     path: '/spotlight',
     Component: SpotlightLayout,
-    children: [
-      { index: true, Component: SpotlightPageV3 },
-    ],
-  },
-  // ── City of Hope microsite — versioned clean URL ──
-  {
-    path: '/spotlight/coh/v1',
-    element: <SpotlightLayout />,
-    children: [{ index: true, element: <SpotlightPageV3 /> }],
+    children: [{ index: true, Component: SpotlightPage }],
   },
   // ── Public microsite shell — v2 (client feedback applied) ──
   {
@@ -64,5 +57,11 @@ export const router = createHashRouter([
     path: '/spotlight-v3',
     Component: SpotlightLayout,
     children: [{ index: true, Component: SpotlightPageV3 }],
+  },
+  // ── City of Hope microsite — versioned clean URL ──
+  {
+    path: '/spotlight/coh/v1',
+    Component: SpotlightLayout,
+    children: [{ index: true, Component: SpotlightPageCOH }],
   },
 ]);

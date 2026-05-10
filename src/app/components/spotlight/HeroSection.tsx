@@ -4,8 +4,8 @@ const FONT = 'gotham, sans-serif';
 const UOC_LOGO_URL =
   'https://edge.sitecorecloud.io/unichicagomc-81nbqnb3/media/images/ucmc/landing-pages/ucm-logo-horizontal.png';
 
-// COH logo with white background pill for contrast on maroon
-const COHLogo = () => {
+// UoC logo with white background pill for contrast on maroon
+const UoCLogo = () => {
   const [imgFailed, setImgFailed] = useState(false);
 
   return (
@@ -23,7 +23,7 @@ const COHLogo = () => {
       {!imgFailed ? (
         <img
           src={UOC_LOGO_URL}
-          alt="City of Hope"
+          alt="University of Chicago Medicine"
           style={{ height: '64px', width: 'auto', display: 'block' }}
           onError={() => setImgFailed(true)}
         />
@@ -37,7 +37,7 @@ const COHLogo = () => {
             textAlign: 'center' as const,
           }}
         >
-          City of Hope
+          University of Chicago Medicine
         </span>
       )}
     </div>
@@ -102,7 +102,7 @@ const SeriesStrip: React.FC = () => {
               marginTop: '4px',
             }}
           >
-            Spotlight Series <span style={{ fontWeight: 300 }}>· July 2026</span>
+            Spotlight Series <span style={{ fontWeight: 300 }}>· June 2026</span>
           </div>
         </div>
       </div>
@@ -116,7 +116,7 @@ export const HeroSection: React.FC = () => {
     <>
       <SeriesStrip />
 
-      {/* Maroon COH feature band */}
+      {/* Maroon UoC feature band */}
       <section
         style={{
           background: 'linear-gradient(135deg, #8B1F2D 0%, #6E1A24 100%)',
@@ -183,14 +183,14 @@ export const HeroSection: React.FC = () => {
                 fontFamily: FONT,
               }}
             >
-              City of Hope Amyloidosis Program
+              University of Chicago Amyloidosis Program
             </h1>
 
           </div>
 
-          {/* Right column — COH logo (hidden on mobile via .hero-logo-col CSS class) */}
+          {/* Right column — UoC logo (hidden on mobile via .hero-logo-col CSS class) */}
           <div className="hero-logo-col" style={{ flexShrink: 0 }}>
-            <COHLogo />
+            <UoCLogo />
           </div>
         </div>
       </section>
