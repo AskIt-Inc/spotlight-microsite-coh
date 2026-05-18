@@ -1,27 +1,28 @@
 import React from 'react';
 
 const FONT = 'gotham, sans-serif';
+const TEAL = '#006E8E';
 
-// ─── Overview v2 ──────────────────────────────────────────────────────────────
-// Client feedback: "too much text at the top", "I don't think this is a good way to lead"
-// Decision: one impactful hero quote + three visual program pillars → straight to team.
-// No dense paragraphs. Content stays high-level and scannable.
+// ─── Overview — COH v1 pattern ────────────────────────────────────────────────
+// Mirrors UChicago v1: "About the Program" label + substantive prose + 3 pillars.
+// Copy is AI-generated as a placeholder. Requires City of Hope review and approval
+// before publication.
 
 const pillars = [
   {
-    icon: '01',
-    label: 'AL Amyloidosis Treatment',
-    text: 'Second-line treatment options for relapsed/refractory disease, including City of Hope experience with venetoclax and bispecific antibodies.',
+    icon: '🩸',
+    label: 'Multidisciplinary AL & TTR Care',
+    text: 'A dedicated amyloidosis program spanning hematology, cardiology, nephrology, and neurology — coordinated under one roof at City of Hope Medical Center.',
   },
   {
-    icon: '02',
-    label: 'Earlier Diagnosis',
-    text: 'A dedicated July session on the SAVE trial and how new findings may support earlier diagnosis of AL amyloidosis.',
+    icon: '🔬',
+    label: 'Active Clinical Research',
+    text: 'Multiple open trials including venetoclax-based regimens, bispecific antibodies, and the SAVE trial for earlier AL amyloidosis diagnosis — giving patients access to emerging therapies.',
   },
   {
-    icon: '03',
-    label: 'Cardiac Amyloidosis + SCT',
-    text: 'Current AI diagnostic tools for cardiac amyloidosis and the evolving role of upfront autologous SCT in primary AL amyloidosis.',
+    icon: '🤖',
+    label: 'AI-Driven Cardiac Diagnostics',
+    text: 'Pioneering application of artificial intelligence algorithms to quantitative echocardiography, enabling earlier and more precise detection of cardiac amyloidosis.',
   },
 ];
 
@@ -31,32 +32,81 @@ export const OverviewSection: React.FC = () => (
     style={{
       background: 'var(--oav-card-bg)',
       borderBottom: '1px solid var(--oav-border)',
-      padding: '40px 24px',
+      padding: '48px 24px',
     }}
   >
     <div>
-      {/* Hero quote */}
-      <blockquote
+      {/* Section label */}
+      <div
         style={{
-          margin: '0 0 32px 0',
-          borderLeft: '4px solid #006E8E',
-          paddingLeft: '20px',
+          fontSize: '11px',
+          fontWeight: 700,
+          textTransform: 'uppercase' as const,
+          letterSpacing: '1px',
+          color: TEAL,
+          marginBottom: '8px',
+          fontFamily: FONT,
         }}
       >
-        <p
-          style={{
-            fontSize: '20px',
-            fontWeight: 300,
-            color: '#000000',
-            lineHeight: 1.5,
-            margin: 0,
-            fontFamily: FONT,
-          }}
-        >
-          "A July spotlight series featuring City of Hope presenters on AL amyloidosis treatment,
-          earlier diagnosis, cardiac amyloidosis diagnostics, and upfront autologous SCT."
-        </p>
-      </blockquote>
+        About the Program
+      </div>
+
+      {/* Body text — paragraph 1 */}
+      <p
+        style={{
+          fontSize: '16px',
+          fontWeight: 300,
+          color: '#000000',
+          lineHeight: 1.7,
+          margin: 0,
+          fontFamily: FONT,
+        }}
+      >
+        The City of Hope Amyloidosis Program is a multidisciplinary centre of excellence dedicated to the
+        diagnosis and treatment of all forms of systemic amyloidosis — including light chain (AL), transthyretin
+        (TTR), secondary amyloidosis (AA), and LECT2. Led by Dr. Michael Rosenzweig, who also serves as Chief
+        of the Division of Multiple Myeloma, the programme brings together haematology/oncology, cardiology,
+        nephrology, and neurology specialists to ensure every patient receives a coordinated, whole-person care
+        plan tailored to their specific disease type and stage. City of Hope is a National Cancer Institute-Designated
+        Comprehensive Cancer Center with a long-standing commitment to advancing care for rare and complex
+        haematologic malignancies.
+      </p>
+
+      {/* Body text — paragraph 2 */}
+      <p
+        style={{
+          fontSize: '16px',
+          fontWeight: 300,
+          color: '#000000',
+          lineHeight: 1.7,
+          marginTop: '20px',
+          marginBottom: 0,
+          fontFamily: FONT,
+        }}
+      >
+        What distinguishes the City of Hope programme is its integration of cutting-edge research with
+        compassionate, patient-centred care. The team is actively investigating second-line treatment strategies
+        for relapsed/refractory AL amyloidosis — including venetoclax-based regimens and bispecific antibody
+        therapies — while also advancing earlier diagnostic approaches through the SAVE trial. The cardiology
+        arm, led by Dr. Faizi Jamal, is pioneering the use of artificial intelligence tools for cardiac
+        amyloidosis detection. Patients benefit from access to multiple open clinical trials and from the
+        programme's growing support team of specialist nurses, nurse practitioners, a nurse navigator, and a
+        dedicated clinical research nurse for amyloid trials.*
+      </p>
+
+      {/* Disclaimer */}
+      <p
+        style={{
+          fontSize: '12px',
+          color: '#9CA3AF',
+          marginTop: '16px',
+          marginBottom: '32px',
+          fontFamily: FONT,
+          fontStyle: 'italic',
+        }}
+      >
+        * AI-generated content for review purposes. Requires City of Hope review and approval before publication.
+      </p>
 
       {/* Three pillars */}
       <div
@@ -77,29 +127,20 @@ export const OverviewSection: React.FC = () => (
               padding: '20px',
             }}
           >
-            <div
-              style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#F58220',
-                marginBottom: '10px',
-                fontFamily: FONT,
-              }}
-            >
-              {p.icon}
-            </div>
-            <div
-              style={{
-                fontSize: '13px',
-                fontWeight: 700,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.5px',
-                color: '#006E8E',
-                fontFamily: FONT,
-                marginBottom: '6px',
-              }}
-            >
-              {p.label}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span style={{ fontSize: '20px', lineHeight: 1 }}>{p.icon}</span>
+              <span
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.5px',
+                  color: TEAL,
+                  fontFamily: FONT,
+                }}
+              >
+                {p.label}
+              </span>
             </div>
             <p
               style={{
