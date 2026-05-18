@@ -431,8 +431,117 @@ html, body {
     text-align: center;
   }
 
+  /* Fix justified text on mobile - force left align for readability */
+  ul, ol, p, li {
+    text-align: left !important;
+  }
+
   /* ── Prevent images from overflowing ───────────────────────────────────────── */
   img {
     max-width: 100%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TABLET / iPad (769px – 1024px)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  /* Page grid: sidebar below main content on tablet */
+  .spotlight-content-grid {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+    padding: 0 24px 48px !important;
+  }
+
+  /* Sidebar: unstick, full-width on tablet */
+  .spotlight-sidebar-wrapper {
+    width: 100% !important;
+    position: static !important;
+    align-self: auto !important;
+    order: -1;
+  }
+
+  /* Overview pillars: 2 columns instead of 3 */
+  .overview-pillars {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Director profile: reduce photo size */
+  .director-profile-row img {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  /* Series strip: slightly smaller title */
+  .series-strip-title {
+    font-size: 24px !important;
+  }
+
+  /* Series strip row: allow wrapping */
+  .series-strip-row {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE ADDITIONS (max-width: 768px) — supplement existing rules
+   ═══════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Series strip row: stack vertically, centre */
+  .series-strip-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    text-align: center;
+  }
+
+  /* Hide divider on mobile */
+  .series-strip-divider {
+    display: none !important;
+  }
+
+  /* Series strip logo */
+  .series-strip-logo-img {
+    height: 32px !important;
+  }
+
+  /* Director profile: stack photo above text */
+  .director-profile-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  /* Prevent justified/centered text in body content on mobile */
+  .director-profile-row ~ ul,
+  .director-profile-row ~ ul li {
+    text-align: left !important;
+  }
+
+  .director-profile-row img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  /* v5 team tabs: full width, smaller font */
+  .team-tabs-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .team-tabs-bar button {
+    font-size: 13px !important;
+    padding: 10px 16px !important;
+    white-space: nowrap;
+  }
+
+  .team-tabs-bar img {
+    width: 16px !important;
+    height: 16px !important;
   }
 }

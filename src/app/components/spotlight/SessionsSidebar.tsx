@@ -155,7 +155,7 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
 
 export const SessionsSidebar: React.FC = () => {
   const sorted = [...sessions].sort((a, b) => {
-    const monthOrder: Record<string, number> = { MAY: 0, JUN: 1, JUL: 2, AUG: 3 };
+    const monthOrder: Record<string, number> = { MAR: 0, APR: 1, MAY: 2, JUN: 3, JUL: 4, AUG: 5, TBD: 99 };
     const mo = (monthOrder[a.month] ?? 99) - (monthOrder[b.month] ?? 99);
     if (mo !== 0) return mo;
     return parseInt(a.day) - parseInt(b.day);
