@@ -27,10 +27,10 @@ const pillars = [
   },
 ];
 
-// Placeholder copy — awaiting City of Hope to provide approved programme description.
+// Placeholder copy — awaiting City of Hope to provide approved program description.
 const PROGRAM_ABOUT_PLACEHOLDER = `City of Hope's Amyloidosis Program brings together experts across hematology, cardiology, nephrology, and neurology to provide multidisciplinary care for patients with all forms of amyloidosis. The program spans multiple sites across Southern California and Arizona, making expert amyloidosis care accessible across the region.
 
-[City of Hope to provide: programme history, team focus, goals, and what makes this programme unique — including the significance of operating across multiple sites.]`;
+[City of Hope to provide: program history, team focus, goals, and what makes this program unique — including the significance of operating across multiple sites.]`;
 
 const AboutProgramAccordion: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -206,7 +206,7 @@ export const OverviewSection: React.FC = () => (
         ))}
       </div>
 
-      {/* Collapsible programme description — earmarked for COH copy */}
+      {/* Collapsible program description — earmarked for COH copy */}
       <AboutProgramAccordion />
     </div>
   </section>
