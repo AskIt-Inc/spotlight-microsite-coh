@@ -35,7 +35,7 @@ const PROGRAM_ABOUT_PARAGRAPHS = [
 ];
 
 const AboutProgramAccordion: React.FC = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <div
