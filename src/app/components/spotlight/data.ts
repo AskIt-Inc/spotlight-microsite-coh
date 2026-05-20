@@ -258,14 +258,4 @@ export const sessions: Session[] = [
     presenter: 'Dr. Kourosh Rezania',
     status: 'upcoming',
   },
-  {
-    id: 6,
-    month: 'TBD',
-    day: '—',
-    dayOfWeek: 'Swing',
-    time: '5:00 PM CT',
-    title: 'When to Consider Kidney Transplantation in Patients with Amyloidosis',
-    presenter: 'Dr. Beatrice Concepcion',
-    status: 'upcoming',
-  },
 ];
