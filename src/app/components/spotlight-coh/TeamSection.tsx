@@ -256,12 +256,14 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician }) => {
           </div>
           <div
             style={{
-              fontSize: '13px',
+              fontSize: '14px',
               fontWeight: 300,
               color: '#4B5563',
               fontFamily: FONT,
               marginTop: '3px',
-              lineHeight: 1.4,
+              whiteSpace: 'nowrap' as const,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
             {clinician.specialty}
