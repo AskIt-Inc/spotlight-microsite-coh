@@ -380,18 +380,6 @@ export const TrialsSection: React.FC = () => {
             >
               Clinical Trials
             </h2>
-            <p
-              style={{
-                fontSize: '14px',
-                color: '#4B5563',
-                marginTop: '8px',
-                marginBottom: 0,
-                fontFamily: FONT,
-                lineHeight: 1.5,
-              }}
-            >
-              City of Hope amyloidosis trial details can be added once approved.
-            </p>
             <a
               href="https://clinicaltrials.gov"
               target="_blank"
@@ -429,17 +417,6 @@ export const TrialsSection: React.FC = () => {
               {trials.map((trial) => (
                 <TrialCard key={trial.id} trial={trial} />
               ))}
-              <p
-                style={{
-                  fontSize: '12px',
-                  color: '#4B5563',
-                  margin: '8px 0 0 0',
-                  fontFamily: FONT,
-                  fontStyle: 'italic',
-                }}
-              >
-                * Trial descriptions require City of Hope approval before publication.
-              </p>
             </>
           ) : (
             <div

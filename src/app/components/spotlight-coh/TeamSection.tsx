@@ -134,59 +134,82 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
             {clinician.bio}
           </p>
 
-          {/* CTAs */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {clinician.hasSession && (
-              <button
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 16px',
-                  background: '#006E8E',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontSize: '13px',
-                  fontWeight: 300,
-                  cursor: 'pointer',
-                  fontFamily: FONT,
-                  width: '100%',
-                  justifyContent: 'center',
-                }}
-              >
-                <Calendar size={14} />
-                {clinician.sessionLabel}
-              </button>
-            )}
-
-            <a
-              href={clinician.appointmentUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          {/* Session info box */}
+          {clinician.hasSession && (
+            <div
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                background: 'transparent',
-                border: '1px solid #E8E8E8',
-                borderRadius: '4px',
-                fontSize: '13px',
-                fontWeight: 300,
-                cursor: 'pointer',
-                fontFamily: FONT,
-                width: '100%',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                color: '#000000',
-                boxSizing: 'border-box' as const,
+                background: '#E7F5F8',
+                border: '1px solid #B9DEE6',
+                borderRadius: '8px',
+                padding: '16px',
+                marginBottom: '16px',
               }}
             >
-              Schedule an appointment
-              <ExternalLink size={13} color="#4B5563" />
-            </a>
-          </div>
+              <div
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.1em',
+                  color: '#006E8E',
+                  fontFamily: FONT,
+                  marginBottom: '4px',
+                }}
+              >
+                Session: {clinician.sessionDate}
+              </div>
+              <div
+                style={{
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  color: '#000000',
+                  fontFamily: FONT,
+                  marginBottom: '6px',
+                }}
+              >
+                {clinician.sessionTitle}
+              </div>
+              <p
+                style={{
+                  fontSize: '14px',
+                  color: '#000000',
+                  lineHeight: 1.6,
+                  margin: 0,
+                  fontFamily: FONT,
+                }}
+              >
+                {clinician.sessionDescription}
+              </p>
+            </div>
+          )}
+
+          {/* Appointment CTA */}
+          <a
+            href={clinician.appointmentUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 16px',
+              background: 'transparent',
+              border: '1px solid #E8E8E8',
+              borderRadius: '4px',
+              fontSize: '13px',
+              fontWeight: 300,
+              cursor: 'pointer',
+              fontFamily: FONT,
+              width: '100%',
+              justifyContent: 'center',
+              textDecoration: 'none',
+              color: '#000000',
+              boxSizing: 'border-box' as const,
+            }}
+          >
+            Schedule an appointment
+            <ExternalLink size={13} color="#4B5563" />
+          </a>
         </div>
       </div>
     </div>
@@ -268,6 +291,12 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician }) => {
           >
             {clinician.specialty}
           </div>
+          {clinician.hasSession && (
+            <div style={{ fontSize: '12px', color: '#006E8E', fontFamily: FONT, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Calendar size={11} color="#006E8E" />
+              <span>{clinician.sessionDate}</span>
+            </div>
+          )}
         </div>
 
         {/* CTAs — stacked on the right */}

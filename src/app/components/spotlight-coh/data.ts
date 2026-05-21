@@ -9,10 +9,12 @@ export interface Clinician {
   bio: string;
   hasVideo: boolean;
   hasSession: boolean;
-  sessionLabel: string;
+  sessionDate: string;
+  sessionTitle: string;
+  sessionDescription: string;
+  education?: string;
   appointmentUrl: string;
   videoUrl?: string;
-  appointmentLabel?: string;
 }
 
 export interface SupportStaff {
@@ -58,9 +60,10 @@ export const clinicians: Clinician[] = [
     bio: 'Dr. Michael Rosenzweig is Chief of the Division of Multiple Myeloma and Director of the Amyloidosis Program at City of Hope. A hematologist-oncologist with expertise in plasma cell disorders, he cares for patients with multiple myeloma, Waldenström macroglobulinemia, POEMS syndrome, and all forms of amyloidosis — AL, TTR, AA, and LECT2. He trained at Boston Medical Center and Memorial Sloan Kettering, and previously directed the Amyloid Treatment and Research Program at Boston University.',
     hasVideo: false,
     hasSession: true,
-    sessionLabel: 'Register: Second-line options for relapsed/refractory disease — the COH experience with venetoclax for AL amyloidosis',
+    sessionDate: 'July 1',
+    sessionTitle: 'Second-line options for relapsed/refractory disease: the COH experience with venetoclax for AL amyloidosis',
+    sessionDescription: 'Dr. Rosenzweig will discuss his approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with venetoclax.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/michael-rosenzweig',
-    appointmentLabel: 'Schedule with Dr. Rosenzweig',
   },
   {
     id: 2,
@@ -73,9 +76,10 @@ export const clinicians: Clinician[] = [
     bio: 'Dr. Lisa Lee is a hematologist and Associate Clinical Professor at City of Hope Orange County (Irvine), specialising in multiple myeloma, amyloidosis, smoldering myeloma, and CAR T-cell therapy. She trained at Tufts Medical Center and was previously on faculty at UC Irvine, where she received the Amyloidosis Foundation Young Investigator\'s Award. She is the principal investigator of the SAVE trial — a study working toward earlier diagnosis of AL amyloidosis.',
     hasVideo: false,
     hasSession: true,
-    sessionLabel: 'Register: SAVE trial — towards earlier diagnosis of AL amyloidosis',
+    sessionDate: 'July 8',
+    sessionTitle: 'SAVE trial: towards earlier diagnosis of AL amyloidosis',
+    sessionDescription: 'Dr. Lisa Lee will review the SAVE trial and how results could possibly lead to an earlier diagnosis of AL amyloidosis.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/lisa-lee',
-    appointmentLabel: 'Schedule with Dr. Lisa Lee',
   },
   {
     id: 3,
@@ -88,9 +92,10 @@ export const clinicians: Clinician[] = [
     bio: 'Dr. Sarah S. Lee is a hematologist-oncologist specialising in plasma cell disorders including multiple myeloma and amyloidosis. She joined City of Hope in 2023 after faculty appointments at Fred Hutchinson Cancer Research Center and Cleveland Clinic, where she was chief quality improvement fellow. By the time she arrived at City of Hope, she had co-authored 12 peer-reviewed publications and was principal investigator on seven active clinical trials.',
     hasVideo: false,
     hasSession: true,
-    sessionLabel: 'Register: Second-line treatment options — the COH experience with bispecific antibodies for AL amyloidosis',
+    sessionDate: 'July 15',
+    sessionTitle: 'Second-line treatment options: the COH experience with bispecific antibodies for AL amyloidosis',
+    sessionDescription: 'Dr. Sarah Lee will discuss her approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with bispecific antibodies.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/sarah-lee',
-    appointmentLabel: 'Schedule with Dr. Sarah Lee',
   },
   {
     id: 4,
@@ -103,9 +108,10 @@ export const clinicians: Clinician[] = [
     bio: 'Dr. Faizi Jamal is a cardiologist and Chief of the Division of Cardiology at City of Hope, where he also directs the Echocardiography Laboratory. He specialises in cardio-oncology, cardiac imaging, heart failure, and cardiac amyloidosis, and is board-certified in cardiovascular disease, echocardiography, and nuclear cardiology. He trained at Cedars-Sinai and previously held faculty at Northwestern University Feinberg School of Medicine.',
     hasVideo: false,
     hasSession: true,
-    sessionLabel: 'Register: AI tools for the diagnosis of cardiac amyloidosis',
+    sessionDate: 'July 22',
+    sessionTitle: 'AI tools for the diagnosis of cardiac amyloidosis',
+    sessionDescription: 'Dr. Jamal will discuss the current and evolving AI tools for the diagnosis of cardiac amyloidosis.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/faizi-jamal',
-    appointmentLabel: 'Schedule with Dr. Jamal',
   },
   {
     id: 5,
@@ -118,9 +124,10 @@ export const clinicians: Clinician[] = [
     bio: 'Dr. Tibor Kovacsovics is Chief of Hematology and Medical Director of Leukemia at City of Hope Cancer Center Phoenix. A hematologist-oncologist with 20 years of clinical research experience, he specialises in AML, ALL, stem cell transplantation, and amyloidosis. He trained at Harvard Medical School/MGH/Brigham and Women\'s, co-founded the Utah Amyloidosis Program at Huntsman Cancer Institute, and has served as principal investigator on dozens of landmark hematology studies.',
     hasVideo: false,
     hasSession: true,
-    sessionLabel: 'Register: The role of upfront autologous SCT for primary AL amyloidosis',
+    sessionDate: 'July 29',
+    sessionTitle: 'The role of upfront autologous SCT for primary AL amyloidosis',
+    sessionDescription: 'Dr. Kovacsovics will discuss autologous SCT for the treatment of AL amyloidosis: past, present, and future, including how first-line treatment has evolved and where upfront AutoSCT is considered.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/tibor-kovacsovics',
-    appointmentLabel: 'Schedule with Dr. Kovacsovics',
   },
 ];
 
