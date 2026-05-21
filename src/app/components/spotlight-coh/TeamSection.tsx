@@ -400,32 +400,38 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff }) => (
       background: 'var(--oav-card-bg)',
       border: '1px solid var(--oav-border)',
       borderRadius: '8px',
-      padding: '16px 18px',
+      padding: '14px 20px',
       display: 'flex',
-      flexDirection: 'column' as const,
-      gap: '4px',
+      alignItems: 'center',
+      gap: '14px',
     }}
   >
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', flexWrap: 'wrap' as const }}>
-      <span style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-        {staff.name}
-      </span>
-      {staff.credentials && (
-        <span style={{ fontSize: '12px', fontWeight: 300, color: '#006E8E', fontFamily: FONT }}>
-          {staff.credentials}
-        </span>
-      )}
-    </div>
+    {/* Avatar */}
     <div
       style={{
-        fontSize: '13px',
-        fontWeight: 300,
-        color: '#4B5563',
-        fontFamily: FONT,
-        lineHeight: 1.5,
+        width: '44px',
+        height: '44px',
+        borderRadius: '50%',
+        background: '#006E8E',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
       }}
     >
-      {staff.role}
+      <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+        {staff.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
+      </span>
+    </div>
+
+    {/* Info */}
+    <div>
+      <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+        {staff.name}{staff.credentials ? `, ${staff.credentials}` : ''}
+      </div>
+      <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
+        {staff.role}
+      </div>
     </div>
   </div>
 );
@@ -500,9 +506,9 @@ export const TeamSection: React.FC = () => (
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: '12px',
+            display: 'flex',
+            flexDirection: 'column' as const,
+            gap: '10px',
           }}
         >
           {supportStaff.map((staff) => (
