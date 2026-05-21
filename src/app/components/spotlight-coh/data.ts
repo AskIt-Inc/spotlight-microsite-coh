@@ -20,6 +20,7 @@ export interface SupportStaff {
   name: string;
   credentials: string;
   role: string;
+  email?: string;
   note?: string;
 }
 
@@ -129,12 +130,14 @@ export const supportStaff: SupportStaff[] = [
     name: 'Eve Celestial',
     credentials: 'RN',
     role: 'Multi-disciplinary Amyloid Clinic Registered Nurse',
+    email: 'emariecelestial@coh.org',
   },
   {
     id: 2,
     name: 'Tricia Walker',
     credentials: 'NP',
     role: 'Amyloidosis Nurse Practitioner',
+    email: 'trwalker@coh.org',
     note: 'Expertise in Smoldering Multiple Myeloma, Relapsed/Refractory Multiple Myeloma, Myeloproliferative Neoplasms, and Febrile Neutropenia.',
   },
   {
@@ -142,31 +145,36 @@ export const supportStaff: SupportStaff[] = [
     name: 'Justine Buchholz',
     credentials: 'NP',
     role: 'Amyloidosis Nurse Practitioner',
+    email: 'jbuchholz@coh.org',
     note: 'Family nurse practitioner in advanced practice nursing with a certification in family care.',
   },
   {
     id: 4,
-    name: 'Edelyn Whip',
+    name: 'Edelyn Yhip',
     credentials: '',
     role: 'Nurse Navigator, Amyloid Clinic',
+    email: 'eyhip@coh.org',
   },
   {
     id: 5,
     name: 'Gloria Higuera',
     credentials: '',
     role: 'Senior Site Liaison for Patient Scheduling',
+    email: 'glohiguera@coh.org',
   },
   {
     id: 6,
     name: 'Stephanie Goral',
     credentials: 'RN',
     role: 'Clinical Research Nurse for Amyloid Trials',
+    email: 'sgoral@coh.org',
   },
   {
     id: 7,
     name: 'James Sanchez',
     credentials: 'PhD',
     role: 'Staff Scientist, Clinical & Translational Research',
+    email: 'jamsanchez@coh.org',
     note: 'Leading research initiatives in healthcare delivery through scientific project development within City of Hope.',
   },
 ];

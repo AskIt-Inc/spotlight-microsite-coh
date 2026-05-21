@@ -398,6 +398,22 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff }) => (
     >
       {staff.role}
     </div>
+    {staff.email && (
+      <a
+        href={`mailto:${staff.email}`}
+        style={{
+          fontSize: '12px',
+          fontWeight: 400,
+          color: '#005EB8',
+          fontFamily: FONT,
+          textDecoration: 'none',
+          marginTop: '2px',
+          display: 'inline-block',
+        }}
+      >
+        {staff.email}
+      </a>
+    )}
   </div>
 );
 
