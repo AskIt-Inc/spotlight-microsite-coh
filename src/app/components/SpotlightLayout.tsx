@@ -255,7 +255,6 @@ const SponsorLogo: React.FC<{ name: string; img: string; height?: number }> = ({
 // Pharma sponsor logos
 const SPONSORS = [
   { name: 'Alnylam',            img: 'https://oneamyloidosisvoice.com/sites/default/files/logos/alnylam.jpg' },
-  { name: 'Pfizer Rare Disease', img: 'https://oneamyloidosisvoice.com/sites/default/files/logos/Pfizer_1.png' },
   { name: 'BRIDGEBIO',           img: 'https://oneamyloidosisvoice.com/sites/default/files/logos/bb-orange-logo.png' },
   { name: 'attralus',            img: 'https://oneamyloidosisvoice.com/sites/default/files/logos/attralus_1.png' },
   { name: 'prothena',            img: 'https://oneamyloidosisvoice.com/sites/default/files/logos/prothena.png' },
