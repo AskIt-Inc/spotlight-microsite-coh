@@ -23,7 +23,6 @@ export default defineConfig({
   // Required for React Router — serve index.html for all routes
   appType: 'spa',
 
-  // Netlify: serves from root (/). GitHub Pages: serves from /<repo-name>/.
-  // GITHUB_PAGES=true is set in the CI workflow — do not hardcode here.
-  base: process.env.GITHUB_PAGES === 'true' ? '/spotlight-microsite-coh/' : '/',
+  // Custom domain deploys serve from root (/), including GitHub Pages.
+  base: '/',
 })

@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router';
+import { Navigate, createHashRouter } from 'react-router';
 import { Layout } from './components/Layout';
 import { SpotlightLayout } from './components/SpotlightLayout';
 import { DashboardPage } from './pages/DashboardPage';
@@ -36,7 +36,7 @@ export const router = createHashRouter([
     path: '/',
     Component: Layout,
     children: [
-      { index: true, Component: DashboardPage },
+      { index: true, element: <Navigate to="/spotlight/coh/v1" replace /> },
       { path: 'sessions', element: <PlaceholderPage title="Sessions" /> },
       { path: 'marketing', element: <PlaceholderPage title="Marketing" /> },
       { path: 'submissions', element: <PlaceholderPage title="Submissions" /> },
