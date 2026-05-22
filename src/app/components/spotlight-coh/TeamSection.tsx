@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PlayCircle, Calendar, ExternalLink, X } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
+import { useSessionsAPI } from './useSessionsAPI';
 
 const FONT = 'gotham, sans-serif';
 
@@ -221,9 +222,10 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
 // v2: horizontal layout, photo + name + specialty left, CTAs right, modal for full bio.
 interface CompactCardProps {
   clinician: Clinician;
+  regLink?: string;
 }
 
-const CompactCard: React.FC<CompactCardProps> = ({ clinician }) => {
+const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
@@ -329,9 +331,12 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician }) => {
             View more
           </button>
 
-          {/* Register CTA — only if has session */}
-          {clinician.hasSession && (
-            <button
+          {/* Register CTA — only if has session and regLink available */}
+          {clinician.hasSession && regLink && (
+            <a
+              href={regLink}
+              target="_blank"
+              rel="noopener noreferrer"
               onMouseEnter={() => setRegisterHovered(true)}
               onMouseLeave={() => setRegisterHovered(false)}
               style={{
@@ -349,11 +354,12 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician }) => {
                 fontFamily: FONT,
                 whiteSpace: 'nowrap' as const,
                 transition: 'background 0.15s ease',
+                textDecoration: 'none',
               }}
             >
               <Calendar size={11} color="#ffffff" />
               Register
-            </button>
+            </a>
           )}
 
           {/* Watch video — if available */}
@@ -437,7 +443,14 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff }) => (
 );
 
 // ─── TeamSection v2 ───────────────────────────────────────────────────────────
-export const TeamSection: React.FC = () => (
+export const TeamSection: React.FC = () => {
+  const { sessions } = useSessionsAPI();
+  // uuid → regLink lookup — used to pass the correct Zoom URL to each CompactCard
+  const regLinkByUuid = new Map(
+    sessions.map((s) => [s.uuid ?? '', s.regLink ?? ''])
+  );
+
+  return (
   <section
     style={{
       background: 'var(--oav-page-bg)',
@@ -475,7 +488,11 @@ export const TeamSection: React.FC = () => (
       {/* Compact card list — single column for scannability */}
       <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '12px' }}>
         {clinicians.map((clinician) => (
-          <CompactCard key={clinician.id} clinician={clinician} />
+          <CompactCard
+            key={clinician.id}
+            clinician={clinician}
+            regLink={clinician.sessionUuid ? regLinkByUuid.get(clinician.sessionUuid) : undefined}
+          />
         ))}
       </div>
 
@@ -519,4 +536,5 @@ export const TeamSection: React.FC = () => (
 
     </div>
   </section>
-);
+  );
+};

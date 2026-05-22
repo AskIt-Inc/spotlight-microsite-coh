@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Calendar } from 'lucide-react';
-import { sessions, type Session } from './data';
+import { type Session } from './data';
+import { useSessionsAPI } from './useSessionsAPI';
 
 const FONT = 'gotham, sans-serif';
 
@@ -105,7 +106,10 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
         </div>
 
         {session.status === 'upcoming' && (
-          <button
+          <a
+            href={session.regLink ?? '#'}
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
@@ -123,11 +127,12 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
               gap: '5px',
               fontFamily: FONT,
               transition: 'background 0.15s ease',
+              textDecoration: 'none',
             }}
           >
             <Calendar size={11} color="#ffffff" style={{ flexShrink: 0 }} />
             Register
-          </button>
+          </a>
         )}
 
         {session.status === 'completed' && (
@@ -154,6 +159,7 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
 };
 
 export const SessionsSidebar: React.FC = () => {
+  const { sessions } = useSessionsAPI();
   const sorted = [...sessions].sort((a, b) => {
     const monthOrder: Record<string, number> = { MAY: 0, JUN: 1, JUL: 2, AUG: 3 };
     const mo = (monthOrder[a.month] ?? 99) - (monthOrder[b.month] ?? 99);
