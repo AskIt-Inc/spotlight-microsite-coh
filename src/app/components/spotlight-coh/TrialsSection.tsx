@@ -27,7 +27,7 @@ const TrialCard: React.FC<TrialCardProps> = ({ trial }) => {
     background: '#ffffff',
     marginTop: '4px',
     outline: 'none',
-    boxShadow: focusedField === fieldName ? '0 0 0 3px rgba(139,31,45,0.12)' : 'none',
+    boxShadow: focusedField === fieldName ? '0 0 0 3px rgba(0,110,142,0.14)' : 'none',
     fontFamily: FONT,
     boxSizing: 'border-box' as const,
     display: 'block',

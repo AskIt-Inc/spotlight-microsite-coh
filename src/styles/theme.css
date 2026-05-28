@@ -9,7 +9,7 @@
   /* Backgrounds */
   --oav-page-bg: #F5F5F5;
   --oav-card-bg: #ffffff;
-  --oav-utility-bg: #FBF0F1;
+  --oav-utility-bg: #E7F5F8;
   --oav-icon-bg: #F5F5F5;
   --oav-input-bg: #ffffff;
   --oav-stripe-row: #fafafa;
@@ -22,16 +22,16 @@
   /* Borders */
   --oav-border: #E5E5E5;
   --oav-border-light: #EEEEEE;
-  --oav-utility-border: #F0D0D3;
+  --oav-utility-border: #B9DEE6;
 
   /* Brand tokens */
-  --oav-brand: #8B1F2D;
-  --oav-brand-hover: #6E1A24;
-  --oav-brand-light: #FBF0F1;
+  --oav-brand: #006E8E;
+  --oav-brand-hover: #004F66;
+  --oav-brand-light: #E7F5F8;
 
   /* Accent (links) */
-  --oav-accent: #005EB8;
-  --oav-accent-hover: #004A93;
+  --oav-accent: #F58220;
+  --oav-accent-hover: #C96512;
 
   /* Structural */
   --oav-header-bg: #ffffff;
@@ -317,8 +317,8 @@ html, body {
     text-align: center;
   }
 
-  /* ── Hero maroon band ───────────────────────────────────────────────────────── */
-  /* Stack: text column above UoC logo */
+  /* ── Hero brand band ────────────────────────────────────────────────────────── */
+  /* Stack: text column above COH logo */
   .hero-content-row {
     flex-direction: column !important;
     align-items: center !important;
@@ -338,7 +338,7 @@ html, body {
     font-size: 22px !important;
   }
 
-  /* UoC logo: legible size, centred pill */
+  /* COH logo: legible size, centred pill */
   .hero-logo-col {
     display: flex !important;
     justify-content: center;

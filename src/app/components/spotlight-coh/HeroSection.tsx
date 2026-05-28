@@ -101,7 +101,7 @@ const SeriesStrip: React.FC = () => (
   </div>
 );
 
-// ─── Hero section (lower maroon band — 60% of total hero height) ──────────────
+// ─── Hero section (lower brand band — 60% of total hero height) ───────────────
 export const HeroSection: React.FC = () => (
   <>
     <SeriesStrip />
