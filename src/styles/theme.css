@@ -204,10 +204,10 @@ html, body {
     display: none !important;
   }
 
-  /* Desktop: sessions list scrolls within the sticky sidebar to fill available viewport height */
+  /* Desktop: sessions list expands to full height — no scroll */
   .sessions-list {
-    max-height: calc(100vh - 260px);
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
 }
 
