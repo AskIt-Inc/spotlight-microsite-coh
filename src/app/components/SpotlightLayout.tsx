@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router';
-import { Search, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 
 const FONT = 'gotham, sans-serif';
 
@@ -97,8 +97,8 @@ const SiteHeader: React.FC = () => {
               justifyContent: 'flex-end',
             }}
           >
-            {NAV_LINKS.map(({ label, dropdown }) => (
-              <NavItem key={label} label={label} dropdown={dropdown} />
+            {NAV_LINKS.map(({ label, url }) => (
+              <NavItem key={label} label={label} url={url} />
             ))}
           </nav>
 
@@ -159,10 +159,12 @@ const SiteHeader: React.FC = () => {
             padding: '8px 0',
           }}
         >
-          {NAV_LINKS.map(({ label }) => (
+          {NAV_LINKS.map(({ label, url }) => (
             <a
               key={label}
-              href="#"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
               style={{
                 display: 'block',
@@ -186,12 +188,14 @@ const SiteHeader: React.FC = () => {
   );
 };
 
-const NavItem: React.FC<{ label: string; dropdown: boolean }> = ({ label, dropdown }) => {
+const NavItem: React.FC<{ label: string; url: string }> = ({ label, url }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
     <a
-      href="#"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -211,7 +215,6 @@ const NavItem: React.FC<{ label: string; dropdown: boolean }> = ({ label, dropdo
       }}
     >
       {label}
-      {dropdown && <ChevronDown size={11} style={{ opacity: 0.7 }} />}
     </a>
   );
 };
@@ -290,10 +293,12 @@ const SiteFooter: React.FC = () => (
         justifyContent: 'center',
       }}
     >
-      {FOOTER_LINKS.map((link, i) => (
-        <React.Fragment key={link}>
+      {FOOTER_LINKS.map(({ label, url }, i) => (
+        <React.Fragment key={label}>
           <a
-            href="#"
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               fontSize: '13px',
               color: '#000000',
@@ -311,7 +316,7 @@ const SiteFooter: React.FC = () => (
               (e.currentTarget as HTMLAnchorElement).style.textDecorationColor = '#AAAAAA';
             }}
           >
-            {link}
+            {label}
           </a>
           {i < FOOTER_LINKS.length - 1 && (
             <span style={{ color: '#E5E5E5', fontSize: '13px' }}>|</span>
