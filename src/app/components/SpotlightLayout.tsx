@@ -90,14 +90,12 @@ const SiteHeader: React.FC = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0',
+              gap: '6px',
               flex: 1,
               justifyContent: 'flex-end',
-              background: '#050505',
-              borderRadius: '2px',
-              padding: '4px 6px',
-              minHeight: '48px',
-              boxShadow: '0 8px 18px rgba(0,0,0,0.08)',
+              background: 'transparent',
+              padding: 0,
+              minHeight: '44px',
             }}
           >
             {NAV_LINKS.map(({ label, url }) => (
@@ -187,19 +185,17 @@ const NavItem: React.FC<{ label: string; url: string }> = ({ label, url }) => {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '10px 12px',
-        minHeight: '40px',
+        padding: '10px 8px',
+        minHeight: '42px',
         fontSize: '14px',
         fontWeight: 700,
-        color: '#ffffff',
+        color: hovered ? '#8B1F2D' : '#000000',
         textDecoration: 'none',
         whiteSpace: 'nowrap' as const,
         fontFamily: FONT,
         letterSpacing: 0,
-        borderRadius: '2px',
-        background: hovered ? '#1a1a1a' : 'transparent',
-        boxShadow: hovered ? 'inset 0 -3px 0 #8B1F2D' : 'inset 0 -3px 0 transparent',
-        transition: 'background 0.15s ease, box-shadow 0.15s ease',
+        borderBottom: hovered ? '3px solid #8B1F2D' : '3px solid transparent',
+        transition: 'color 0.15s ease, border-color 0.15s ease',
       }}
     >
       {label}
