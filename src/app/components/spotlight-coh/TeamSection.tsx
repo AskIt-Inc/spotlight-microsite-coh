@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PlayCircle, Calendar, ExternalLink, X } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
-import { useSessionsAPI } from './useSessionsAPI';
+import { useSpotlightSessions, buildRegUrlMap } from './useSpotlightSessions';
+import { useSpotlightProfiles } from './useSpotlightProfiles';
 
 const FONT = 'gotham, sans-serif';
 
@@ -17,10 +18,12 @@ function getInitials(name: string): string {
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
 interface BioModalProps {
   clinician: Clinician;
+  photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
+  apiSessionDescription?: string; // session description from Drupal API — overrides data.ts copy
   onClose: () => void;
 }
 
-const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
+const BioModal: React.FC<BioModalProps> = ({ clinician, photoUrl, apiSessionDescription, onClose }) => {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -73,9 +76,9 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
               background: '#006E8E',
             }}
           >
-            {clinician.photo && !imgError ? (
+            {photoUrl && !imgError ? (
               <img
-                src={clinician.photo}
+                src={photoUrl}
                 alt={clinician.name}
                 onError={() => setImgError(true)}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
@@ -179,7 +182,7 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
                   fontFamily: FONT,
                 }}
               >
-                {clinician.sessionDescription}
+                {apiSessionDescription ?? clinician.sessionDescription}
               </p>
             </div>
           )}
@@ -218,17 +221,20 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, onClose }) => {
 };
 
 // ─── Compact horizontal card ──────────────────────────────────────────────────
-// Client feedback: cards too tall, too much text.
-// v2: horizontal layout, photo + name + specialty left, CTAs right, modal for full bio.
 interface CompactCardProps {
   clinician: Clinician;
   regLink?: string;
+  apiPhotoUrl?: string;           // live photo from profiles API — preferred over data.ts photo
+  apiSessionDescription?: string; // session description from Drupal API
 }
 
-const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
+const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink, apiPhotoUrl, apiSessionDescription }) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
+
+  // API photo preferred; fall back to data.ts CDN photo
+  const resolvedPhoto = apiPhotoUrl ?? clinician.photo;
 
   return (
     <>
@@ -245,7 +251,7 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
           gap: '16px',
         }}
       >
-        {/* Photo — smaller than v1 (60px vs 80px) */}
+        {/* Photo */}
         <div
           style={{
             width: '60px',
@@ -260,9 +266,9 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
             justifyContent: 'center',
           }}
         >
-          {clinician.photo && !imgError ? (
+          {resolvedPhoto && !imgError ? (
             <img
-              src={clinician.photo}
+              src={resolvedPhoto}
               alt={clinician.name}
               onError={() => setImgError(true)}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
@@ -274,7 +280,7 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
           )}
         </div>
 
-        {/* Identity — flex-grows to fill space */}
+        {/* Identity */}
         <div className="compact-card-identity" style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: '16px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
             {clinician.name}
@@ -301,7 +307,7 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
           )}
         </div>
 
-        {/* CTAs — stacked on the right */}
+        {/* CTAs */}
         <div
           className="compact-card-ctas"
           style={{
@@ -389,7 +395,12 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink }) => {
 
       {/* Bio modal */}
       {modalOpen && (
-        <BioModal clinician={clinician} onClose={() => setModalOpen(false)} />
+        <BioModal
+          clinician={clinician}
+          photoUrl={resolvedPhoto}
+          apiSessionDescription={apiSessionDescription}
+          onClose={() => setModalOpen(false)}
+        />
       )}
     </>
   );
@@ -442,12 +453,17 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff }) => (
   </div>
 );
 
-// ─── TeamSection v2 ───────────────────────────────────────────────────────────
+// ─── TeamSection ──────────────────────────────────────────────────────────────
 export const TeamSection: React.FC = () => {
-  const { sessions } = useSessionsAPI();
-  // uuid → regLink lookup — used to pass the correct Zoom URL to each CompactCard
-  const regLinkByUuid = new Map(
-    sessions.map((s) => [s.uuid ?? '', s.regLink ?? ''])
+  const { sessions } = useSpotlightSessions();
+  const { profileMap } = useSpotlightProfiles();
+
+  // uuid → regUrl — memoised to avoid rebuilding on every render
+  const regUrlMap  = useMemo(() => buildRegUrlMap(sessions), [sessions]);
+  // uuid → session description (Drupal API copy overrides data.ts)
+  const descMap    = useMemo(
+    () => new Map(sessions.map(s => [s.id, s.description])),
+    [sessions],
   );
 
   return (
@@ -485,13 +501,15 @@ export const TeamSection: React.FC = () => {
         </p>
       </div>
 
-      {/* Compact card list — single column for scannability */}
+      {/* Compact card list */}
       <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '12px' }}>
         {clinicians.map((clinician) => (
           <CompactCard
             key={clinician.id}
             clinician={clinician}
-            regLink={clinician.sessionUuid ? regLinkByUuid.get(clinician.sessionUuid) : undefined}
+            regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
+            apiPhotoUrl={clinician.profileUid ? profileMap.get(clinician.profileUid)?.photoUrl : undefined}
+            apiSessionDescription={clinician.sessionUuid ? descMap.get(clinician.sessionUuid) : undefined}
           />
         ))}
       </div>

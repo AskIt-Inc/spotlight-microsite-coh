@@ -16,6 +16,7 @@ export interface Clinician {
   appointmentUrl: string;
   videoUrl?: string;
   sessionUuid?: string;
+  profileUid?: number;   // API uid — used to look up live photo from useSpotlightProfiles
 }
 
 export interface SupportStaff {
@@ -69,6 +70,7 @@ export const clinicians: Clinician[] = [
     sessionDescription: 'Dr. Rosenzweig will discuss his approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with venetoclax.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/michael-rosenzweig',
     sessionUuid: 'b3baeab8-7544-4c5b-ad12-3f1576133569',
+    profileUid: 295,
   },
   {
     id: 2,
@@ -86,6 +88,7 @@ export const clinicians: Clinician[] = [
     sessionDescription: 'Dr. Lisa Lee will review the SAVE trial and how results could possibly lead to an earlier diagnosis of AL amyloidosis.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/lisa-lee',
     sessionUuid: 'f6004c33-97e0-4fcd-95c5-1a94542c3cd1',
+    profileUid: 277,
   },
   {
     id: 3,
@@ -103,6 +106,7 @@ export const clinicians: Clinician[] = [
     sessionDescription: 'Dr. Sarah Lee will discuss her approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with bispecific antibodies.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/sarah-lee',
     sessionUuid: '1c49752f-1bde-400b-9499-4c14114097fa',
+    profileUid: 279,
   },
   {
     id: 4,
@@ -120,6 +124,7 @@ export const clinicians: Clinician[] = [
     sessionDescription: 'Dr. Jamal will discuss the current and evolving AI tools for the diagnosis of cardiac amyloidosis.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/faizi-jamal',
     sessionUuid: '4eb4381a-0a98-44c0-829a-f6e3cb131b6a',
+    profileUid: 278,
   },
   {
     id: 5,
@@ -137,6 +142,7 @@ export const clinicians: Clinician[] = [
     sessionDescription: 'Dr. Kovacsovics will discuss autologous SCT for the treatment of AL amyloidosis: past, present, and future, including how first-line treatment has evolved and where upfront AutoSCT is considered.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/tibor-kovacsovics',
     sessionUuid: '3a73451c-0b71-4c31-8e42-f6370b2d6c16',
+    profileUid: 296,
   },
 ];
 

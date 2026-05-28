@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { User, Calendar } from 'lucide-react';
-import { type Session } from './data';
-import { useSessionsAPI } from './useSessionsAPI';
+import { User, Calendar, Loader, AlertCircle } from 'lucide-react';
+import { type NormalizedSession, useSpotlightSessions } from './useSpotlightSessions';
 
 const FONT = 'gotham, sans-serif';
 
-const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
+const SidebarSessionRow: React.FC<{ session: NormalizedSession }> = ({ session }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -105,9 +104,9 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
           {session.presenter}
         </div>
 
-        {session.status === 'upcoming' && (
+        {session.status === 'upcoming' && session.regUrl && (
           <a
-            href={session.regLink ?? '#'}
+            href={session.regUrl}
             target="_blank"
             rel="noopener noreferrer"
             onMouseEnter={() => setHovered(true)}
@@ -159,10 +158,20 @@ const SidebarSessionRow: React.FC<{ session: Session }> = ({ session }) => {
 };
 
 export const SessionsSidebar: React.FC = () => {
-  const { sessions } = useSessionsAPI();
+  const { sessions, loading, error } = useSpotlightSessions();
+
+  // Secondary sort within status groups: ascending by month/day
+  const MONTH_ORDER: Record<string, number> = {
+    JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+    JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11,
+  };
   const sorted = [...sessions].sort((a, b) => {
-    const monthOrder: Record<string, number> = { MAY: 0, JUN: 1, JUL: 2, AUG: 3 };
-    const mo = (monthOrder[a.month] ?? 99) - (monthOrder[b.month] ?? 99);
+    // Primary: status (completed before upcoming)
+    if (a.status !== b.status) {
+      return a.status === 'completed' ? -1 : 1;
+    }
+    // Secondary: chronological
+    const mo = (MONTH_ORDER[a.month] ?? 99) - (MONTH_ORDER[b.month] ?? 99);
     if (mo !== 0) return mo;
     return parseInt(a.day) - parseInt(b.day);
   });
@@ -197,12 +206,53 @@ export const SessionsSidebar: React.FC = () => {
         </div>
       </div>
 
+      {/* Loading state */}
+      {loading && (
+        <div
+          style={{
+            padding: '32px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            color: '#4B5563',
+            fontFamily: FONT,
+            fontSize: '13px',
+          }}
+        >
+          <Loader size={16} color="#006E8E" style={{ animation: 'spin 1s linear infinite' }} />
+          Loading sessions…
+        </div>
+      )}
+
+      {/* Error banner — shown above sessions when using fallback data */}
+      {!loading && error && (
+        <div
+          style={{
+            padding: '8px 16px',
+            background: '#FFF8E7',
+            borderBottom: '1px solid #F0D060',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: '#7A5A00',
+            fontFamily: FONT,
+          }}
+        >
+          <AlertCircle size={13} color="#B58A00" style={{ flexShrink: 0 }} />
+          {error}
+        </div>
+      )}
+
       {/* Session rows — scrollable on mobile only via CSS class */}
-      <div className="sessions-list">
-        {sorted.map((session) => (
-          <SidebarSessionRow key={session.id} session={session} />
-        ))}
-      </div>
+      {!loading && (
+        <div className="sessions-list">
+          {sorted.map((session) => (
+            <SidebarSessionRow key={session.id} session={session} />
+          ))}
+        </div>
+      )}
 
     </div>
   );
