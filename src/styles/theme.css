@@ -191,15 +191,15 @@ html, body {
 
 /* ── Responsive breakpoints ─────────────────────────────────────────────────── */
 
-/* Nav collapse at 900px (existing) */
-@media (max-width: 900px) {
+/* Nav collapse: larger OAV-style menu needs more horizontal room */
+@media (max-width: 1200px) {
   .hidden-mobile-nav {
     display: none !important;
   }
 }
 
 /* Mobile hamburger button — hidden on desktop, shown on mobile */
-@media (min-width: 769px) {
+@media (min-width: 1201px) {
   .mobile-menu-btn {
     display: none !important;
   }
@@ -211,12 +211,15 @@ html, body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
 
   /* ── Show hamburger ─────────────────────────────────────────────────────────── */
   .mobile-menu-btn {
     display: flex !important;
   }
+}
+
+@media (max-width: 768px) {
 
   /* ── Header: tighten padding + shrink OAV logo ──────────────────────────────── */
   /* ROOT CAUSE OF HORIZONTAL OVERFLOW: OAV SVG logo at 72px height renders       */

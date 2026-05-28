@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router';
-import { Search, ChevronDown, Menu, X } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 
 const FONT = 'gotham, sans-serif';
 
@@ -9,10 +9,10 @@ const NAV_LINKS = [
   { label: 'Home',                url: 'https://oneamyloidosisvoice.com/' },
   { label: 'Patient Care Center', url: 'https://pcc.oneamyloidosisvoice.com/' },
   { label: 'Clinical Trials',     url: 'https://oneamyloidosisvoice.com/clinical-trial-finder' },
-  { label: 'Providers',           url: 'https://oneamyloidosisvoice.com/providers', hasDropdown: true },
-  { label: 'Community Center',    url: 'https://oneamyloidosisvoice.com/community-center', hasDropdown: true },
-  { label: 'News',                url: 'https://oneamyloidosisvoice.com/news', hasDropdown: true },
-  { label: 'Trusted Resources',   url: 'https://oneamyloidosisvoice.com/trusted-resources', hasDropdown: true },
+  { label: 'Providers',           url: 'https://oneamyloidosisvoice.com/providers' },
+  { label: 'Community Center',    url: 'https://oneamyloidosisvoice.com/community-center' },
+  { label: 'News',                url: 'https://oneamyloidosisvoice.com/news' },
+  { label: 'Trusted Resources',   url: 'https://oneamyloidosisvoice.com/trusted-resources' },
   { label: 'Event Calendar',      url: 'https://oneamyloidosisvoice.com/all-upcoming-sessions' },
 ];
 
@@ -91,13 +91,18 @@ const SiteHeader: React.FC = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '2px',
+              gap: '0',
               flex: 1,
               justifyContent: 'flex-end',
+              background: '#050505',
+              borderRadius: '2px',
+              padding: '4px 6px',
+              minHeight: '48px',
+              boxShadow: '0 8px 18px rgba(0,0,0,0.08)',
             }}
           >
-            {NAV_LINKS.map(({ label, url, hasDropdown }) => (
-              <NavItem key={label} label={label} url={url} hasDropdown={hasDropdown} />
+            {NAV_LINKS.map(({ label, url }) => (
+              <NavItem key={label} label={label} url={url} />
             ))}
           </nav>
 
@@ -105,18 +110,21 @@ const SiteHeader: React.FC = () => {
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             style={{
-              background: 'none',
+              background: '#050505',
               border: 'none',
               cursor: 'pointer',
-              padding: '4px',
-              color: '#000000',
+              padding: '0 14px',
+              height: '48px',
+              color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               flexShrink: 0,
+              borderRadius: '2px',
             }}
             aria-label="Search"
           >
-            <Search size={18} color="#000000" />
+            <Search size={22} color="#ffffff" strokeWidth={2.5} />
           </button>
 
           {/* Hamburger — mobile only, hidden on desktop via CSS */}
@@ -187,7 +195,7 @@ const SiteHeader: React.FC = () => {
   );
 };
 
-const NavItem: React.FC<{ label: string; url: string; hasDropdown?: boolean }> = ({ label, url, hasDropdown }) => {
+const NavItem: React.FC<{ label: string; url: string }> = ({ label, url }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -200,21 +208,23 @@ const NavItem: React.FC<{ label: string; url: string; hasDropdown?: boolean }> =
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '3px',
-        padding: '8px 10px',
-        fontSize: '12px',
-        fontWeight: 300,
-        color: hovered ? '#8B1F2D' : '#000000',
+        justifyContent: 'center',
+        padding: '10px 12px',
+        minHeight: '40px',
+        fontSize: '14px',
+        fontWeight: 700,
+        color: '#ffffff',
         textDecoration: 'none',
         whiteSpace: 'nowrap' as const,
         fontFamily: FONT,
-        letterSpacing: '0.01em',
-        borderBottom: hovered ? '2px solid #8B1F2D' : '2px solid transparent',
-        transition: 'color 0.15s, border-color 0.15s',
+        letterSpacing: 0,
+        borderRadius: '2px',
+        background: hovered ? '#1a1a1a' : 'transparent',
+        boxShadow: hovered ? 'inset 0 -3px 0 #8B1F2D' : 'inset 0 -3px 0 transparent',
+        transition: 'background 0.15s ease, box-shadow 0.15s ease',
       }}
     >
       {label}
-      {hasDropdown && <ChevronDown size={11} style={{ opacity: 0.7 }} />}
     </a>
   );
 };
