@@ -420,8 +420,6 @@ export const SpotlightLayout: React.FC = () => {
       <main style={{ flex: 1, width: '100%', minWidth: 0 }}>
         <Outlet />
       </main>
-
-      <SiteFooter />
     </div>
   );
 };
