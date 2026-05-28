@@ -6,21 +6,29 @@ const FONT = 'gotham, sans-serif';
 
 // ─── Nav config ────────────────────────────────────────────────────────────────
 const NAV_LINKS = [
-  { label: 'Home', dropdown: false },
-  { label: 'Patient Care Center', dropdown: false },
-  { label: 'Clinical Trials', dropdown: false },
-  { label: 'Providers', dropdown: true },
-  { label: 'Community Center', dropdown: true },
-  { label: 'News', dropdown: true },
-  { label: 'Trusted Resources', dropdown: true },
-  { label: 'Event Calendar', dropdown: false },
-  { label: 'Login', dropdown: false },
+  { label: 'Home',                 url: 'https://oneamyloidosisvoice.com/' },
+  { label: 'News',                 url: 'https://oneamyloidosisvoice.com/news' },
+  { label: 'Education',            url: 'https://oneamyloidosisvoice.com/education' },
+  { label: 'Community Center',     url: 'https://oneamyloidosisvoice.com/community-center' },
+  { label: 'Trusted Resources',    url: 'https://oneamyloidosisvoice.com/trusted-resources' },
+  { label: 'About',                url: 'https://oneamyloidosisvoice.com/about-oneamyloidosisvoice' },
+  { label: 'Contact',              url: 'https://oneamyloidosisvoice.com/contact' },
+  { label: 'All Upcoming Sessions',url: 'https://oneamyloidosisvoice.com/all-upcoming-sessions' },
 ];
 
 const FOOTER_LINKS = [
-  'Home', 'About us', 'Video', 'Galleries', 'Contact',
-  'Login', 'Privacy Policy', 'Privacy Reminder',
-  'Terms of use', 'FAQ', 'Code of Conduct',
+  { label: 'Home',                  url: 'https://oneamyloidosisvoice.com/' },
+  { label: 'News',                  url: 'https://oneamyloidosisvoice.com/news' },
+  { label: 'Education',             url: 'https://oneamyloidosisvoice.com/education' },
+  { label: 'Community Center',      url: 'https://oneamyloidosisvoice.com/community-center' },
+  { label: 'Trusted Resources',     url: 'https://oneamyloidosisvoice.com/trusted-resources' },
+  { label: 'About',                 url: 'https://oneamyloidosisvoice.com/about-oneamyloidosisvoice' },
+  { label: 'Contact',               url: 'https://oneamyloidosisvoice.com/contact' },
+  { label: 'Privacy Policy',        url: 'https://oneamyloidosisvoice.com/privacy-policy' },
+  { label: 'Terms of Use',          url: 'https://oneamyloidosisvoice.com/terms-of-use' },
+  { label: 'Cookie Policy',         url: 'https://oneamyloidosisvoice.com/cookie-policy' },
+  { label: 'Patient Care Center',   url: 'https://pcc.oneamyloidosisvoice.com/' },
+  { label: 'SomebodyToTalkTo.com',  url: 'https://somebodytotalkto.com/' },
 ];
 
 // ─── OAV Logo ─────────────────────────────────────────────────────────────────
@@ -352,51 +360,6 @@ const SiteFooter: React.FC = () => (
       </div>
     </div>
 
-    {/* ── Pharma sponsor logos ── */}
-    <div
-      style={{
-        padding: '20px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0',
-        flexWrap: 'wrap' as const,
-        borderBottom: '1px solid #E5E5E5',
-      }}
-    >
-      {SPONSORS.map((s, i) => (
-        <React.Fragment key={s.name}>
-          <a
-            href="#"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '4px 16px',
-              textDecoration: 'none',
-            }}
-          >
-            <SponsorLogo name={s.name} img={s.img} />
-          </a>
-          {i < SPONSORS.length - 1 && (
-            <span style={{ color: '#CCCCCC', fontSize: '18px', lineHeight: 1 }}>◆</span>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-
-    {/* ── Amyloidosis Foundation ── */}
-    <div
-      style={{
-        padding: '16px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <a href="#" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-        <SponsorLogo name="Amyloidosis Foundation" img={AMYLOIDOSIS_FOUNDATION_LOGO} height={40} />
-      </a>
-    </div>
   </footer>
 );
 
@@ -420,6 +383,8 @@ export const SpotlightLayout: React.FC = () => {
       <main style={{ flex: 1, width: '100%', minWidth: 0 }}>
         <Outlet />
       </main>
+
+      <SiteFooter />
     </div>
   );
 };
