@@ -198,6 +198,7 @@ export const OverviewSection: React.FC = () => (
                 lineHeight: 1.6,
                 margin: 0,
                 fontFamily: FONT,
+                textAlign: 'left' as const,
               }}
             >
               {p.text}
