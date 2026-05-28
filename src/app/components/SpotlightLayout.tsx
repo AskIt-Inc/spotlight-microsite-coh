@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, ChevronDown, Menu, X } from 'lucide-react';
 
 const FONT = 'gotham, sans-serif';
 
 // ─── Nav config ────────────────────────────────────────────────────────────────
 const NAV_LINKS = [
-  { label: 'Home',                 url: 'https://oneamyloidosisvoice.com/' },
-  { label: 'News',                 url: 'https://oneamyloidosisvoice.com/news' },
-  { label: 'Education',            url: 'https://oneamyloidosisvoice.com/education' },
-  { label: 'Community Center',     url: 'https://oneamyloidosisvoice.com/community-center' },
-  { label: 'Trusted Resources',    url: 'https://oneamyloidosisvoice.com/trusted-resources' },
-  { label: 'About',                url: 'https://oneamyloidosisvoice.com/about-oneamyloidosisvoice' },
-  { label: 'Contact',              url: 'https://oneamyloidosisvoice.com/contact' },
-  { label: 'All Upcoming Sessions',url: 'https://oneamyloidosisvoice.com/all-upcoming-sessions' },
+  { label: 'Home',                url: 'https://oneamyloidosisvoice.com/' },
+  { label: 'Patient Care Center', url: 'https://pcc.oneamyloidosisvoice.com/' },
+  { label: 'Clinical Trials',     url: 'https://oneamyloidosisvoice.com/clinical-trial-finder' },
+  { label: 'Providers',           url: 'https://oneamyloidosisvoice.com/providers', hasDropdown: true },
+  { label: 'Community Center',    url: 'https://oneamyloidosisvoice.com/community-center', hasDropdown: true },
+  { label: 'News',                url: 'https://oneamyloidosisvoice.com/news', hasDropdown: true },
+  { label: 'Trusted Resources',   url: 'https://oneamyloidosisvoice.com/trusted-resources', hasDropdown: true },
+  { label: 'Event Calendar',      url: 'https://oneamyloidosisvoice.com/all-upcoming-sessions' },
 ];
 
 const FOOTER_LINKS = [
@@ -96,8 +96,8 @@ const SiteHeader: React.FC = () => {
               justifyContent: 'flex-end',
             }}
           >
-            {NAV_LINKS.map(({ label, url }) => (
-              <NavItem key={label} label={label} url={url} />
+            {NAV_LINKS.map(({ label, url, hasDropdown }) => (
+              <NavItem key={label} label={label} url={url} hasDropdown={hasDropdown} />
             ))}
           </nav>
 
@@ -187,7 +187,7 @@ const SiteHeader: React.FC = () => {
   );
 };
 
-const NavItem: React.FC<{ label: string; url: string }> = ({ label, url }) => {
+const NavItem: React.FC<{ label: string; url: string; hasDropdown?: boolean }> = ({ label, url, hasDropdown }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -214,6 +214,7 @@ const NavItem: React.FC<{ label: string; url: string }> = ({ label, url }) => {
       }}
     >
       {label}
+      {hasDropdown && <ChevronDown size={11} style={{ opacity: 0.7 }} />}
     </a>
   );
 };
