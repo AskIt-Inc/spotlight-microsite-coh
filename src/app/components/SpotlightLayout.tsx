@@ -20,14 +20,14 @@ const FOOTER_LINKS = [
   { label: 'Home',             url: 'https://oneamyloidosisvoice.com/' },
   { label: 'About us',         url: 'https://oneamyloidosisvoice.com/about-oneamyloidosisvoice' },
   { label: 'Video',            url: 'https://oneamyloidosisvoice.com/video' },
-  { label: 'Galleries',        url: 'https://oneamyloidosisvoice.com/galleries' },
+  { label: 'Galleries',        url: 'https://oneamyloidosisvoice.com/photo' },
   { label: 'Contact',          url: 'https://oneamyloidosisvoice.com/contact' },
   { label: 'Login',            url: 'https://oneamyloidosisvoice.com/user/login' },
   { label: 'Privacy Policy',   url: 'https://oneamyloidosisvoice.com/privacy-policy' },
   { label: 'Privacy Reminder', url: 'https://oneamyloidosisvoice.com/privacy-reminder' },
-  { label: 'Terms of use',     url: 'https://oneamyloidosisvoice.com/terms-of-use' },
+  { label: 'Terms of use',     url: 'https://oneamyloidosisvoice.com/terms-use' },
   { label: 'FAQ',              url: 'https://oneamyloidosisvoice.com/faq' },
-  { label: 'Code of Conduct',  url: 'https://oneamyloidosisvoice.com/code-of-conduct' },
+  { label: 'Code of Conduct',  url: 'https://oneamyloidosisvoice.com/code-conduct' },
 ];
 
 // ─── OAV Logo ─────────────────────────────────────────────────────────────────
