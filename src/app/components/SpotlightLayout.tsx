@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router';
-import { Search, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const FONT = 'gotham, sans-serif';
 
@@ -52,7 +52,6 @@ const OAVLogo: React.FC = () => {
 
 // ─── Main nav ──────────────────────────────────────────────────────────────────
 const SiteHeader: React.FC = () => {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -105,27 +104,6 @@ const SiteHeader: React.FC = () => {
               <NavItem key={label} label={label} url={url} />
             ))}
           </nav>
-
-          {/* Search icon */}
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            style={{
-              background: '#050505',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0 14px',
-              height: '48px',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              borderRadius: '2px',
-            }}
-            aria-label="Search"
-          >
-            <Search size={22} color="#ffffff" strokeWidth={2.5} />
-          </button>
 
           {/* Hamburger — mobile only, hidden on desktop via CSS */}
           <button
