@@ -6,6 +6,12 @@ import { useSpotlightProfiles } from './useSpotlightProfiles';
 
 const FONT = 'gotham, sans-serif';
 
+function formatApiSessionDate(month?: string, day?: string): string | undefined {
+  if (!month || !day) return undefined;
+  const lower = month.toLowerCase();
+  return `${lower.charAt(0).toUpperCase()}${lower.slice(1)} ${day}`;
+}
+
 function getInitials(name: string): string {
   const words = name.replace(/^Dr\.?\s+/i, '').split(/\s+/).filter(Boolean);
   if (words.length === 0) return '?';
@@ -19,11 +25,22 @@ function getInitials(name: string): string {
 interface BioModalProps {
   clinician: Clinician;
   photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
+  bio: string;                   // resolved bio — API profile bio preferred, data.ts as fallback
+  sessionDate: string;           // resolved session date — API sessions preferred, data.ts as fallback
+  sessionTitle: string;          // resolved session title — API sessions preferred, data.ts as fallback
   apiSessionDescription?: string; // session description from Drupal API — overrides data.ts copy
   onClose: () => void;
 }
 
-const BioModal: React.FC<BioModalProps> = ({ clinician, photoUrl, apiSessionDescription, onClose }) => {
+const BioModal: React.FC<BioModalProps> = ({
+  clinician,
+  photoUrl,
+  bio,
+  sessionDate,
+  sessionTitle,
+  apiSessionDescription,
+  onClose,
+}) => {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -135,7 +152,7 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, photoUrl, apiSessionDesc
               fontFamily: FONT,
             }}
           >
-            {clinician.bio}
+            {bio}
           </p>
 
           {/* Session info box */}
@@ -160,7 +177,7 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, photoUrl, apiSessionDesc
                   marginBottom: '4px',
                 }}
               >
-                Session: {clinician.sessionDate}
+                Session: {sessionDate}
               </div>
               <div
                 style={{
@@ -171,7 +188,7 @@ const BioModal: React.FC<BioModalProps> = ({ clinician, photoUrl, apiSessionDesc
                   marginBottom: '6px',
                 }}
               >
-                {clinician.sessionTitle}
+                {sessionTitle}
               </div>
               <p
                 style={{
@@ -225,16 +242,30 @@ interface CompactCardProps {
   clinician: Clinician;
   regLink?: string;
   apiPhotoUrl?: string;           // live photo from profiles API — preferred over data.ts photo
+  apiBio?: string;                // live bio from profiles API — preferred over data.ts bio
+  apiSessionDate?: string;        // live date from sessions API
+  apiSessionTitle?: string;       // live title from sessions API
   apiSessionDescription?: string; // session description from Drupal API
 }
 
-const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink, apiPhotoUrl, apiSessionDescription }) => {
+const CompactCard: React.FC<CompactCardProps> = ({
+  clinician,
+  regLink,
+  apiPhotoUrl,
+  apiBio,
+  apiSessionDate,
+  apiSessionTitle,
+  apiSessionDescription,
+}) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
 
   // API photo preferred; fall back to data.ts CDN photo
   const resolvedPhoto = apiPhotoUrl ?? clinician.photo;
+  const resolvedBio = apiBio?.trim() || clinician.bio;
+  const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
+  const resolvedSessionTitle = apiSessionTitle || clinician.sessionTitle;
 
   return (
     <>
@@ -302,7 +333,7 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink, apiPhotoU
           {clinician.hasSession && (
             <div style={{ fontSize: '12px', color: '#006E8E', fontFamily: FONT, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Calendar size={11} color="#006E8E" />
-              <span>{clinician.sessionDate}</span>
+              <span>{resolvedSessionDate}</span>
             </div>
           )}
         </div>
@@ -398,6 +429,9 @@ const CompactCard: React.FC<CompactCardProps> = ({ clinician, regLink, apiPhotoU
         <BioModal
           clinician={clinician}
           photoUrl={resolvedPhoto}
+          bio={resolvedBio}
+          sessionDate={resolvedSessionDate}
+          sessionTitle={resolvedSessionTitle}
           apiSessionDescription={apiSessionDescription}
           onClose={() => setModalOpen(false)}
         />
@@ -460,6 +494,11 @@ export const TeamSection: React.FC = () => {
 
   // uuid → regUrl — memoised to avoid rebuilding on every render
   const regUrlMap  = useMemo(() => buildRegUrlMap(sessions), [sessions]);
+  // uuid → full session data from Drupal API for team card/modal copy.
+  const sessionMap = useMemo(
+    () => new Map(sessions.map(s => [s.id, s])),
+    [sessions],
+  );
   // uuid → session description (Drupal API copy overrides data.ts)
   const descMap    = useMemo(
     () => new Map(sessions.map(s => [s.id, s.description])),
@@ -509,6 +548,16 @@ export const TeamSection: React.FC = () => {
             clinician={clinician}
             regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
             apiPhotoUrl={clinician.profileUid ? profileMap.get(clinician.profileUid)?.photoUrl : undefined}
+            apiBio={clinician.profileUid ? profileMap.get(clinician.profileUid)?.bio : undefined}
+            apiSessionDate={
+              clinician.sessionUuid
+                ? formatApiSessionDate(
+                    sessionMap.get(clinician.sessionUuid)?.month,
+                    sessionMap.get(clinician.sessionUuid)?.day,
+                  )
+                : undefined
+            }
+            apiSessionTitle={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.title : undefined}
             apiSessionDescription={clinician.sessionUuid ? descMap.get(clinician.sessionUuid) : undefined}
           />
         ))}

@@ -6,8 +6,8 @@
 // because two presenters share the last name "Lee" (Lisa Lee uid=277, Sarah Lee uid=279).
 // Consumers look up via clinician.profileUid.
 //
-// Strips HTML bios; data.ts bios remain authoritative (Stacey-approved) — API
-// bios are retained in the map for future use but NOT rendered in TeamSection.
+// Strips HTML bios so TeamSection can render profile API bios with data.ts as
+// fallback when the API is unavailable or incomplete.
 
 import { useState, useEffect } from 'react';
 
@@ -32,7 +32,7 @@ export interface ApiProfile {
 export interface NormalizedProfile {
   uid: number;
   lastNameKey: string;  // lowercase trimmed last_name — retained for debugging
-  bio: string;          // plain text, HTML stripped (not rendered — data.ts bios used instead)
+  bio: string;          // plain text, HTML stripped
   photoUrl: string;
 }
 
@@ -71,7 +71,7 @@ function normalise(p: ApiProfile): NormalizedProfile {
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 // COH deviation: returns Map<uid, NormalizedProfile> (not Map<lastNameKey, ...>)
-// Use: profileMap.get(clinician.profileUid)?.photoUrl
+// Use: profileMap.get(clinician.profileUid)?.photoUrl / .bio
 export function useSpotlightProfiles() {
   const [profileMap, setProfileMap] = useState<Map<number, NormalizedProfile>>(new Map());
 
