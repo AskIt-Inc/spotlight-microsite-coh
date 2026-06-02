@@ -203,13 +203,6 @@ export const supportStaff: SupportStaff[] = [
 
 export const trials: Trial[] = [
   {
-    id: 'NCT06097832',
-    title: 'Study of NXC-201 CAR-T in Patients With Light Chain (AL) Amyloidosis (NEXICART-2)',
-    status: 'Recruiting',
-    description: 'Open-label Phase 1b dose escalation/expansion study of NXC-201 CAR-T cell therapy in patients with relapsed or refractory light chain (AL) amyloidosis. City of Hope (Duarte) is an active enrolling site.',
-    phase: 'Phase 1b',
-  },
-  {
     id: 'NCT06292780',
     title: 'Linvoseltamab in Adults With Relapsed or Refractory Systemic Light Chain Amyloidosis (LINKER-AL2)',
     status: 'Recruiting',

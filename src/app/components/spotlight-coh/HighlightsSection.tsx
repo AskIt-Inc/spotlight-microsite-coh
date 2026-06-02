@@ -2,7 +2,7 @@ import React from 'react';
 
 const FONT = 'gotham, sans-serif';
 
-// ─── Highlights — Programme accomplishments ───────────────────────────────────
+// ─── Highlights — Program accomplishments ───────────────────────────────────
 // Source: cityofhope.org/locations/los-angeles/los-angeles-clinical-programs/amyloidosis
 //         + Dr. Rosenzweig profile awards & publications
 
@@ -48,7 +48,7 @@ export const HighlightsSection: React.FC = () => (
           fontFamily: FONT,
         }}
       >
-        Programme Highlights
+        Program Highlights
       </div>
 
       {/* Highlight rows — compact */}
