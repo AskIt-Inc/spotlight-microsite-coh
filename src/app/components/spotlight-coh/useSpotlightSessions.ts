@@ -82,6 +82,19 @@ const MONTH_MAP: Record<string, string> = {
   Jul: 'JUL', Aug: 'AUG', Sep: 'SEP', Oct: 'OCT', Nov: 'NOV', Dec: 'DEC',
 };
 
+function normalizePresenterName(presenter?: ApiSession['presenters'][number]): string {
+  if (!presenter) return '';
+
+  const firstName = (presenter.first_name ?? '').replace(/\s{2,}/g, ' ').trim();
+  const lastName = (presenter.last_name ?? '').replace(/\s{2,}/g, ' ').trim();
+  const apiTitle = (presenter.title ?? '').replace(/\s{2,}/g, ' ').trim();
+  const suffix = (presenter.name_suffix ?? '').toLowerCase();
+  const inferredTitle = apiTitle || (/\bm\.?d\.?\b/.test(suffix) ? 'Dr.' : '');
+  const name = [inferredTitle, firstName, lastName].filter(Boolean).join(' ');
+
+  return name || (presenter.display_name ?? '').replace(/\s{2,}/g, ' ').trim();
+}
+
 function normalise(s: ApiSession): NormalizedSession {
   // Parse date string: "Jul 1, 2026" → month="JUL", day="1"
   const parts = s.date.split(' ');                        // ["Jul", "1,", "2026"]
@@ -96,10 +109,10 @@ function normalise(s: ApiSession): NormalizedSession {
   const ptTime = s.times_by_zone?.PT;
   const time   = ptTime ? `${ptTime} PT` : s.time;
 
-  // Presenter: first presenter display_name, collapse double-spaces
-  const presenterRaw      = s.presenters?.[0]?.display_name ?? '';
-  const presenter         = presenterRaw.replace(/\s{2,}/g, ' ').trim();
-  const presenterLastName = (s.presenters?.[0]?.last_name ?? '').trim().toLowerCase();
+  // Presenter: build a clean name from title + first_name + last_name.
+  const firstPresenter    = s.presenters?.[0];
+  const presenter         = normalizePresenterName(firstPresenter);
+  const presenterLastName = (firstPresenter?.last_name ?? '').trim().toLowerCase();
 
   // Status: completed if timestamp is in the past
   const status: 'upcoming' | 'completed' =

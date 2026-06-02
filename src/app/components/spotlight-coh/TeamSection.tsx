@@ -24,6 +24,7 @@ function getInitials(name: string): string {
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
 interface BioModalProps {
   clinician: Clinician;
+  name: string;                   // resolved name — sessions API presenter preferred, data.ts as fallback
   photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
   bio: string;                   // resolved bio — API profile bio preferred, data.ts as fallback
   sessionDate: string;           // resolved session date — API sessions preferred, data.ts as fallback
@@ -34,6 +35,7 @@ interface BioModalProps {
 
 const BioModal: React.FC<BioModalProps> = ({
   clinician,
+  name,
   photoUrl,
   bio,
   sessionDate,
@@ -96,13 +98,13 @@ const BioModal: React.FC<BioModalProps> = ({
             {photoUrl && !imgError ? (
               <img
                 src={photoUrl}
-                alt={clinician.name}
+                alt={name}
                 onError={() => setImgError(true)}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
               />
             ) : (
               <span style={{ fontSize: '24px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
-                {getInitials(clinician.name)}
+                {getInitials(name)}
               </span>
             )}
           </div>
@@ -110,7 +112,7 @@ const BioModal: React.FC<BioModalProps> = ({
           {/* Identity */}
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '17px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-              {clinician.name}
+              {name}
             </div>
             <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
               {clinician.credentials} · {clinician.title}
@@ -242,6 +244,7 @@ interface CompactCardProps {
   clinician: Clinician;
   regLink?: string;
   apiPhotoUrl?: string;           // live photo from profiles API — preferred over data.ts photo
+  apiPresenterName?: string;      // live presenter name from sessions API
   apiBio?: string;                // live bio from profiles API — preferred over data.ts bio
   apiSessionDate?: string;        // live date from sessions API
   apiSessionTitle?: string;       // live title from sessions API
@@ -252,6 +255,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
   clinician,
   regLink,
   apiPhotoUrl,
+  apiPresenterName,
   apiBio,
   apiSessionDate,
   apiSessionTitle,
@@ -262,6 +266,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const [registerHovered, setRegisterHovered] = useState(false);
 
   // API photo preferred; fall back to data.ts CDN photo
+  const resolvedName = apiPresenterName?.trim() || clinician.name;
   const resolvedPhoto = apiPhotoUrl ?? clinician.photo;
   const resolvedBio = apiBio?.trim() || clinician.bio;
   const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
@@ -300,13 +305,13 @@ const CompactCard: React.FC<CompactCardProps> = ({
           {resolvedPhoto && !imgError ? (
             <img
               src={resolvedPhoto}
-              alt={clinician.name}
+              alt={resolvedName}
               onError={() => setImgError(true)}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
             />
           ) : (
             <span style={{ fontSize: '20px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
-              {getInitials(clinician.name)}
+              {getInitials(resolvedName)}
             </span>
           )}
         </div>
@@ -314,7 +319,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
         {/* Identity */}
         <div className="compact-card-identity" style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: '16px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-            {clinician.name}
+            {resolvedName}
           </div>
           <div
             style={{
@@ -428,6 +433,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
       {modalOpen && (
         <BioModal
           clinician={clinician}
+          name={resolvedName}
           photoUrl={resolvedPhoto}
           bio={resolvedBio}
           sessionDate={resolvedSessionDate}
@@ -548,6 +554,7 @@ export const TeamSection: React.FC = () => {
             clinician={clinician}
             regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
             apiPhotoUrl={clinician.profileUid ? profileMap.get(clinician.profileUid)?.photoUrl : undefined}
+            apiPresenterName={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.presenter : undefined}
             apiBio={clinician.profileUid ? profileMap.get(clinician.profileUid)?.bio : undefined}
             apiSessionDate={
               clinician.sessionUuid
