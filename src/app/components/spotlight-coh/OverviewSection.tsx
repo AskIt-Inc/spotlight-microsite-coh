@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Building2, ChevronDown, FlaskConical, Microscope, type LucideIcon } from 'lucide-react';
 
 const FONT = 'gotham, sans-serif';
 
 // ─── Overview — COH ───────────────────────────────────────────────────────────
 // Layout:
-//   1. Impactful hero quote
+//   1. Impactful opening statement
 //   2. Three visual program pillars (scannable)
 //   3. Collapsible "About the Program" — earmarked for COH to provide copy
 
-const pillars = [
+const pillars: Array<{ icon: LucideIcon; label: string; text: string }> = [
   {
-    icon: '01',
+    icon: Building2,
     label: 'Dedicated Outpatient Program',
     text: 'A comprehensive outpatient amyloidosis clinic offering the full spectrum of care — from definitive diagnosis through stem cell transplantation and cellular therapy — for AL, ATTR, and all other forms of the disease.',
   },
   {
-    icon: '02',
+    icon: Microscope,
     label: 'Advanced Diagnostics',
     text: 'State-of-the-art imaging (echocardiography, cardiac MRI, nuclear medicine), Congo Red staining (the gold standard for amyloid detection), and a unique partnership with Mayo Clinic for definitive protein subtyping via liquid chromatography.',
   },
   {
-    icon: '03',
+    icon: FlaskConical,
     label: 'Research & Clinical Trials',
     text: 'Access to breakthrough clinical trials and novel therapeutics — including CAR-T therapy, bispecific antibodies, and targeted inhibitors — led by a team that has driven pivotal advances in AL and TTR amyloidosis research.',
   },
@@ -125,7 +125,7 @@ export const OverviewSection: React.FC = () => (
     }}
   >
     <div>
-      {/* Hero quote */}
+      {/* Opening statement */}
       <blockquote
         style={{
           margin: '0 0 32px 0',
@@ -143,7 +143,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          "City of Hope is a nationally recognized center of excellence in amyloidosis — bringing together hematologists, cardiologists, nephrologists, and neurologists under one dedicated multidisciplinary program to provide every patient with the right diagnosis and the best available treatment."
+          City of Hope is a nationally recognized center of excellence in amyloidosis — bringing together hematologists, cardiologists, nephrologists, and neurologists under one dedicated multidisciplinary program to provide every patient with the right diagnosis and the best available treatment.
         </p>
       </blockquote>
 
@@ -156,55 +156,63 @@ export const OverviewSection: React.FC = () => (
           gap: '16px',
         }}
       >
-        {pillars.map((p) => (
-          <div
-            key={p.label}
-            style={{
-              background: 'var(--oav-page-bg)',
-              border: '1px solid var(--oav-border)',
-              borderRadius: '8px',
-              padding: '20px',
-            }}
-          >
+        {pillars.map((p) => {
+          const Icon = p.icon;
+
+          return (
             <div
+              key={p.label}
               style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                color: '#F58220',
-                marginBottom: '10px',
-                fontFamily: FONT,
+                background: 'var(--oav-page-bg)',
+                border: '1px solid var(--oav-border)',
+                borderRadius: '8px',
+                padding: '20px',
               }}
             >
-              {p.icon}
+              <div
+                style={{
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '8px',
+                  background: '#FFF3E8',
+                  border: '1px solid #F9C89D',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '12px',
+                }}
+              >
+                <Icon size={18} color="#F58220" strokeWidth={1.8} />
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.5px',
+                  color: '#006E8E',
+                  fontFamily: FONT,
+                  marginBottom: '6px',
+                }}
+              >
+                {p.label}
+              </div>
+              <p
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 300,
+                  color: '#000000',
+                  lineHeight: 1.6,
+                  margin: 0,
+                  fontFamily: FONT,
+                  textAlign: 'left' as const,
+                }}
+              >
+                {p.text}
+              </p>
             </div>
-            <div
-              style={{
-                fontSize: '13px',
-                fontWeight: 700,
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.5px',
-                color: '#006E8E',
-                fontFamily: FONT,
-                marginBottom: '6px',
-              }}
-            >
-              {p.label}
-            </div>
-            <p
-              style={{
-                fontSize: '14px',
-                fontWeight: 300,
-                color: '#000000',
-                lineHeight: 1.6,
-                margin: 0,
-                fontFamily: FONT,
-                textAlign: 'left' as const,
-              }}
-            >
-              {p.text}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Collapsible program description — earmarked for COH copy */}
