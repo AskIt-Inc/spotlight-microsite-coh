@@ -13,25 +13,25 @@ const pillars: Array<{ icon: LucideIcon; label: string; text: string }> = [
   {
     icon: Building2,
     label: 'Dedicated Outpatient Program',
-    text: 'A comprehensive outpatient amyloidosis clinic offering the full spectrum of care — from definitive diagnosis through stem cell transplantation and cellular therapy — for AL, ATTR, and all other forms of the disease.',
+    text: 'A comprehensive multidisciplinary amyloidosis clinic offering the full spectrum of care — from definitive diagnosis through stem cell transplantation and cellular therapy — for AL, ATTR, and all other forms of the disease.',
   },
   {
     icon: Microscope,
     label: 'Advanced Diagnostics',
-    text: 'State-of-the-art imaging (echocardiography, cardiac MRI, nuclear medicine), Congo Red staining (the gold standard for amyloid detection), and a unique partnership with Mayo Clinic for definitive protein subtyping via liquid chromatography.',
+    text: 'State-of-the-art imaging (echocardiography, cardiac MRI, nuclear medicine), Congo Red staining (the gold standard for amyloid detection), and a partnership with Mayo Clinic for definitive protein subtyping via liquid chromatography.',
   },
   {
     icon: FlaskConical,
     label: 'Research & Clinical Trials',
-    text: 'Access to breakthrough clinical trials and novel therapeutics — including CAR-T therapy, bispecific antibodies, and targeted inhibitors — led by a team that has driven pivotal advances in AL and TTR amyloidosis research.',
+    text: 'Access to breakthrough clinical trials and novel therapeutics, including CAR-T, bispecific antibodies, and targeted inhibitors, led by a team that has driven pivotal advances in AL and TTR amyloidosis research.',
   },
 ];
 
 // Program description — sourced from cityofhope.org/locations/los-angeles/los-angeles-clinical-programs/amyloidosis
 const PROGRAM_ABOUT_PARAGRAPHS = [
-  `City of Hope® Cancer Center Duarte is a nationally recognized center of excellence in amyloidosis care, dedicated to providing patients across Southern California with access to leading-edge diagnostic and treatment options for AL, ATTR, and other forms of the disease.`,
-  `What sets the program apart: a dedicated outpatient amyloidosis clinic offering comprehensive care and a wide range of treatment options including stem cell transplantation and cellular therapy; state-of-the-art diagnostic imaging including echocardiography, cardiac MRI, and nuclear medicine scans; Congo Red staining (the gold standard for amyloid detection in tissue); and a partnership with Mayo Clinic for biopsy tissue subtyping using liquid chromatography.`,
-  `The multidisciplinary care team brings together hematologists, cardiologists, nephrologists, and neurologists — specialists who work together seamlessly for every patient. As a founding member of the National Comprehensive Cancer Network and a U.S. News & World Report Top 10 "Best Hospital" for cancer (2025–26), City of Hope is ideally placed to combine clinical excellence with leading-edge research.`,
+  `The City of Hope Amyloidosis Treatment and Research Program is anchored by City of Hope Duarte, a nationally recognized center of excellence in amyloidosis care, and gives patients access to expertise across a wide region with locations in Duarte, California, Irvine, California, and Phoenix, Arizona.`,
+  `What sets the program apart is a dedicated outpatient amyloidosis clinic offering comprehensive care, multidisciplinary providers, and a wide range of treatment options, including stem cell transplantation and cellular therapy; state-of-the-art diagnostic imaging including echocardiography, cardiac MRI, and nuclear medicine scans; Congo Red staining, the gold standard for amyloid detection in tissue; and biopsy tissue subtyping through Mayo Clinic using liquid chromatography.`,
+  `The multidisciplinary care model brings together hematology, cardiology, nephrology, neurology, and other amyloid specialists. As a founding member of the National Comprehensive Cancer Network and a U.S. News & World Report Top 10 "Best Hospital" for cancer (2025-26), City of Hope is well positioned to combine clinical excellence with leading-edge research.`,
 ];
 
 const AboutProgramAccordion: React.FC = () => {
@@ -143,7 +143,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          City of Hope is a nationally recognized center of excellence in amyloidosis — bringing together hematologists, cardiologists, nephrologists, and neurologists under one dedicated multidisciplinary program to provide every patient with the right diagnosis and the best available treatment.
+          City of Hope provides amyloidosis expertise across a wide regional program, helping patients in Duarte, Irvine, Phoenix, and beyond access specialized diagnosis, treatment, and research options.
         </p>
       </blockquote>
 

@@ -62,7 +62,7 @@ export const clinicians: Clinician[] = [
     specialty: 'Hematology & Oncology · Multiple Myeloma · Amyloidosis Program Director',
     type: 'Medical Doctor',
     photo: 'https://cdn.cityofhope.org/media/bios/96842f25-1673-4f19-afc8-38c46b9d9560/default/rosenzweig-michael.jpg',
-    bio: 'Dr. Michael Rosenzweig is an Associate Professor of Medicine, Department of Hematology & Hematopoietic Cell Transplantation. He is the Director of the City of Hope Amyloidosis Program and Chief of the Division of Multiple Myeloma. He is an expert in plasma cell disorders — multiple myeloma, Waldenström macroglobulinemia, POEMS syndrome, and all forms of amyloidosis (AL, TTR, AA, and LECT2). He trained at Boston Medical Center and Memorial Sloan Kettering, and previously directed the Amyloid Treatment and Research Program at Boston University.',
+    bio: 'Dr. Michael Rosenzweig is an Associate Professor of Medicine, Department of Hematology & Hematopoietic Cell Transplantation. He is the Director of the City of Hope Amyloidosis Program and Chief of the Division of Multiple Myeloma. He is an expert in plasma cell disorders — multiple myeloma, Waldenström macroglobulinemia, POEMS syndrome, and all forms of amyloidosis (AL, TTR, AA, and LECT2). He trained at Boston Medical Center and Memorial Sloan Kettering, and previously worked with the Amyloid Treatment and Research Program.',
     hasVideo: false,
     hasSession: true,
     sessionDate: 'July 1',

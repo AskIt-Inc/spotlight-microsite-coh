@@ -20,8 +20,8 @@ const highlights = [
     text: 'The COH team has led transformational research in amyloidosis diagnosis and treatment — including participation in the pivotal ANDROMEDA trial and receipt of the 2021 IDEA (Improving Detection of AL Amyloidosis) Grant.',
   },
   {
-    label: 'Mayo Clinic Diagnostic Alliance',
-    text: 'A unique partnership with Mayo Clinic ensures definitive amyloid protein subtyping via liquid chromatography evaluation — the gold standard for differentiating AL from ATTR and directing the correct treatment path for every patient.',
+    label: 'Recognized Leader in Cellular Therapies and Stem Cell Transplantation',
+    text: 'City of Hope brings broad institutional experience in cellular therapies, immunotherapy, and stem cell transplantation, supporting patients who may need advanced treatment options as part of their care.',
   },
 ];
 
@@ -103,7 +103,7 @@ export const HighlightsSection: React.FC = () => (
           fontStyle: 'italic',
         }}
       >
-        Source: City of Hope Amyloidosis Program — cityofhope.org
+        Source: City of Hope Los Angeles-Area Amyloidosis Care — cityofhope.org
       </p>
     </div>
   </section>

@@ -331,7 +331,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
               lineHeight: 1.4,
             }}
           >
-            {clinician.title}
+            {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
           </div>
           <div
             style={{

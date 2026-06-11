@@ -193,7 +193,7 @@ const TrialCard: React.FC<TrialCardProps> = ({ trial }) => {
               lineHeight: 1.5,
             }}
           >
-            A member of the research team will be in touch.
+            A member of the City of Hope research team will be in touch.
           </p>
 
           <form onSubmit={(e) => { e.preventDefault(); setFormState('submitted'); }}>
