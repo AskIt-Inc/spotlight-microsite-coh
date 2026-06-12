@@ -239,6 +239,83 @@ const BioModal: React.FC<BioModalProps> = ({
   );
 };
 
+// ─── Video Modal ──────────────────────────────────────────────────────────────
+interface VideoModalProps {
+  title: string;
+  videoUrl: string;
+  onClose: () => void;
+}
+
+const VideoModal: React.FC<VideoModalProps> = ({ title, videoUrl, onClose }) => (
+  <div
+    style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,0.72)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      padding: '24px',
+    }}
+    onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+  >
+    <div
+      style={{
+        background: '#ffffff',
+        borderRadius: '12px',
+        maxWidth: '860px',
+        width: '100%',
+        overflow: 'hidden',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.32)',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '16px',
+          padding: '14px 18px',
+          borderBottom: '1px solid #E8E8E8',
+        }}
+      >
+        <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+          {title}
+        </div>
+        <button
+          onClick={onClose}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#4B5563',
+          }}
+          aria-label="Close video"
+        >
+          <X size={20} />
+        </button>
+      </div>
+      <video
+        src={videoUrl}
+        controls
+        autoPlay
+        style={{
+          display: 'block',
+          width: '100%',
+          maxHeight: '72vh',
+          background: '#000000',
+        }}
+      />
+    </div>
+  </div>
+);
+
 // ─── Compact horizontal card ──────────────────────────────────────────────────
 interface CompactCardProps {
   clinician: Clinician;
@@ -261,6 +338,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
 
   // Profile API is the source of truth when it has a matching uid.
@@ -414,10 +492,9 @@ const CompactCard: React.FC<CompactCardProps> = ({
 
           {/* Watch video — if available */}
           {clinician.hasVideo && clinician.videoUrl && (
-            <a
-              href={clinician.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => setVideoModalOpen(true)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -436,7 +513,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
             >
               <PlayCircle size={13} color="#005EB8" />
               Watch video
-            </a>
+            </button>
           )}
         </div>
       </div>
@@ -452,6 +529,14 @@ const CompactCard: React.FC<CompactCardProps> = ({
           sessionTitle={resolvedSessionTitle}
           apiSessionDescription={apiSessionDescription}
           onClose={() => setModalOpen(false)}
+        />
+      )}
+
+      {videoModalOpen && clinician.videoUrl && (
+        <VideoModal
+          title={`${resolvedName} video`}
+          videoUrl={clinician.videoUrl}
+          onClose={() => setVideoModalOpen(false)}
         />
       )}
     </>
