@@ -696,8 +696,8 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
         {/* Avatar */}
         <div
           style={{
-            width: '44px',
-            height: '44px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
             border: '2px solid #006E8E',
             background: '#006E8E',

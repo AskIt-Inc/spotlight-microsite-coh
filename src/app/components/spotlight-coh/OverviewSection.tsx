@@ -29,7 +29,7 @@ const pillars: Array<{ icon: LucideIcon; label: string; text: string }> = [
 
 // Program description — sourced from cityofhope.org/locations/los-angeles/los-angeles-clinical-programs/amyloidosis
 const PROGRAM_ABOUT_PARAGRAPHS = [
-  `The City of Hope Amyloidosis Treatment and Research Program is anchored by City of Hope Duarte, a nationally recognized center of excellence in amyloidosis care, and gives patients access to expertise across a wide region with locations in Duarte, California, Irvine, California, and Phoenix, Arizona.`,
+  `The City of Hope Amyloidosis Treatment and Research Program is a regional program with amyloid expertise in Duarte, California, Irvine, California, and Phoenix, Arizona.`,
   `What sets the program apart is a dedicated outpatient amyloidosis clinic offering comprehensive multidisciplinary care and a wide range of treatment options, including stem cell transplantation and cellular therapy; state-of-the-art diagnostic imaging including echocardiography, cardiac MRI, and nuclear medicine scans; and Congo Red staining, the gold standard for amyloid detection in tissue.`,
   `The multidisciplinary care model brings together hematology, cardiology, nephrology, neurology, and other amyloid specialists. As a founding member of the National Comprehensive Cancer Network and a U.S. News & World Report Top 10 "Best Hospital" for cancer (2025-26), City of Hope is well positioned to combine clinical excellence with leading-edge research.`,
 ];
@@ -143,7 +143,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          Anchored in Duarte, City of Hope offers comprehensive multidisciplinary amyloidosis care across the full spectrum — from definitive diagnosis through stem cell transplantation and cellular therapy — for AL, ATTR, and other forms of the disease.
+          The City of Hope Amyloidosis Treatment and Research Program is a regional program with amyloid expertise in Duarte, California, Irvine, California, and Phoenix, Arizona.
         </p>
       </blockquote>
 
