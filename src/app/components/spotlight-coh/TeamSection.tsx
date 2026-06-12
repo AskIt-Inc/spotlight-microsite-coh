@@ -686,19 +686,20 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
           background: 'var(--oav-card-bg)',
           border: '1px solid var(--oav-border)',
           borderRadius: '8px',
-          padding: '24px 28px',
+          padding: '16px 20px',
           display: 'flex',
           alignItems: 'center',
-          gap: '24px',
+          gap: '16px',
           boxShadow: 'var(--oav-card-shadow)',
         }}
       >
         {/* Avatar */}
         <div
           style={{
-            width: '68px',
-            height: '68px',
+            width: '44px',
+            height: '44px',
             borderRadius: '50%',
+            border: '2px solid #006E8E',
             background: '#006E8E',
             display: 'flex',
             alignItems: 'center',
@@ -715,7 +716,7 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
             />
           ) : (
-            <span style={{ fontSize: '20px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+            <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
               {getInitials(resolvedName)}
             </span>
           )}
