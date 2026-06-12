@@ -723,10 +723,10 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
 
         {/* Info */}
         <div className="support-staff-identity" style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: '#000000', fontFamily: FONT, lineHeight: 1.25 }}>
+          <div style={{ fontSize: '16px', fontWeight: 700, color: '#000000', fontFamily: FONT, lineHeight: 1.3 }}>
             {resolvedName}
           </div>
-          <div style={{ fontSize: '17px', color: '#374151', fontFamily: FONT, marginTop: '8px', lineHeight: 1.35 }}>
+          <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '3px', lineHeight: 1.4 }}>
             {staff.role}
           </div>
         </div>
@@ -736,7 +736,7 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
               type="button"
               onClick={() => setModalOpen(true)}
               style={{
-                fontSize: '16px',
+                fontSize: '12px',
                 fontWeight: 300,
                 color: '#005EB8',
                 background: 'none',
