@@ -133,7 +133,7 @@ const BioModal: React.FC<BioModalProps> = ({
               {name}
             </div>
             <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
-              {clinician.title}
+              {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
             </div>
             <div style={{ fontSize: '13px', color: '#006E8E', fontFamily: FONT, marginTop: '2px' }}>
               {clinician.specialty}
@@ -425,7 +425,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
               lineHeight: 1.4,
             }}
           >
-            {clinician.title}
+            {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
           </div>
           <div
             style={{
