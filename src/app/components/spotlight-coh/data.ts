@@ -26,6 +26,10 @@ export interface SupportStaff {
   role: string;
   email?: string;
   note?: string;
+  photo?: string;
+  profileUrl?: string;
+  ctaLabel?: string;
+  profileUid?: number;
 }
 
 export interface Trial {
@@ -58,11 +62,11 @@ export const clinicians: Clinician[] = [
     id: 1,
     name: 'Dr. Michael Rosenzweig',
     credentials: 'MD',
-    title: 'Associate Professor, Hematology & HCT · Director, COH Amyloidosis Program · Chief, Division of Multiple Myeloma',
+    title: 'Associate Professor, Hematology & HCT · Co-Director, COH Amyloidosis Program · Chief, Division of Multiple Myeloma',
     specialty: 'Hematology/Oncology · Amyloidosis · Myeloma · HCT',
     type: 'Medical Doctor',
     photo: 'https://cdn.cityofhope.org/media/bios/96842f25-1673-4f19-afc8-38c46b9d9560/default/rosenzweig-michael.jpg',
-    bio: 'Dr. Michael Rosenzweig is an Associate Professor of Medicine, Department of Hematology & Hematopoietic Cell Transplantation. He is the Director of the City of Hope Amyloidosis Program and Chief of the Division of Multiple Myeloma. He is an expert in plasma cell disorders — multiple myeloma, Waldenström macroglobulinemia, POEMS syndrome, and all forms of amyloidosis (AL, TTR, AA, and LECT2). He trained at Boston Medical Center and Memorial Sloan Kettering, and previously worked with the Amyloid Treatment and Research Program.',
+    bio: 'Dr. Michael Rosenzweig is an Associate Professor of Medicine, Department of Hematology & Hematopoietic Cell Transplantation. He is Co-Director of the City of Hope Amyloidosis Program and Chief of the Division of Multiple Myeloma. He is an expert in plasma cell disorders — multiple myeloma, Waldenström macroglobulinemia, POEMS syndrome, and all forms of amyloidosis (AL, TTR, AA, and LECT2). He trained at Boston Medical Center and Memorial Sloan Kettering, and previously worked with the Amyloid Treatment and Research Program.',
     hasVideo: false,
     hasSession: true,
     sessionDate: 'July 1',
@@ -117,12 +121,13 @@ export const clinicians: Clinician[] = [
     type: 'Medical Doctor',
     photo: 'https://cdn.cityofhope.org/media/bios/30513842-8963-49eb-a578-1b77dc885b54/default/jamal-faizi.jpg',
     bio: 'Dr. Faizi Jamal is an Associate Clinical Professor, Division of Cardiology, and Chief of the Division of Cardiology at City of Hope, where he also directs the Echocardiography Laboratory. He specializes in cardio-oncology, cardiac imaging, heart failure, and cardiac amyloidosis, and is board-certified in cardiovascular disease, echocardiography, and nuclear cardiology. He trained at Cedars-Sinai and previously held faculty at Northwestern University Feinberg School of Medicine.',
-    hasVideo: false,
+    hasVideo: true,
     hasSession: true,
     sessionDate: 'July 22',
     sessionTitle: 'Diagnosis of Cardiac Amyloidosis',
     sessionDescription: 'Dr. Jamal will review the diagnostic features of cardiac amyloidosis, the red flags clinicians examine, and the steps followed to confirm disease. Within this diagnostic process, we will discuss the emergence of novel AI tools that may increase disease detection.',
     appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/faizi-jamal',
+    videoUrl: '/videos/jamal-coh-spotlight.mp4',
     sessionUuid: '4eb4381a-0a98-44c0-829a-f6e3cb131b6a',
     profileUid: 278,
   },
@@ -153,6 +158,7 @@ export const supportStaff: SupportStaff[] = [
     credentials: 'RN',
     role: 'Multi-disciplinary Amyloid Clinic Registered Nurse',
     email: 'emariecelestial@coh.org',
+    profileUid: 306,
   },
   {
     id: 2,
@@ -160,6 +166,7 @@ export const supportStaff: SupportStaff[] = [
     credentials: 'NP',
     role: 'Amyloidosis Nurse Practitioner',
     email: 'trwalker@coh.org',
+    photo: '/images/coh/tricia-walker.jpeg',
     note: 'Expertise in Smoldering Multiple Myeloma, Relapsed/Refractory Multiple Myeloma, Myeloproliferative Neoplasms, and Febrile Neutropenia.',
   },
   {
@@ -195,9 +202,32 @@ export const supportStaff: SupportStaff[] = [
     id: 7,
     name: 'James Sanchez',
     credentials: 'PhD',
-    role: 'Staff Scientist, Clinical & Translational Research',
+    role: 'Senior Project Development Scientist',
     email: 'jamsanchez@coh.org',
-    note: 'Leading research initiatives in healthcare delivery through scientific project development within City of Hope.',
+    note: 'Supports the Judy and Bernard Briskin Center for Multiple Myeloma Research and works in City of Hope Hematology & Hematopoietic Cell Transplantation on articles, grants, and protocols.',
+    profileUrl: 'https://www.cityofhope.org/research/hematologic-malignancies-research-institute/briskin-center-for-multiple-myeloma-research/faculty',
+    ctaLabel: 'View research team',
+    profileUid: 309,
+  },
+  {
+    id: 8,
+    name: 'Dr. Hadi Mohammad Khanli',
+    credentials: 'MD',
+    role: 'Neurologist · Assistant Clinical Professor, Department of Medicine',
+    note: 'City of Hope neurologist with clinical expertise in general neurology, epilepsy, neuromuscular disorders, and headaches. His COH profile also notes experience consulting on neurological complications of blood cancers and their treatment.',
+    profileUrl: 'https://www.cityofhope.org/patients/find-a-doctor/hadi-khanli',
+    ctaLabel: 'Schedule an appointment',
+    profileUid: 307,
+  },
+  {
+    id: 9,
+    name: 'Dr. Amna Rizvi',
+    credentials: 'MD',
+    role: 'Contracted Consultant, Nephrology',
+    note: 'Independent nephrologist supporting the program as a contracted consultant. Public profiles list her nephrology specialty, independent physician status, and regional practice affiliations, but no COH academic title has been confirmed.',
+    profileUrl: 'https://www.keckmedicine.org/provider/amna-arif-rizvi/',
+    ctaLabel: 'View profile',
+    profileUid: 308,
   },
 ];
 

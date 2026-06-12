@@ -4,6 +4,7 @@ const FONT = 'gotham, sans-serif';
 
 // ─── Highlights — Program accomplishments ───────────────────────────────────
 // Source: cityofhope.org/locations/los-angeles/los-angeles-clinical-programs/amyloidosis
+//         + City of Hope CAR T / cellular therapy and transplant materials
 //         + Dr. Rosenzweig profile awards & publications
 
 const highlights = [
@@ -20,8 +21,8 @@ const highlights = [
     text: 'The COH team has led transformational research in amyloidosis diagnosis and treatment — including participation in the pivotal ANDROMEDA trial and receipt of the 2021 IDEA (Improving Detection of AL Amyloidosis) Grant.',
   },
   {
-    label: 'Recognized Leader in Cellular Therapies and Stem Cell Transplantation',
-    text: 'City of Hope brings broad institutional experience in cellular therapies, immunotherapy, and stem cell transplantation, supporting patients who may need advanced treatment options as part of their care.',
+    label: 'Cellular Therapy and Transplant Leadership',
+    text: 'City of Hope\'s cellular therapy work builds on a transplant program that began in 1976 and a CAR T research history dating back to the late 1990s, giving the program deep institutional expertise in cellular therapies and stem cell transplantation.',
   },
 ];
 

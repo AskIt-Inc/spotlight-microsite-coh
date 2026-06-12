@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { PlayCircle, Calendar, ExternalLink, X } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
 import { useSpotlightSessions, buildRegUrlMap } from './useSpotlightSessions';
-import { useSpotlightProfiles } from './useSpotlightProfiles';
+import { useSpotlightProfiles, type NormalizedProfile } from './useSpotlightProfiles';
 
 const FONT = 'gotham, sans-serif';
 
@@ -24,7 +24,7 @@ function getInitials(name: string): string {
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
 interface BioModalProps {
   clinician: Clinician;
-  name: string;                   // resolved name — sessions API presenter preferred, data.ts as fallback
+  name: string;                   // resolved name — profile API preferred, sessions/static as fallback
   photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
   bio: string;                   // resolved bio — API profile bio preferred, data.ts as fallback
   sessionDate: string;           // resolved session date — API sessions preferred, data.ts as fallback
@@ -243,9 +243,8 @@ const BioModal: React.FC<BioModalProps> = ({
 interface CompactCardProps {
   clinician: Clinician;
   regLink?: string;
-  apiPhotoUrl?: string;           // live photo from profiles API — preferred over data.ts photo
+  apiProfile?: NormalizedProfile; // live profile API — preferred over sessions/data.ts
   apiPresenterName?: string;      // live presenter name from sessions API
-  apiBio?: string;                // live bio from profiles API — preferred over data.ts bio
   apiSessionDate?: string;        // live date from sessions API
   apiSessionTitle?: string;       // live title from sessions API
   apiSessionDescription?: string; // session description from Drupal API
@@ -254,9 +253,8 @@ interface CompactCardProps {
 const CompactCard: React.FC<CompactCardProps> = ({
   clinician,
   regLink,
-  apiPhotoUrl,
+  apiProfile,
   apiPresenterName,
-  apiBio,
   apiSessionDate,
   apiSessionTitle,
   apiSessionDescription,
@@ -265,10 +263,10 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
 
-  // API photo preferred; fall back to data.ts CDN photo
-  const resolvedName = apiPresenterName?.trim() || clinician.name;
-  const resolvedPhoto = apiPhotoUrl ?? clinician.photo;
-  const resolvedBio = apiBio?.trim() || clinician.bio;
+  // Profile API is the source of truth when it has a matching uid.
+  const resolvedName = apiProfile?.displayName || apiPresenterName?.trim() || clinician.name;
+  const resolvedPhoto = apiProfile?.photoUrl || clinician.photo;
+  const resolvedBio = apiProfile?.bio || clinician.bio;
   const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
   const resolvedSessionTitle = apiSessionTitle || clinician.sessionTitle;
 
@@ -415,8 +413,11 @@ const CompactCard: React.FC<CompactCardProps> = ({
           )}
 
           {/* Watch video — if available */}
-          {clinician.hasVideo && (
-            <button
+          {clinician.hasVideo && clinician.videoUrl && (
+            <a
+              href={clinician.videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -430,11 +431,12 @@ const CompactCard: React.FC<CompactCardProps> = ({
                 cursor: 'pointer',
                 fontFamily: FONT,
                 whiteSpace: 'nowrap' as const,
+                textDecoration: 'none',
               }}
             >
               <PlayCircle size={13} color="#005EB8" />
               Watch video
-            </button>
+            </a>
           )}
         </div>
       </div>
@@ -459,49 +461,93 @@ const CompactCard: React.FC<CompactCardProps> = ({
 // ─── Support Staff Card ───────────────────────────────────────────────────────
 interface SupportStaffCardProps {
   staff: SupportStaff;
+  apiProfile?: NormalizedProfile;
 }
 
-const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff }) => (
-  <div
-    style={{
-      background: 'var(--oav-card-bg)',
-      border: '1px solid var(--oav-border)',
-      borderRadius: '8px',
-      padding: '14px 20px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '14px',
-    }}
-  >
-    {/* Avatar */}
+const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }) => {
+  const [imgError, setImgError] = useState(false);
+  const resolvedName = apiProfile?.displayName || (staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name);
+  const resolvedNote = apiProfile?.bio || staff.note;
+  const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
+
+  return (
     <div
       style={{
-        width: '44px',
-        height: '44px',
-        borderRadius: '50%',
-        background: '#006E8E',
+        background: 'var(--oav-card-bg)',
+        border: '1px solid var(--oav-border)',
+        borderRadius: '8px',
+        padding: '14px 20px',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
+        gap: '14px',
       }}
     >
-      <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
-        {staff.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
-      </span>
-    </div>
+      {/* Avatar */}
+      <div
+        style={{
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          background: '#006E8E',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          overflow: 'hidden',
+        }}
+      >
+        {resolvedPhoto && !imgError ? (
+          <img
+            src={resolvedPhoto}
+            alt={resolvedName}
+            onError={() => setImgError(true)}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+          />
+        ) : (
+          <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+            {getInitials(resolvedName)}
+          </span>
+        )}
+      </div>
 
-    {/* Info */}
-    <div>
-      <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-        {staff.name}{staff.credentials ? `, ${staff.credentials}` : ''}
-      </div>
-      <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
-        {staff.role}
+      {/* Info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+          {resolvedName}
+        </div>
+        <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
+          {staff.role}
+        </div>
+        {resolvedNote && (
+          <div style={{ fontSize: '12px', color: '#4B5563', fontFamily: FONT, marginTop: '6px', lineHeight: 1.5 }}>
+            {resolvedNote}
+          </div>
+        )}
+        {staff.profileUrl && (
+          <a
+            href={staff.profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              marginTop: '8px',
+              fontSize: '12px',
+              fontWeight: 700,
+              color: '#006E8E',
+              fontFamily: FONT,
+              textDecoration: 'none',
+            }}
+          >
+            {staff.ctaLabel ?? 'View profile'}
+            <ExternalLink size={11} color="#006E8E" />
+          </a>
+        )}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── TeamSection ──────────────────────────────────────────────────────────────
 export const TeamSection: React.FC = () => {
@@ -563,9 +609,8 @@ export const TeamSection: React.FC = () => {
             key={clinician.id}
             clinician={clinician}
             regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
-            apiPhotoUrl={clinician.profileUid ? profileMap.get(clinician.profileUid)?.photoUrl : undefined}
+            apiProfile={clinician.profileUid ? profileMap.get(clinician.profileUid) : undefined}
             apiPresenterName={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.presenter : undefined}
-            apiBio={clinician.profileUid ? profileMap.get(clinician.profileUid)?.bio : undefined}
             apiSessionDate={
               clinician.sessionUuid
                 ? formatApiSessionDate(
@@ -613,7 +658,11 @@ export const TeamSection: React.FC = () => {
           }}
         >
           {supportStaff.map((staff) => (
-            <SupportStaffCard key={staff.id} staff={staff} />
+            <SupportStaffCard
+              key={staff.id}
+              staff={staff}
+              apiProfile={staff.profileUid ? profileMap.get(staff.profileUid) : undefined}
+            />
           ))}
         </div>
       </div>

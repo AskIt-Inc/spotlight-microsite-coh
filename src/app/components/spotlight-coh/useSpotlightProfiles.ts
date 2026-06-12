@@ -31,6 +31,11 @@ export interface ApiProfile {
 // ─── Normalised shape ─────────────────────────────────────────────────────────
 export interface NormalizedProfile {
   uid: number;
+  displayName: string;    // title + first/last + suffix from API
+  firstName: string;
+  lastName: string;
+  title: string;
+  nameSuffix: string;
   lastNameKey: string;  // lowercase trimmed last_name — retained for debugging
   bio: string;          // plain text, HTML stripped
   photoUrl: string;
@@ -60,18 +65,35 @@ function isTestUser(p: ApiProfile): boolean {
   return combined.includes('test');
 }
 
+function formatDisplayName(p: ApiProfile): string {
+  const title = p.title.trim();
+  const firstName = p.first_name.replace(/\s{2,}/g, ' ').trim();
+  const lastName = p.last_name.replace(/\s{2,}/g, ' ').trim();
+  const nameSuffix = p.name_suffix.replace(/\s{2,}/g, ' ').trim();
+  const fullName = [title, firstName, lastName].filter(Boolean).join(' ');
+
+  if (fullName && nameSuffix) return `${fullName}, ${nameSuffix}`;
+  if (fullName) return fullName;
+  return p.display_name.replace(/\s{2,}/g, ' ').trim();
+}
+
 function normalise(p: ApiProfile): NormalizedProfile {
   return {
-    uid:         p.uid,
-    lastNameKey: p.last_name.trim().toLowerCase(),
-    bio:         stripHtml(p.bio),
-    photoUrl:    p.photo_url,
+    uid:          p.uid,
+    displayName:  formatDisplayName(p),
+    firstName:    p.first_name.replace(/\s{2,}/g, ' ').trim(),
+    lastName:     p.last_name.replace(/\s{2,}/g, ' ').trim(),
+    title:        p.title.trim(),
+    nameSuffix:   p.name_suffix.replace(/\s{2,}/g, ' ').trim(),
+    lastNameKey:  p.last_name.trim().toLowerCase(),
+    bio:          stripHtml(p.bio),
+    photoUrl:     p.photo_url,
   };
 }
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 // COH deviation: returns Map<uid, NormalizedProfile> (not Map<lastNameKey, ...>)
-// Use: profileMap.get(clinician.profileUid)?.photoUrl / .bio
+// Use: profileMap.get(clinician.profileUid)?.displayName / .photoUrl / .bio
 export function useSpotlightProfiles() {
   const [profileMap, setProfileMap] = useState<Map<number, NormalizedProfile>>(new Map());
 

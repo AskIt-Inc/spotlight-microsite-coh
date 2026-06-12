@@ -18,7 +18,7 @@ const pillars: Array<{ icon: LucideIcon; label: string; text: string }> = [
   {
     icon: Microscope,
     label: 'Advanced Diagnostics',
-    text: 'State-of-the-art imaging (echocardiography, cardiac MRI, nuclear medicine), Congo Red staining (the gold standard for amyloid detection), and a partnership with Mayo Clinic for definitive protein subtyping via liquid chromatography.',
+    text: 'State-of-the-art imaging including echocardiography, cardiac MRI, and nuclear medicine scans, along with Congo Red staining, the gold standard for amyloid detection in tissue.',
   },
   {
     icon: FlaskConical,
@@ -30,7 +30,7 @@ const pillars: Array<{ icon: LucideIcon; label: string; text: string }> = [
 // Program description — sourced from cityofhope.org/locations/los-angeles/los-angeles-clinical-programs/amyloidosis
 const PROGRAM_ABOUT_PARAGRAPHS = [
   `The City of Hope Amyloidosis Treatment and Research Program is anchored by City of Hope Duarte, a nationally recognized center of excellence in amyloidosis care, and gives patients access to expertise across a wide region with locations in Duarte, California, Irvine, California, and Phoenix, Arizona.`,
-  `What sets the program apart is a dedicated outpatient amyloidosis clinic offering comprehensive care, multidisciplinary providers, and a wide range of treatment options, including stem cell transplantation and cellular therapy; state-of-the-art diagnostic imaging including echocardiography, cardiac MRI, and nuclear medicine scans; Congo Red staining, the gold standard for amyloid detection in tissue; and biopsy tissue subtyping through Mayo Clinic using liquid chromatography.`,
+  `What sets the program apart is a dedicated outpatient amyloidosis clinic offering comprehensive multidisciplinary care and a wide range of treatment options, including stem cell transplantation and cellular therapy; state-of-the-art diagnostic imaging including echocardiography, cardiac MRI, and nuclear medicine scans; and Congo Red staining, the gold standard for amyloid detection in tissue.`,
   `The multidisciplinary care model brings together hematology, cardiology, nephrology, neurology, and other amyloid specialists. As a founding member of the National Comprehensive Cancer Network and a U.S. News & World Report Top 10 "Best Hospital" for cancer (2025-26), City of Hope is well positioned to combine clinical excellence with leading-edge research.`,
 ];
 
@@ -143,7 +143,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          City of Hope provides amyloidosis expertise across a wide regional program, helping patients in Duarte, Irvine, Phoenix, and beyond access specialized diagnosis, treatment, and research options.
+          Anchored in Duarte, City of Hope offers comprehensive multidisciplinary amyloidosis care across the full spectrum — from definitive diagnosis through stem cell transplantation and cellular therapy — for AL, ATTR, and other forms of the disease.
         </p>
       </blockquote>
 
@@ -210,6 +210,32 @@ export const OverviewSection: React.FC = () => (
               >
                 {p.text}
               </p>
+              {p.label === 'Research & Clinical Trials' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    document.getElementById('clinical-trials')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    marginTop: '12px',
+                    padding: 0,
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    color: '#006E8E',
+                    fontFamily: FONT,
+                    textDecoration: 'none',
+                  }}
+                >
+                  View clinical trials
+                </button>
+              )}
             </div>
           );
         })}

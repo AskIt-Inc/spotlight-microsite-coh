@@ -359,6 +359,7 @@ const TrialCard: React.FC<TrialCardProps> = ({ trial }) => {
 export const TrialsSection: React.FC = () => {
   return (
     <section
+      id="clinical-trials"
       style={{
         background: 'var(--oav-page-bg)',
         padding: '56px 0',
