@@ -239,8 +239,6 @@ export const supportStaff: SupportStaff[] = [
     role: 'Senior Project Development Scientist',
     email: 'jamsanchez@coh.org',
     note: 'Supports the Judy and Bernard Briskin Center for Multiple Myeloma Research and works in City of Hope Hematology & Hematopoietic Cell Transplantation on articles, grants, and protocols.',
-    profileUrl: 'https://www.cityofhope.org/research/hematologic-malignancies-research-institute/briskin-center-for-multiple-myeloma-research/faculty',
-    ctaLabel: 'View research team',
     profileUid: 309,
   },
 ];

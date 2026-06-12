@@ -549,88 +549,216 @@ interface SupportStaffCardProps {
   apiProfile?: NormalizedProfile;
 }
 
-const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }) => {
+interface SupportStaffModalProps {
+  name: string;
+  role: string;
+  note: string;
+  photoUrl?: string;
+  onClose: () => void;
+}
+
+const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
+  name,
+  role,
+  note,
+  photoUrl,
+  onClose,
+}) => {
   const [imgError, setImgError] = useState(false);
-  const resolvedName = staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name;
-  const resolvedNote = apiProfile?.bio || staff.note;
-  const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
 
   return (
     <div
       style={{
-        background: 'var(--oav-card-bg)',
-        border: '1px solid var(--oav-border)',
-        borderRadius: '8px',
-        padding: '14px 20px',
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.55)',
         display: 'flex',
         alignItems: 'center',
-        gap: '14px',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
       }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      {/* Avatar */}
       <div
         style={{
-          width: '44px',
-          height: '44px',
-          borderRadius: '50%',
-          background: '#006E8E',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          overflow: 'hidden',
+          background: '#ffffff',
+          borderRadius: '12px',
+          maxWidth: '560px',
+          width: '100%',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
         }}
       >
-        {resolvedPhoto && !imgError ? (
-          <img
-            src={resolvedPhoto}
-            alt={resolvedName}
-            onError={() => setImgError(true)}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
-          />
-        ) : (
-          <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
-            {getInitials(resolvedName)}
-          </span>
-        )}
-      </div>
-
-      {/* Info */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-          {resolvedName}
-        </div>
-        <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
-          {staff.role}
-        </div>
-        {resolvedNote && (
-          <div style={{ fontSize: '12px', color: '#4B5563', fontFamily: FONT, marginTop: '6px', lineHeight: 1.5 }}>
-            {resolvedNote}
-          </div>
-        )}
-        {staff.profileUrl && (
-          <a
-            href={staff.profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '20px 24px',
+            borderBottom: '1px solid #E8E8E8',
+          }}
+        >
+          <div
             style={{
-              display: 'inline-flex',
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              background: '#006E8E',
+              display: 'flex',
               alignItems: 'center',
-              gap: '5px',
-              marginTop: '8px',
-              fontSize: '12px',
-              fontWeight: 700,
-              color: '#006E8E',
-              fontFamily: FONT,
-              textDecoration: 'none',
+              justifyContent: 'center',
+              flexShrink: 0,
+              overflow: 'hidden',
             }}
           >
-            {staff.ctaLabel ?? 'View profile'}
-            <ExternalLink size={11} color="#006E8E" />
-          </a>
-        )}
+            {photoUrl && !imgError ? (
+              <img
+                src={photoUrl}
+                alt={name}
+                onError={() => setImgError(true)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+              />
+            ) : (
+              <span style={{ fontSize: '21px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+                {getInitials(name)}
+              </span>
+            )}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: '17px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+              {name}
+            </div>
+            <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '3px' }}>
+              {role}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#4B5563',
+            }}
+            aria-label="Close"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        <div style={{ padding: '24px' }}>
+          <p
+            style={{
+              fontSize: '15px',
+              fontWeight: 300,
+              color: '#000000',
+              lineHeight: 1.7,
+              margin: 0,
+              fontFamily: FONT,
+            }}
+          >
+            {note}
+          </p>
+        </div>
       </div>
     </div>
+  );
+};
+
+const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }) => {
+  const [imgError, setImgError] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const resolvedName = staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name;
+  const resolvedNote = staff.note || apiProfile?.bio;
+  const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
+
+  return (
+    <>
+      <div
+        style={{
+          background: 'var(--oav-card-bg)',
+          border: '1px solid var(--oav-border)',
+          borderRadius: '8px',
+          padding: '14px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+        }}
+      >
+        {/* Avatar */}
+        <div
+          style={{
+            width: '44px',
+            height: '44px',
+            borderRadius: '50%',
+            background: '#006E8E',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            overflow: 'hidden',
+          }}
+        >
+          {resolvedPhoto && !imgError ? (
+            <img
+              src={resolvedPhoto}
+              alt={resolvedName}
+              onError={() => setImgError(true)}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+            />
+          ) : (
+            <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+              {getInitials(resolvedName)}
+            </span>
+          )}
+        </div>
+
+        {/* Info */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+            {resolvedName}
+          </div>
+          <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
+            {staff.role}
+          </div>
+          {resolvedNote && (
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: '#005EB8',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: FONT,
+                textDecoration: 'underline',
+                marginTop: '6px',
+              }}
+            >
+              View more
+            </button>
+          )}
+        </div>
+      </div>
+      {modalOpen && resolvedNote && (
+        <SupportStaffModal
+          name={resolvedName}
+          role={staff.role}
+          note={resolvedNote}
+          photoUrl={resolvedPhoto}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
