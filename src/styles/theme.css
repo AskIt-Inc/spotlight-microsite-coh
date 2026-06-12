@@ -393,6 +393,23 @@ html, body {
     border-top: 1px solid var(--oav-border) !important;
   }
 
+  .support-staff-card {
+    align-items: flex-start !important;
+    gap: 16px !important;
+    padding: 18px 20px !important;
+  }
+
+  .support-staff-identity {
+    flex: 1 1 100% !important;
+  }
+
+  .support-staff-actions {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    padding-left: 84px !important;
+    margin-top: -18px !important;
+  }
+
   /* ── v1 team grid (portrait cards) → single column ─────────────────────────── */
   .team-card-grid {
     grid-template-columns: 1fr !important;

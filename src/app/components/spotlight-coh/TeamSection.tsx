@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { PlayCircle, Calendar, ExternalLink, X } from 'lucide-react';
+import { PlayCircle, Calendar, Users, X } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
 import { useSpotlightSessions, buildRegUrlMap } from './useSpotlightSessions';
 import { useSpotlightProfiles, type NormalizedProfile } from './useSpotlightProfiles';
@@ -681,21 +681,23 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
   return (
     <>
       <div
+        className="support-staff-card"
         style={{
           background: 'var(--oav-card-bg)',
           border: '1px solid var(--oav-border)',
           borderRadius: '8px',
-          padding: '14px 20px',
+          padding: '24px 28px',
           display: 'flex',
           alignItems: 'center',
-          gap: '14px',
+          gap: '24px',
+          boxShadow: 'var(--oav-card-shadow)',
         }}
       >
         {/* Avatar */}
         <div
           style={{
-            width: '44px',
-            height: '44px',
+            width: '68px',
+            height: '68px',
             borderRadius: '50%',
             background: '#006E8E',
             display: 'flex',
@@ -713,26 +715,28 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
             />
           ) : (
-            <span style={{ fontSize: '15px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
+            <span style={{ fontSize: '20px', fontWeight: 600, color: '#ffffff', fontFamily: FONT }}>
               {getInitials(resolvedName)}
             </span>
           )}
         </div>
 
         {/* Info */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+        <div className="support-staff-identity" style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: '#000000', fontFamily: FONT, lineHeight: 1.25 }}>
             {resolvedName}
           </div>
-          <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '2px' }}>
+          <div style={{ fontSize: '17px', color: '#374151', fontFamily: FONT, marginTop: '8px', lineHeight: 1.35 }}>
             {staff.role}
           </div>
-          {resolvedNote && (
+        </div>
+        {resolvedNote && (
+          <div className="support-staff-actions" style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}>
             <button
               type="button"
               onClick={() => setModalOpen(true)}
               style={{
-                fontSize: '12px',
+                fontSize: '16px',
                 fontWeight: 300,
                 color: '#005EB8',
                 background: 'none',
@@ -741,13 +745,13 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
                 cursor: 'pointer',
                 fontFamily: FONT,
                 textDecoration: 'underline',
-                marginTop: '6px',
+                whiteSpace: 'nowrap' as const,
               }}
             >
               View more
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       {modalOpen && resolvedNote && (
         <SupportStaffModal
@@ -838,36 +842,38 @@ export const TeamSection: React.FC = () => {
         ))}
       </div>
 
-      {/* ── Critical Supportive Staff ── */}
+      {/* ── Support Staff ── */}
       <div style={{ marginTop: '48px' }}>
-        <h2
+        <div
           style={{
-            fontSize: '24px',
-            fontWeight: 300,
-            color: '#000000',
-            margin: '0 0 4px 0',
-            lineHeight: 1.3,
-            fontFamily: FONT,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            margin: '0 0 24px 0',
           }}
         >
-          Critical Supportive Staff
-        </h2>
-        <p
-          style={{
-            fontSize: '14px',
-            color: '#4B5563',
-            margin: '0 0 20px 0',
-            fontFamily: FONT,
-          }}
-        >
-          The dedicated clinical and research team supporting the City of Hope Amyloidosis Program
-        </p>
+          <Users size={22} color="#006E8E" strokeWidth={2} />
+          <h2
+            style={{
+              fontSize: '24px',
+              fontWeight: 700,
+              color: '#006E8E',
+              margin: 0,
+              lineHeight: 1.2,
+              fontFamily: FONT,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase' as const,
+            }}
+          >
+            Support Staff
+          </h2>
+        </div>
 
         <div
           style={{
             display: 'flex',
             flexDirection: 'column' as const,
-            gap: '10px',
+            gap: '18px',
           }}
         >
           {supportStaff.map((staff) => (
