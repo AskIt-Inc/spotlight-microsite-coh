@@ -853,17 +853,15 @@ export const TeamSection: React.FC = () => {
             margin: '0 0 24px 0',
           }}
         >
-          <Users size={22} color="#006E8E" strokeWidth={2} />
+          <Users size={22} color="#000000" strokeWidth={2} />
           <h2
             style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: '#006E8E',
+              fontSize: '28px',
+              fontWeight: 300,
+              color: '#000000',
               margin: 0,
-              lineHeight: 1.2,
+              lineHeight: 1.3,
               fontFamily: FONT,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
             }}
           >
             Support Staff
