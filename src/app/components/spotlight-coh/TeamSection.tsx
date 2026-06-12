@@ -466,7 +466,7 @@ interface SupportStaffCardProps {
 
 const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }) => {
   const [imgError, setImgError] = useState(false);
-  const resolvedName = apiProfile?.displayName || (staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name);
+  const resolvedName = staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name;
   const resolvedNote = apiProfile?.bio || staff.note;
   const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
 
