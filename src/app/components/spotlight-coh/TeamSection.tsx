@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { PlayCircle, Calendar, Users, X } from 'lucide-react';
+import { PlayCircle, Calendar, Users, X, ExternalLink } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
 import { useSpotlightSessions, buildRegUrlMap } from './useSpotlightSessions';
 import { useSpotlightProfiles, type NormalizedProfile } from './useSpotlightProfiles';
@@ -19,6 +19,24 @@ function getInitials(name: string): string {
   const filtered = words.filter((w) => !suffixes.has(w.toLowerCase().replace(/[.,]/g, '')));
   if (filtered.length >= 2) return (filtered[0][0] + filtered[filtered.length - 1][0]).toUpperCase();
   return filtered[0][0].toUpperCase();
+}
+
+function stripCredentialSuffix(name: string): string {
+  return name
+    .replace(/\s*,?\s*(MD|M\.D\.|PhD|Ph\.D\.|MS|M\.S\.|CGC)\s*$/i, '')
+    .trim();
+}
+
+function formatClinicianName(
+  clinician: Clinician,
+  apiProfile?: NormalizedProfile,
+  apiPresenterName?: string,
+): string {
+  if (apiProfile?.title && apiProfile.firstName && apiProfile.lastName) {
+    return [apiProfile.title, apiProfile.firstName, apiProfile.lastName].filter(Boolean).join(' ');
+  }
+
+  return stripCredentialSuffix(apiProfile?.displayName || apiPresenterName?.trim() || clinician.name);
 }
 
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
@@ -115,7 +133,7 @@ const BioModal: React.FC<BioModalProps> = ({
               {name}
             </div>
             <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
-              {clinician.credentials} · {clinician.title}
+              {clinician.title}
             </div>
             <div style={{ fontSize: '13px', color: '#006E8E', fontFamily: FONT, marginTop: '2px' }}>
               {clinician.specialty}
@@ -342,7 +360,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const [registerHovered, setRegisterHovered] = useState(false);
 
   // Profile API is the source of truth when it has a matching uid.
-  const resolvedName = apiProfile?.displayName || apiPresenterName?.trim() || clinician.name;
+  const resolvedName = formatClinicianName(clinician, apiProfile, apiPresenterName);
   const resolvedPhoto = apiProfile?.photoUrl || clinician.photo;
   const resolvedBio = apiProfile?.bio || clinician.bio;
   const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
@@ -407,7 +425,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
               lineHeight: 1.4,
             }}
           >
-            {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
+            {clinician.title}
           </div>
           <div
             style={{

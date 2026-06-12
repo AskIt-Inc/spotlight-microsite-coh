@@ -180,7 +180,7 @@ export const clinicians: Clinician[] = [
     sessionDate: '',
     sessionTitle: '',
     sessionDescription: '',
-    appointmentUrl: 'https://www.keckmedicine.org/provider/amna-arif-rizvi/',
+    appointmentUrl: 'https://californiakidneyspecialists.com/amna-a-rizvi-md/',
     profileUid: 308,
   },
 ];

@@ -173,7 +173,7 @@ export const HeroSection: React.FC = () => (
               fontFamily: FONT,
             }}
           >
-            City of Hope Amyloidosis Program
+            City of Hope Amyloidosis Treatment and Research Program
           </h1>
         </div>
 
