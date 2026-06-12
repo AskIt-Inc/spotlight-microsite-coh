@@ -200,8 +200,7 @@ export const supportStaff: SupportStaff[] = [
     credentials: 'NP',
     role: 'Amyloidosis Nurse Practitioner',
     email: 'trwalker@coh.org',
-    photo: '/images/coh/tricia-walker.jpeg',
-    note: 'Expertise in Smoldering Multiple Myeloma, Relapsed/Refractory Multiple Myeloma, Myeloproliferative Neoplasms, and Febrile Neutropenia.',
+    profileUid: 310,
   },
   {
     id: 3,
@@ -238,7 +237,6 @@ export const supportStaff: SupportStaff[] = [
     credentials: 'PhD',
     role: 'Senior Project Development Scientist',
     email: 'jamsanchez@coh.org',
-    note: 'Supports the Judy and Bernard Briskin Center for Multiple Myeloma Research and works in City of Hope Hematology & Hematopoietic Cell Transplantation on articles, grants, and protocols.',
     profileUid: 309,
   },
 ];
