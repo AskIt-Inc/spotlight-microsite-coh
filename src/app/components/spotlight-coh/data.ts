@@ -220,6 +220,7 @@ export const supportStaff: SupportStaff[] = [
     email: 'eyhip@coh.org',
     note: 'Edelyn Yhip supervises the Hematology Nurse Navigation team in City of Hope New Patient Services, a nationwide remote team that supports patients at the start of their care journey. Her team gathers comprehensive medical and treatment history, coordinates with onsite amyloid liaison Gloria Higuera and the physician team, helps identify patients who may need urgent evaluation, and bridges registration with specialty care so patients feel heard, prepared, and confident as they begin care.',
     photo: `${import.meta.env.BASE_URL}images/edelyn-yhip-coh-2026.png`,
+    profileUid: 311,
   },
   {
     id: 5,
