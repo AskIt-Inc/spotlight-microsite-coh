@@ -61,7 +61,7 @@ export const clinicians: Clinician[] = [
   {
     id: 1,
     name: 'Dr. Michael Rosenzweig',
-    credentials: 'MD',
+    credentials: 'MD, MS',
     title: 'Associate Professor, Hematology & HCT · Co-Director, COH Amyloidosis Program · Chief, Division of Multiple Myeloma',
     specialty: 'Hematology/Oncology · Amyloidosis · Myeloma · HCT',
     type: 'Medical Doctor',
@@ -218,7 +218,8 @@ export const supportStaff: SupportStaff[] = [
     credentials: 'RN, BSN',
     role: 'Registered Nurse — Intake Nurse Navigation / Myeloma & Amyloidosis',
     email: 'eyhip@coh.org',
-    note: 'Edelyn Yhip supports intake nurse navigation for leukemia, lymphoma, myeloma, amyloidosis, gene therapy, pediatrics, and Enterprise New Patient Services. She helps patients connect with the right care team and understand next steps as they enter the program.',
+    note: 'Edelyn Yhip supervises the Hematology Nurse Navigation team in City of Hope New Patient Services, a nationwide remote team that supports patients at the start of their care journey. Her team gathers comprehensive medical and treatment history, coordinates with onsite amyloid liaison Gloria Higuera and the physician team, helps identify patients who may need urgent evaluation, and bridges registration with specialty care so patients feel heard, prepared, and confident as they begin care.',
+    photo: `${import.meta.env.BASE_URL}images/edelyn-yhip-coh-2026.png`,
   },
   {
     id: 5,
@@ -341,5 +342,17 @@ export const sessions: Session[] = [
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/v8-wvczMROubSvL8KHw9NA',
     shortUrl: 'https://bit.ly/4v0eCkG',
+  },
+  {
+    id: 6,
+    uuid: 'edelyn-yhip-july-27',
+    month: 'JUL',
+    day: '27',
+    dayOfWeek: 'Mon',
+    time: 'Time TBD',
+    title: 'The Importance of Communicating with Your Health Care Team',
+    presenter: 'Edelyn Yhip, RN, BSN',
+    description: 'Edelyn Yhip will review when to report unexpected symptoms, medication side effects, or changes in general health such as weight, pain, or energy levels. Communicating changes early can reduce or prevent complications and allows the care team to adjust treatment plans proactively.',
+    status: 'upcoming',
   },
 ];

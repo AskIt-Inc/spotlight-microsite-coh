@@ -46,7 +46,7 @@ const CityOfHopeLogo = () => {
 };
 
 // ─── Series strip (upper band — 40% of total hero height) ────────────────────
-// Format: [STTT logo] | [Amyloidosis Program Spotlight Series] [July 2026]
+// Format: [STTT logo] | [City of Hope Amyloidosis Program Spotlight Series] [July 2026]
 // Disease-first naming enables: "Sickle Cell Disease Program Spotlight Series" etc.
 const SeriesStrip: React.FC = () => (
   <div
@@ -93,7 +93,7 @@ const SeriesStrip: React.FC = () => (
             lineHeight: 1.1,
           }}
         >
-          <span>Amyloidosis Program Spotlight Series</span>
+          <span>City of Hope Amyloidosis Program Spotlight Series</span>
           <span style={{ color: '#000000' }}> · July 2026</span>
         </div>
       </div>
