@@ -508,6 +508,32 @@ const CompactCard: React.FC<CompactCardProps> = ({
             </a>
           )}
 
+          {!clinician.hasSession && clinician.appointmentUrl && (
+            <a
+              href={clinician.appointmentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontSize: '12px',
+                fontWeight: 300,
+                color: '#005EB8',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: FONT,
+                whiteSpace: 'nowrap' as const,
+                textDecoration: 'none',
+              }}
+            >
+              Schedule an appointment
+              <ExternalLink size={12} color="#005EB8" />
+            </a>
+          )}
+
           {/* Watch video — if available */}
           {clinician.hasVideo && clinician.videoUrl && (
             <button
@@ -749,26 +775,62 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
             {staff.role}
           </div>
         </div>
-        {resolvedNote && (
-          <div className="support-staff-actions" style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}>
-            <button
-              type="button"
-              onClick={() => setModalOpen(true)}
-              style={{
-                fontSize: '12px',
-                fontWeight: 300,
-                color: '#005EB8',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-                fontFamily: FONT,
-                textDecoration: 'underline',
-                whiteSpace: 'nowrap' as const,
-              }}
-            >
-              View more
-            </button>
+        {(resolvedNote || staff.appointmentUrl) && (
+          <div
+            className="support-staff-actions"
+            style={{
+              flexShrink: 0,
+              display: 'flex',
+              flexDirection: 'column' as const,
+              alignItems: 'flex-end',
+              gap: '6px',
+            }}
+          >
+            {resolvedNote && (
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: '#005EB8',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  textDecoration: 'underline',
+                  whiteSpace: 'nowrap' as const,
+                }}
+              >
+                View more
+              </button>
+            )}
+            {staff.appointmentUrl && (
+              <a
+                href={staff.appointmentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: '#005EB8',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap' as const,
+                }}
+              >
+                Schedule an appointment
+                <ExternalLink size={12} color="#005EB8" />
+              </a>
+            )}
           </div>
         )}
       </div>

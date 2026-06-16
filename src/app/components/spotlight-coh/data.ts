@@ -27,6 +27,7 @@ export interface SupportStaff {
   email?: string;
   note?: string;
   photo?: string;
+  appointmentUrl?: string;
   profileUrl?: string;
   ctaLabel?: string;
   profileUid?: number;
@@ -170,7 +171,7 @@ export const clinicians: Clinician[] = [
     id: 7,
     name: 'Dr. Amna Rizvi',
     credentials: 'MD',
-    title: 'Contracted Consultant',
+    title: 'Affiliated Consultant',
     specialty: 'Nephrology · Internal Medicine',
     type: 'Medical Doctor',
     photo: '',
@@ -202,6 +203,7 @@ export const supportStaff: SupportStaff[] = [
     role: 'Nurse Practitioner — Hematology & HCT / Multiple Myeloma & Amyloidosis',
     email: 'trwalker@coh.org',
     note: 'Tricia R. Walker, MSN, FNP-C, is a nurse practitioner specializing in amyloidosis, multiple myeloma, and hematopoietic stem cell transplantation, with more than 10 years of experience across acute and outpatient care settings. She combines expertise in complex hematologic malignancies with patient advocacy, education, and compassionate care to support patients and families throughout treatment.',
+    appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/tricia-walker',
     profileUid: 310,
   },
   {
@@ -211,6 +213,7 @@ export const supportStaff: SupportStaff[] = [
     role: 'Nurse Practitioner — Amyloidosis Care',
     email: 'jbuchholz@coh.org',
     note: 'Justine Buchholz supports amyloidosis care as a nurse practitioner, helping patients and families navigate clinical questions, care planning, and follow-up needs within the program.',
+    appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/justine-buchholz',
   },
   {
     id: 4,
