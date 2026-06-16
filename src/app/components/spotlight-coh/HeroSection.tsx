@@ -161,20 +161,43 @@ export const HeroSection: React.FC = () => (
             </span>
           </div>
 
-          {/* H1 */}
-          <h1
-            className="hero-h1"
-            style={{
-              fontSize: '34px',
-              fontWeight: 700,
-              color: '#ffffff',
-              margin: 0,
-              lineHeight: 1.2,
-              fontFamily: FONT,
-            }}
-          >
-            City of Hope Amyloidosis Treatment and Research Program
-          </h1>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <h1
+              className="hero-h1"
+              style={{
+                fontSize: '29px',
+                fontWeight: 700,
+                color: '#ffffff',
+                margin: '0 0 10px',
+                lineHeight: 1.2,
+                fontFamily: FONT,
+              }}
+            >
+              City of Hope Amyloidosis Treatment and Research Program
+            </h1>
+            <div
+              style={{
+                width: '45px',
+                height: '3px',
+                background: 'rgb(255, 232, 163)',
+                borderRadius: '2px',
+                marginBottom: '10px',
+              }}
+            />
+            <p
+              style={{
+                fontSize: '1.5rem',
+                fontWeight: 700,
+                color: 'rgba(255, 255, 255, 0.85)',
+                margin: 0,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase' as const,
+                fontFamily: FONT,
+              }}
+            >
+              Amyloidosis Program
+            </p>
+          </div>
         </div>
 
         {/* Right column — partner identity */}
