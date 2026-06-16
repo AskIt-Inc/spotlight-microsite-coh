@@ -39,6 +39,69 @@ function formatClinicianName(
   return stripCredentialSuffix(apiProfile?.displayName || apiPresenterName?.trim() || clinician.name);
 }
 
+interface AppointmentActionProps {
+  appointmentUrl?: string;
+}
+
+const AppointmentAction: React.FC<AppointmentActionProps> = ({ appointmentUrl }) => {
+  const hasAppointmentUrl = Boolean(appointmentUrl?.trim());
+
+  return (
+    <div style={{ borderTop: '1px solid #E8E8E8', marginTop: '24px', paddingTop: '24px' }}>
+      {hasAppointmentUrl ? (
+        <a
+          href={appointmentUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            width: '100%',
+            minHeight: '56px',
+            padding: '14px 18px',
+            background: '#9D1B32',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '16px',
+            fontWeight: 700,
+            cursor: 'pointer',
+            fontFamily: FONT,
+            textDecoration: 'none',
+            boxSizing: 'border-box' as const,
+          }}
+        >
+          Schedule an appointment
+          <ExternalLink size={18} color="#ffffff" />
+        </a>
+      ) : (
+        <div
+          style={{
+            width: '100%',
+            minHeight: '56px',
+            padding: '14px 18px',
+            background: '#F7F7F7',
+            color: '#4B5563',
+            border: '1px solid #DADADA',
+            borderRadius: '6px',
+            fontSize: '15px',
+            fontWeight: 600,
+            fontFamily: FONT,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxSizing: 'border-box' as const,
+          }}
+        >
+          Appointment link is not available yet
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
 interface BioModalProps {
   clinician: Clinician;
@@ -224,33 +287,7 @@ const BioModal: React.FC<BioModalProps> = ({
             </div>
           )}
 
-          {/* Appointment CTA */}
-          <a
-            href={clinician.appointmentUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              background: 'transparent',
-              border: '1px solid #E8E8E8',
-              borderRadius: '4px',
-              fontSize: '13px',
-              fontWeight: 300,
-              cursor: 'pointer',
-              fontFamily: FONT,
-              width: '100%',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              color: '#000000',
-              boxSizing: 'border-box' as const,
-            }}
-          >
-            Schedule an appointment
-            <ExternalLink size={13} color="#4B5563" />
-          </a>
+          <AppointmentAction appointmentUrl={clinician.appointmentUrl} />
         </div>
       </div>
     </div>
@@ -508,32 +545,6 @@ const CompactCard: React.FC<CompactCardProps> = ({
             </a>
           )}
 
-          {!clinician.hasSession && clinician.appointmentUrl && (
-            <a
-              href={clinician.appointmentUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                fontSize: '12px',
-                fontWeight: 300,
-                color: '#005EB8',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-                fontFamily: FONT,
-                whiteSpace: 'nowrap' as const,
-                textDecoration: 'none',
-              }}
-            >
-              Schedule an appointment
-              <ExternalLink size={12} color="#005EB8" />
-            </a>
-          )}
-
           {/* Watch video — if available */}
           {clinician.hasVideo && clinician.videoUrl && (
             <button
@@ -598,6 +609,7 @@ interface SupportStaffModalProps {
   role: string;
   note: string;
   photoUrl?: string;
+  appointmentUrl?: string;
   onClose: () => void;
 }
 
@@ -606,6 +618,7 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
   role,
   note,
   photoUrl,
+  appointmentUrl,
   onClose,
 }) => {
   const [imgError, setImgError] = useState(false);
@@ -709,6 +722,7 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
           >
             {note}
           </p>
+          <AppointmentAction appointmentUrl={appointmentUrl} />
         </div>
       </div>
     </div>
@@ -775,62 +789,26 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
             {staff.role}
           </div>
         </div>
-        {(resolvedNote || staff.appointmentUrl) && (
-          <div
-            className="support-staff-actions"
-            style={{
-              flexShrink: 0,
-              display: 'flex',
-              flexDirection: 'column' as const,
-              alignItems: 'flex-end',
-              gap: '6px',
-            }}
-          >
-            {resolvedNote && (
-              <button
-                type="button"
-                onClick={() => setModalOpen(true)}
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 300,
-                  color: '#005EB8',
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  fontFamily: FONT,
-                  textDecoration: 'underline',
-                  whiteSpace: 'nowrap' as const,
-                }}
-              >
-                View more
-              </button>
-            )}
-            {staff.appointmentUrl && (
-              <a
-                href={staff.appointmentUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  fontSize: '12px',
-                  fontWeight: 300,
-                  color: '#005EB8',
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  fontFamily: FONT,
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap' as const,
-                }}
-              >
-                Schedule an appointment
-                <ExternalLink size={12} color="#005EB8" />
-              </a>
-            )}
+        {resolvedNote && (
+          <div className="support-staff-actions" style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}>
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: '#005EB8',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: FONT,
+                textDecoration: 'underline',
+                whiteSpace: 'nowrap' as const,
+              }}
+            >
+              View more
+            </button>
           </div>
         )}
       </div>
@@ -840,6 +818,7 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
           role={staff.role}
           note={resolvedNote}
           photoUrl={resolvedPhoto}
+          appointmentUrl={staff.appointmentUrl}
           onClose={() => setModalOpen(false)}
         />
       )}
