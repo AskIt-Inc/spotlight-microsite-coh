@@ -23,7 +23,7 @@ function getInitials(name: string): string {
 
 function stripCredentialSuffix(name: string): string {
   return name
-    .replace(/\s*,?\s*(MD|M\.D\.|PhD|Ph\.D\.|MS|M\.S\.|CGC)\s*$/i, '')
+    .replace(/\s*,?\s*(MD|M\.D\.|PhD|Ph\.D\.|MS|M\.S\.|CGC|BSN|RN|FNP-C|NP)\s*$/i, '')
     .trim();
 }
 
@@ -32,11 +32,20 @@ function formatClinicianName(
   apiProfile?: NormalizedProfile,
   apiPresenterName?: string,
 ): string {
-  if (apiProfile?.title && apiProfile.firstName && apiProfile.lastName) {
-    return [apiProfile.title, apiProfile.firstName, apiProfile.lastName].filter(Boolean).join(' ');
-  }
+  if (apiProfile?.displayName) return apiProfile.displayName;
+  if (apiPresenterName?.trim()) return apiPresenterName.trim();
+  return stripCredentialSuffix(clinician.name);
+}
 
-  return stripCredentialSuffix(apiProfile?.displayName || apiPresenterName?.trim() || clinician.name);
+function formatProfileDisplayName(
+  fallbackName: string,
+  fallbackCredentials: string,
+  apiProfile?: NormalizedProfile,
+): string {
+  if (apiProfile?.displayName) {
+    return apiProfile.displayName;
+  }
+  return fallbackCredentials ? `${fallbackName} ${fallbackCredentials}` : fallbackName;
 }
 
 interface AppointmentActionProps {
@@ -402,6 +411,10 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const resolvedBio = apiProfile?.bio || clinician.bio;
   const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
   const resolvedSessionTitle = apiSessionTitle || clinician.sessionTitle;
+  const resolvedSpecialtyLine1 = apiProfile?.specialtyLine1 || (
+    clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title
+  );
+  const resolvedSpecialtyLine2 = apiProfile?.specialtyLine2 || clinician.specialty;
 
   return (
     <>
@@ -462,7 +475,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
               lineHeight: 1.4,
             }}
           >
-            {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
+            {resolvedSpecialtyLine1}
           </div>
           <div
             style={{
@@ -474,7 +487,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
               lineHeight: 1.4,
             }}
           >
-            {clinician.specialty}
+            {resolvedSpecialtyLine2}
           </div>
           {clinician.hasSession && (
             <div style={{ fontSize: '12px', color: '#006E8E', fontFamily: FONT, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -602,6 +615,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
 interface SupportStaffCardProps {
   staff: SupportStaff;
   apiProfile?: NormalizedProfile;
+  regLink?: string;
 }
 
 interface SupportStaffModalProps {
@@ -729,11 +743,13 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
   );
 };
 
-const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }) => {
+const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile, regLink }) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const resolvedName = staff.credentials ? `${staff.name}, ${staff.credentials}` : staff.name;
-  const resolvedNote = staff.note || apiProfile?.bio;
+  const [registerHovered, setRegisterHovered] = useState(false);
+  const resolvedName = formatProfileDisplayName(staff.name, staff.credentials, apiProfile);
+  const resolvedRole = apiProfile?.specialtyLine1 || staff.role;
+  const resolvedNote = apiProfile?.bio || staff.note;
   const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
 
   return (
@@ -786,36 +802,76 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile }
             {resolvedName}
           </div>
           <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '3px', lineHeight: 1.4 }}>
-            {staff.role}
+            {resolvedRole}
           </div>
         </div>
-        {resolvedNote && (
-          <div className="support-staff-actions" style={{ flexShrink: 0, display: 'flex', justifyContent: 'flex-end' }}>
-            <button
-              type="button"
-              onClick={() => setModalOpen(true)}
-              style={{
-                fontSize: '12px',
-                fontWeight: 300,
-                color: '#005EB8',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-                fontFamily: FONT,
-                textDecoration: 'underline',
-                whiteSpace: 'nowrap' as const,
-              }}
-            >
-              View more
-            </button>
+        {(resolvedNote || regLink) && (
+          <div
+            className="support-staff-actions"
+            style={{
+              flexShrink: 0,
+              display: 'flex',
+              flexDirection: 'column' as const,
+              alignItems: 'flex-end',
+              gap: '6px',
+            }}
+          >
+            {resolvedNote && (
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  color: '#005EB8',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  textDecoration: 'underline',
+                  whiteSpace: 'nowrap' as const,
+                }}
+              >
+                View more
+              </button>
+            )}
+            {regLink && (
+              <a
+                href={regLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => setRegisterHovered(true)}
+                onMouseLeave={() => setRegisterHovered(false)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '5px 12px',
+                  background: registerHovered ? '#004F66' : '#006E8E',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: 300,
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                  whiteSpace: 'nowrap' as const,
+                  transition: 'background 0.15s ease',
+                  textDecoration: 'none',
+                }}
+              >
+                <Calendar size={11} color="#ffffff" />
+                Register
+              </a>
+            )}
           </div>
         )}
       </div>
       {modalOpen && resolvedNote && (
         <SupportStaffModal
           name={resolvedName}
-          role={staff.role}
+          role={resolvedRole}
           note={resolvedNote}
           photoUrl={resolvedPhoto}
           appointmentUrl={staff.appointmentUrl}
@@ -939,6 +995,7 @@ export const TeamSection: React.FC = () => {
               key={staff.id}
               staff={staff}
               apiProfile={staff.profileUid ? profileMap.get(staff.profileUid) : undefined}
+              regLink={staff.sessionUuid ? regUrlMap.get(staff.sessionUuid) : undefined}
             />
           ))}
         </div>

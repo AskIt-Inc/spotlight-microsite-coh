@@ -1,5 +1,5 @@
 // ─── Profiles API hook (COH) ──────────────────────────────────────────────────
-// Fetches partner profiles for COH (indication=4, partner=12759).
+// Fetches partner profiles for COH (amyloidosis + related indication filters).
 // Follows the V5 pattern from spotlight-series-microsite/useSpotlightProfiles.ts.
 //
 // COH deviation: returns Map<uid, NormalizedProfile> (uid-keyed, not lastName-keyed)
@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react';
 
 const PROFILES_URL =
-  'https://somebodytotalkto.com/api/spotlight/microsite/profiles?indication=4&partner=12759';
+  'https://somebodytotalkto.com/api/spotlight/microsite/profiles?indication=4,12362&partner=12759';
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 export interface ApiProfile {
@@ -26,12 +26,15 @@ export interface ApiProfile {
   photo_url: string;
   employer: string;
   indication: string;
+  specialty_line_1?: string;
+  specialty_line_2?: string;
+  spotlight_card_tag?: string;
 }
 
 // ─── Normalised shape ─────────────────────────────────────────────────────────
 export interface NormalizedProfile {
   uid: number;
-  displayName: string;    // title + first/last + suffix from API
+  displayName: string;    // first/last + comma-formatted suffix; title only when no suffix exists
   firstName: string;
   lastName: string;
   title: string;
@@ -39,6 +42,9 @@ export interface NormalizedProfile {
   lastNameKey: string;  // lowercase trimmed last_name — retained for debugging
   bio: string;          // plain text, HTML stripped
   photoUrl: string;
+  specialtyLine1: string;
+  specialtyLine2: string;
+  spotlightCardTag: string;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -69,12 +75,25 @@ function formatDisplayName(p: ApiProfile): string {
   const title = p.title.trim();
   const firstName = p.first_name.replace(/\s{2,}/g, ' ').trim();
   const lastName = p.last_name.replace(/\s{2,}/g, ' ').trim();
-  const nameSuffix = p.name_suffix.replace(/\s{2,}/g, ' ').trim();
-  const fullName = [title, firstName, lastName].filter(Boolean).join(' ');
+  const nameSuffix = normalizeCredentialSuffix(p.name_suffix);
+  const fullName = nameSuffix
+    ? [firstName, lastName].filter(Boolean).join(' ')
+    : [title, firstName, lastName].filter(Boolean).join(' ');
 
   if (fullName && nameSuffix) return `${fullName}, ${nameSuffix}`;
   if (fullName) return fullName;
   return p.display_name.replace(/\s{2,}/g, ' ').trim();
+}
+
+function normalizeCredentialSuffix(suffix: string): string {
+  return suffix
+    .replace(/\./g, '')
+    .split(',')
+    .map(part => part.replace(/\s{2,}/g, ' ').trim())
+    .filter(Boolean)
+    .join(', ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
 function normalise(p: ApiProfile): NormalizedProfile {
@@ -84,10 +103,13 @@ function normalise(p: ApiProfile): NormalizedProfile {
     firstName:    p.first_name.replace(/\s{2,}/g, ' ').trim(),
     lastName:     p.last_name.replace(/\s{2,}/g, ' ').trim(),
     title:        p.title.trim(),
-    nameSuffix:   p.name_suffix.replace(/\s{2,}/g, ' ').trim(),
+    nameSuffix:   normalizeCredentialSuffix(p.name_suffix),
     lastNameKey:  p.last_name.trim().toLowerCase(),
     bio:          stripHtml(p.bio),
     photoUrl:     p.photo_url,
+    specialtyLine1: (p.specialty_line_1 ?? '').replace(/\s{2,}/g, ' ').trim(),
+    specialtyLine2: (p.specialty_line_2 ?? '').replace(/\s{2,}/g, ' ').trim(),
+    spotlightCardTag: (p.spotlight_card_tag ?? '').replace(/\s{2,}/g, ' ').trim(),
   };
 }
 

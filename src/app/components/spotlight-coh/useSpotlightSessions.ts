@@ -1,5 +1,5 @@
 // ─── Sessions API hook (COH) ──────────────────────────────────────────────────
-// Fetches live sessions for COH (indication=4, partner=12759).
+// Fetches live sessions for COH (amyloidosis + patient best practices).
 // Follows the V5 pattern from spotlight-series-microsite/useSpotlightSessions.ts.
 //
 // COH deviation: buildRegUrlMap keys by session UUID (not presenterLastName)
@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { sessions as staticSessions } from './data';
 
 const API_URL =
-  'https://somebodytotalkto.com/api/spotlight/microsite/sessions?indication=4&partner=12759';
+  'https://somebodytotalkto.com/api/spotlight/microsite/sessions?indication=4,12362&partner=12759';
 
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 export interface ApiSession {
@@ -82,17 +82,34 @@ const MONTH_MAP: Record<string, string> = {
   Jul: 'JUL', Aug: 'AUG', Sep: 'SEP', Oct: 'OCT', Nov: 'NOV', Dec: 'DEC',
 };
 
+const MONTH_INDEX: Record<string, number> = {
+  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+};
+
 function normalizePresenterName(presenter?: ApiSession['presenters'][number]): string {
   if (!presenter) return '';
 
   const firstName = (presenter.first_name ?? '').replace(/\s{2,}/g, ' ').trim();
   const lastName = (presenter.last_name ?? '').replace(/\s{2,}/g, ' ').trim();
   const apiTitle = (presenter.title ?? '').replace(/\s{2,}/g, ' ').trim();
-  const suffix = (presenter.name_suffix ?? '').toLowerCase();
-  const inferredTitle = apiTitle || (/\bm\.?d\.?\b/.test(suffix) ? 'Dr.' : '');
-  const name = [inferredTitle, firstName, lastName].filter(Boolean).join(' ');
+  const suffix = normalizeCredentialSuffix(presenter.name_suffix ?? '');
+  const name = suffix
+    ? `${[firstName, lastName].filter(Boolean).join(' ')}, ${suffix}`
+    : [apiTitle, firstName, lastName].filter(Boolean).join(' ');
 
   return name || (presenter.display_name ?? '').replace(/\s{2,}/g, ' ').trim();
+}
+
+function normalizeCredentialSuffix(suffix: string): string {
+  return suffix
+    .replace(/\./g, '')
+    .split(',')
+    .map(part => part.replace(/\s{2,}/g, ' ').trim())
+    .filter(Boolean)
+    .join(', ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
 function normalise(s: ApiSession): NormalizedSession {
@@ -101,9 +118,15 @@ function normalise(s: ApiSession): NormalizedSession {
   const month = MONTH_MAP[parts[0]] ?? parts[0].toUpperCase().slice(0, 3);
   const day   = parts[1]?.replace(',', '') ?? '';
 
-  // Day-of-week from timestamp
-  const d = new Date(s.timestamp * 1000);
-  const dayOfWeek = DAY_NAMES[d.getDay()];
+  // API timestamps are UTC; derive weekday from the intended event date instead
+  // so local preview timezones do not shift July Wednesdays into Thursdays.
+  const monthIndex = MONTH_INDEX[parts[0]];
+  const dayNumber = Number.parseInt(day, 10);
+  const yearNumber = Number.parseInt(parts[2] ?? '', 10);
+  const dayOfWeek =
+    monthIndex !== undefined && Number.isFinite(dayNumber) && Number.isFinite(yearNumber)
+      ? DAY_NAMES[new Date(Date.UTC(yearNumber, monthIndex, dayNumber)).getUTCDay()]
+      : DAY_NAMES[new Date(s.timestamp * 1000).getUTCDay()];
 
   // Prefer PT time, fall back to raw time string
   const ptTime = s.times_by_zone?.PT;

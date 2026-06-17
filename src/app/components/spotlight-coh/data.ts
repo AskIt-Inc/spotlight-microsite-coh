@@ -31,6 +31,7 @@ export interface SupportStaff {
   profileUrl?: string;
   ctaLabel?: string;
   profileUid?: number;
+  sessionUuid?: string;
 }
 
 export interface Trial {
@@ -203,8 +204,8 @@ export const supportStaff: SupportStaff[] = [
     role: 'Nurse Practitioner — Hematology & HCT / Multiple Myeloma & Amyloidosis',
     email: 'trwalker@coh.org',
     note: 'Tricia R. Walker, MSN, FNP-C, is a nurse practitioner specializing in amyloidosis, multiple myeloma, and hematopoietic stem cell transplantation, with more than 10 years of experience across acute and outpatient care settings. She combines expertise in complex hematologic malignancies with patient advocacy, education, and compassionate care to support patients and families throughout treatment.',
-    appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/tricia-walker',
-    profileUid: 310,
+    profileUid: 312,
+    sessionUuid: '1aacad1c-888a-4f5a-a9ed-088c37d37a21',
   },
   {
     id: 3,
@@ -213,7 +214,6 @@ export const supportStaff: SupportStaff[] = [
     role: 'Nurse Practitioner — Amyloidosis Care',
     email: 'jbuchholz@coh.org',
     note: 'Justine Buchholz supports amyloidosis care as a nurse practitioner, helping patients and families navigate clinical questions, care planning, and follow-up needs within the program.',
-    appointmentUrl: 'https://www.cityofhope.org/patients/find-a-doctor/justine-buchholz',
   },
   {
     id: 4,
@@ -224,6 +224,7 @@ export const supportStaff: SupportStaff[] = [
     note: 'Edelyn Yhip supervises the Hematology Nurse Navigation team in City of Hope New Patient Services, a nationwide remote team that supports patients at the start of their care journey. Her team gathers comprehensive medical and treatment history, coordinates with onsite amyloid liaison Gloria Higuera and the physician team, helps identify patients who may need urgent evaluation, and bridges registration with specialty care so patients feel heard, prepared, and confident as they begin care.',
     photo: `${import.meta.env.BASE_URL}images/edelyn-yhip-coh-2026.png`,
     profileUid: 311,
+    sessionUuid: '6c5ae858-5423-4ca5-9d18-c3413805c40b',
   },
   {
     id: 5,
@@ -248,7 +249,7 @@ export const supportStaff: SupportStaff[] = [
     role: 'Project Development Scientist — Multiple Myeloma & Amyloidosis Research',
     email: 'jamsanchez@coh.org',
     note: 'James Sanchez, PhD, is a Senior Project Development Scientist in the Department of Clinical Translational Project Development at City of Hope. He works with the multiple myeloma and amyloidosis teams and supports the development of grant applications, clinical protocols, manuscripts, posters, and presentations.',
-    profileUid: 309,
+    profileUid: 320,
   },
 ];
 
@@ -289,7 +290,7 @@ export const sessions: Session[] = [
     description: 'Dr. Rosenzweig will discuss his approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with venetoclax.',
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/LYroe9sxRm2CK6smUWbrFw',
-    shortUrl: 'https://bit.ly/42Ny34w',
+    shortUrl: 'https://bit.ly/44i3CDW',
   },
   {
     id: 2,
@@ -303,7 +304,7 @@ export const sessions: Session[] = [
     description: 'Dr. Lisa Lee will review the SAVE trial and how results could possibly lead to an earlier diagnosis of AL amyloidosis.',
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/hRt1DaytTZK3lDJYh4e-0A',
-    shortUrl: 'https://bit.ly/42KFIAv',
+    shortUrl: 'https://bit.ly/4ecR7zw',
   },
   {
     id: 3,
@@ -317,7 +318,7 @@ export const sessions: Session[] = [
     description: 'Dr. Sarah Lee will discuss her approach to second-line treatment of AL amyloidosis and specifically the City of Hope experience with bispecific antibodies.',
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/covQZppvT-2xeiITJ6-rFg',
-    shortUrl: 'https://bit.ly/42QVdH7',
+    shortUrl: 'https://bit.ly/4otWpKl',
   },
   {
     id: 4,
@@ -331,7 +332,7 @@ export const sessions: Session[] = [
     description: 'Dr. Jamal will review the diagnostic features of cardiac amyloidosis, the red flags clinicians examine, and the steps followed to confirm disease. Within this diagnostic process, we will discuss the emergence of novel AI tools that may increase disease detection.',
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/8YLMvNWQQOCq6nWuWdDyHw',
-    shortUrl: 'https://bit.ly/4fA5ZZK',
+    shortUrl: 'https://bit.ly/4owVXet',
   },
   {
     id: 5,
@@ -345,18 +346,34 @@ export const sessions: Session[] = [
     description: 'Dr. Kovacsovics will discuss autologous SCT for the treatment of AL amyloidosis: past, present, and future, including how first-line treatment has evolved and where upfront AutoSCT is considered.',
     status: 'upcoming',
     regLink: 'https://us06web.zoom.us/meeting/register/v8-wvczMROubSvL8KHw9NA',
-    shortUrl: 'https://bit.ly/4v0eCkG',
+    shortUrl: 'https://bit.ly/4aF5evd',
   },
   {
     id: 6,
-    uuid: 'edelyn-yhip-july-27',
+    uuid: '1aacad1c-888a-4f5a-a9ed-088c37d37a21',
+    month: 'JUL',
+    day: '20',
+    dayOfWeek: 'Mon',
+    time: '3:00 PM PT',
+    title: 'Taking Control of Your Health Care: Navigating and Maximizing the Patient Portal',
+    presenter: 'Tricia Walker, MSN, FNP-C',
+    description: 'Tricia Walker will review how patients can use the patient portal to navigate records, communicate with the care team, and stay organized throughout care.',
+    status: 'upcoming',
+    regLink: 'https://us06web.zoom.us/meeting/register/z4G5iQsSSIafQiYSvq1Kig',
+    shortUrl: 'https://bit.ly/4eOQTPe',
+  },
+  {
+    id: 7,
+    uuid: '6c5ae858-5423-4ca5-9d18-c3413805c40b',
     month: 'JUL',
     day: '27',
     dayOfWeek: 'Mon',
-    time: 'Time TBD',
+    time: '3:00 PM PT',
     title: 'The Importance of Communicating with Your Health Care Team',
-    presenter: 'Edelyn Yhip, RN, BSN',
+    presenter: 'Edelyn (Ed) Yhip, RN, BSN',
     description: 'Edelyn Yhip will review when to report unexpected symptoms, medication side effects, or changes in general health such as weight, pain, or energy levels. Communicating changes early can reduce or prevent complications and allows the care team to adjust treatment plans proactively.',
     status: 'upcoming',
+    regLink: 'https://us06web.zoom.us/meeting/register/JJgwLjo-Q_Gi6P9d81Abmw',
+    shortUrl: 'https://bit.ly/4goaBCD',
   },
 ];
