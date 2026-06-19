@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { PlayCircle, Calendar, Users, X, ExternalLink } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
-import { useSpotlightSessions, buildRegUrlMap } from './useSpotlightSessions';
+import { useSpotlightSessions, buildRegUrlMap, type NormalizedSession } from './useSpotlightSessions';
 import { useSpotlightProfiles, type NormalizedProfile } from './useSpotlightProfiles';
 
 const FONT = 'gotham, sans-serif';
@@ -114,12 +114,14 @@ const AppointmentAction: React.FC<AppointmentActionProps> = ({ appointmentUrl })
 // ─── Bio Modal ────────────────────────────────────────────────────────────────
 interface BioModalProps {
   clinician: Clinician;
-  name: string;                   // resolved name — profile API preferred, sessions/static as fallback
+  name: string;                   // resolved name — profile API preferred
   photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
   bio: string;                   // resolved bio — API profile bio preferred, data.ts as fallback
-  sessionDate: string;           // resolved session date — API sessions preferred, data.ts as fallback
-  sessionTitle: string;          // resolved session title — API sessions preferred, data.ts as fallback
-  apiSessionDescription?: string; // session description from Drupal API — overrides data.ts copy
+  specialtyLine1: string;        // resolved specialty line 1 — profile API preferred
+  specialtyLine2: string;        // resolved specialty line 2 — profile API preferred for Meet the Team
+  sessionDate?: string;          // session date from sessions API
+  sessionTitle?: string;         // session title from sessions API
+  sessionDescription?: string;   // session description from sessions API
   onClose: () => void;
 }
 
@@ -128,9 +130,11 @@ const BioModal: React.FC<BioModalProps> = ({
   name,
   photoUrl,
   bio,
+  specialtyLine1,
+  specialtyLine2,
   sessionDate,
   sessionTitle,
-  apiSessionDescription,
+  sessionDescription,
   onClose,
 }) => {
   const [imgError, setImgError] = useState(false);
@@ -205,10 +209,10 @@ const BioModal: React.FC<BioModalProps> = ({
               {name}
             </div>
             <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
-              {clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title}
+              {specialtyLine1}
             </div>
             <div style={{ fontSize: '13px', color: '#006E8E', fontFamily: FONT, marginTop: '2px' }}>
-              {clinician.specialty}
+              {specialtyLine2}
             </div>
           </div>
 
@@ -248,7 +252,7 @@ const BioModal: React.FC<BioModalProps> = ({
           </p>
 
           {/* Session info box */}
-          {clinician.hasSession && (
+          {sessionDate && sessionTitle && (
             <div
               style={{
                 background: '#E7F5F8',
@@ -282,17 +286,19 @@ const BioModal: React.FC<BioModalProps> = ({
               >
                 {sessionTitle}
               </div>
-              <p
-                style={{
-                  fontSize: '14px',
-                  color: '#000000',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontFamily: FONT,
-                }}
-              >
-                {apiSessionDescription ?? clinician.sessionDescription}
-              </p>
+              {sessionDescription && (
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#000000',
+                    lineHeight: 1.6,
+                    margin: 0,
+                    fontFamily: FONT,
+                  }}
+                >
+                  {sessionDescription}
+                </p>
+              )}
             </div>
           )}
 
@@ -386,9 +392,7 @@ interface CompactCardProps {
   regLink?: string;
   apiProfile?: NormalizedProfile; // live profile API — preferred over sessions/data.ts
   apiPresenterName?: string;      // live presenter name from sessions API
-  apiSessionDate?: string;        // live date from sessions API
-  apiSessionTitle?: string;       // live title from sessions API
-  apiSessionDescription?: string; // session description from Drupal API
+  apiSession?: NormalizedSession; // live session from sessions API
 }
 
 const CompactCard: React.FC<CompactCardProps> = ({
@@ -396,9 +400,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
   regLink,
   apiProfile,
   apiPresenterName,
-  apiSessionDate,
-  apiSessionTitle,
-  apiSessionDescription,
+  apiSession,
 }) => {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -409,8 +411,10 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const resolvedName = formatClinicianName(clinician, apiProfile, apiPresenterName);
   const resolvedPhoto = apiProfile?.photoUrl || clinician.photo;
   const resolvedBio = apiProfile?.bio || clinician.bio;
-  const resolvedSessionDate = apiSessionDate || clinician.sessionDate;
-  const resolvedSessionTitle = apiSessionTitle || clinician.sessionTitle;
+  const resolvedSessionDate = apiSession
+    ? formatApiSessionDate(apiSession.month, apiSession.day)
+    : undefined;
+  const resolvedSessionTitle = apiSession?.title;
   const resolvedSpecialtyLine1 = apiProfile?.specialtyLine1 || (
     clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title
   );
@@ -489,7 +493,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
           >
             {resolvedSpecialtyLine2}
           </div>
-          {clinician.hasSession && (
+          {resolvedSessionDate && (
             <div style={{ fontSize: '12px', color: '#006E8E', fontFamily: FONT, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Calendar size={11} color="#006E8E" />
               <span>{resolvedSessionDate}</span>
@@ -528,7 +532,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
           </button>
 
           {/* Register CTA — only if has session and regLink available */}
-          {clinician.hasSession && regLink && (
+          {apiSession && regLink && (
             <a
               href={regLink}
               target="_blank"
@@ -593,9 +597,11 @@ const CompactCard: React.FC<CompactCardProps> = ({
           name={resolvedName}
           photoUrl={resolvedPhoto}
           bio={resolvedBio}
+          specialtyLine1={resolvedSpecialtyLine1}
+          specialtyLine2={resolvedSpecialtyLine2}
           sessionDate={resolvedSessionDate}
           sessionTitle={resolvedSessionTitle}
-          apiSessionDescription={apiSessionDescription}
+          sessionDescription={apiSession?.description}
           onClose={() => setModalOpen(false)}
         />
       )}
@@ -623,7 +629,6 @@ interface SupportStaffModalProps {
   role: string;
   note: string;
   photoUrl?: string;
-  appointmentUrl?: string;
   onClose: () => void;
 }
 
@@ -632,7 +637,6 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
   role,
   note,
   photoUrl,
-  appointmentUrl,
   onClose,
 }) => {
   const [imgError, setImgError] = useState(false);
@@ -736,7 +740,6 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
           >
             {note}
           </p>
-          <AppointmentAction appointmentUrl={appointmentUrl} />
         </div>
       </div>
     </div>
@@ -874,7 +877,6 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile, 
           role={resolvedRole}
           note={resolvedNote}
           photoUrl={resolvedPhoto}
-          appointmentUrl={staff.appointmentUrl}
           onClose={() => setModalOpen(false)}
         />
       )}
@@ -892,11 +894,6 @@ export const TeamSection: React.FC = () => {
   // uuid → full session data from Drupal API for team card/modal copy.
   const sessionMap = useMemo(
     () => new Map(sessions.map(s => [s.id, s])),
-    [sessions],
-  );
-  // uuid → session description (Drupal API copy overrides data.ts)
-  const descMap    = useMemo(
-    () => new Map(sessions.map(s => [s.id, s.description])),
     [sessions],
   );
 
@@ -944,16 +941,7 @@ export const TeamSection: React.FC = () => {
             regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
             apiProfile={clinician.profileUid ? profileMap.get(clinician.profileUid) : undefined}
             apiPresenterName={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.presenter : undefined}
-            apiSessionDate={
-              clinician.sessionUuid
-                ? formatApiSessionDate(
-                    sessionMap.get(clinician.sessionUuid)?.month,
-                    sessionMap.get(clinician.sessionUuid)?.day,
-                  )
-                : undefined
-            }
-            apiSessionTitle={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.title : undefined}
-            apiSessionDescription={clinician.sessionUuid ? descMap.get(clinician.sessionUuid) : undefined}
+            apiSession={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid) : undefined}
           />
         ))}
       </div>

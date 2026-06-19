@@ -6,10 +6,10 @@
 // because two presenters share the last name "Lee" (Lisa Lee uid=277, Sarah Lee uid=279).
 // Use: regUrlMap.get(clinician.sessionUuid)
 //
-// Static data.ts sessions remain as silent fallback on fetch failure.
+// Sessions are rendered only from the live API. Local data.ts keeps UUID mappings
+// for team cards, but it is not used as a session fallback.
 
 import { useState, useEffect } from 'react';
-import { sessions as staticSessions } from './data';
 
 const API_URL =
   'https://somebodytotalkto.com/api/spotlight/microsite/sessions?indication=4,12362&partner=12759';
@@ -156,40 +156,6 @@ function normalise(s: ApiSession): NormalizedSession {
   };
 }
 
-function normaliseStaticSession(s: typeof staticSessions[number]): NormalizedSession {
-  return {
-    id:                s.uuid ?? String(s.id),
-    month:             s.month,
-    day:               s.day,
-    dayOfWeek:         s.dayOfWeek,
-    time:              s.time,
-    title:             s.title,
-    description:       s.description,
-    presenter:         s.presenter,
-    presenterLastName: '',
-    status:            s.status === 'cancelled' ? 'completed' : s.status,
-    regUrl:            s.regLink ?? '',
-  };
-}
-
-function sessionKey(s: Pick<NormalizedSession, 'month' | 'day' | 'title' | 'presenter'>): string {
-  return [s.month, s.day, s.title, s.presenter]
-    .join('|')
-    .replace(/\s{2,}/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-
-function mergeLocalOnlySessions(apiSessions: NormalizedSession[]): NormalizedSession[] {
-  const seenIds = new Set(apiSessions.map(s => s.id));
-  const seenKeys = new Set(apiSessions.map(sessionKey));
-  const localOnly = staticSessions
-    .map(normaliseStaticSession)
-    .filter(s => !seenIds.has(s.id) && !seenKeys.has(sessionKey(s)));
-
-  return [...apiSessions, ...localOnly];
-}
-
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 export function useSpotlightSessions() {
   const [sessions, setSessions] = useState<NormalizedSession[]>([]);
@@ -206,7 +172,7 @@ export function useSpotlightSessions() {
       })
       .then(json => {
         if (cancelled) return;
-        const normalised = mergeLocalOnlySessions(json.data.map(normalise));
+        const normalised = json.data.map(normalise);
         // Sort: completed first (ascending by position), upcoming last (ascending)
         normalised.sort((a, b) => {
           if (a.status === b.status) return 0;
@@ -218,10 +184,8 @@ export function useSpotlightSessions() {
       .catch(err => {
         if (cancelled) return;
         console.error('[useSpotlightSessions/COH] fetch failed:', err);
-        // Fallback: convert static sessions to NormalizedSession shape
-        const fallback: NormalizedSession[] = staticSessions.map(normaliseStaticSession);
-        setSessions(fallback);
-        setError('Live schedule unavailable — showing cached data.');
+        setSessions([]);
+        setError('Live schedule unavailable.');
         setLoading(false);
       });
 

@@ -17,18 +17,25 @@ const PROFILES_URL =
 // ─── Raw API shape ────────────────────────────────────────────────────────────
 export interface ApiProfile {
   uid: number;
-  display_name: string;
-  first_name: string;
-  last_name: string;
-  name_suffix: string;
-  title: string;
-  bio: string;        // HTML — strip before use
-  photo_url: string;
-  employer: string;
-  indication: string;
+  display_name?: string;
+  first_name?: string;
+  last_name?: string;
+  name_suffix?: string;
+  title?: string;
+  bio?: string;        // HTML — strip before use
+  photo_url?: string;
+  employer?: string;
+  indication?: string;
   specialty_line_1?: string;
   specialty_line_2?: string;
   spotlight_card_tag?: string;
+  field_first_name?: string;
+  field_last_name?: string;
+  field_name_suffix?: string;
+  field_bio?: string;
+  user_picture?: string;
+  field_specialty_line_1?: string;
+  field_specialty_line_2?: string;
 }
 
 // ─── Normalised shape ─────────────────────────────────────────────────────────
@@ -65,24 +72,27 @@ function stripHtml(html: string): string {
 
 /** Filter out internal test accounts — any name segment contains "test". */
 function isTestUser(p: ApiProfile): boolean {
-  const combined = [p.display_name, p.first_name, p.last_name]
+  const firstName = getProfileField(p, 'first_name', 'field_first_name');
+  const lastName = getProfileField(p, 'last_name', 'field_last_name');
+  const combined = [p.display_name ?? '', firstName, lastName]
     .join(' ')
     .toLowerCase();
   return combined.includes('test');
 }
 
-function formatDisplayName(p: ApiProfile): string {
-  const title = p.title.trim();
-  const firstName = p.first_name.replace(/\s{2,}/g, ' ').trim();
-  const lastName = p.last_name.replace(/\s{2,}/g, ' ').trim();
-  const nameSuffix = normalizeCredentialSuffix(p.name_suffix);
-  const fullName = nameSuffix
-    ? [firstName, lastName].filter(Boolean).join(' ')
-    : [title, firstName, lastName].filter(Boolean).join(' ');
+function getProfileField(p: ApiProfile, normalizedKey: keyof ApiProfile, drupalKey: keyof ApiProfile): string {
+  const value = p[drupalKey] || p[normalizedKey];
+  return typeof value === 'string' ? value.replace(/\s{2,}/g, ' ').trim() : '';
+}
 
-  if (fullName && nameSuffix) return `${fullName}, ${nameSuffix}`;
+function formatDisplayName(p: ApiProfile): string {
+  const firstName = getProfileField(p, 'first_name', 'field_first_name');
+  const lastName = getProfileField(p, 'last_name', 'field_last_name');
+  const nameSuffix = normalizeCredentialSuffix(getProfileField(p, 'name_suffix', 'field_name_suffix'));
+  const fullName = [firstName, lastName, nameSuffix].filter(Boolean).join(' ');
+
   if (fullName) return fullName;
-  return p.display_name.replace(/\s{2,}/g, ' ').trim();
+  return (p.display_name ?? '').replace(/\s{2,}/g, ' ').trim();
 }
 
 function normalizeCredentialSuffix(suffix: string): string {
@@ -97,18 +107,25 @@ function normalizeCredentialSuffix(suffix: string): string {
 }
 
 function normalise(p: ApiProfile): NormalizedProfile {
+  const firstName = getProfileField(p, 'first_name', 'field_first_name');
+  const lastName = getProfileField(p, 'last_name', 'field_last_name');
+  const bio = getProfileField(p, 'bio', 'field_bio');
+  const photoUrl = getProfileField(p, 'photo_url', 'user_picture');
+  const specialtyLine1 = getProfileField(p, 'specialty_line_1', 'field_specialty_line_1');
+  const specialtyLine2 = getProfileField(p, 'specialty_line_2', 'field_specialty_line_2');
+
   return {
     uid:          p.uid,
     displayName:  formatDisplayName(p),
-    firstName:    p.first_name.replace(/\s{2,}/g, ' ').trim(),
-    lastName:     p.last_name.replace(/\s{2,}/g, ' ').trim(),
-    title:        p.title.trim(),
-    nameSuffix:   normalizeCredentialSuffix(p.name_suffix),
-    lastNameKey:  p.last_name.trim().toLowerCase(),
-    bio:          stripHtml(p.bio),
-    photoUrl:     p.photo_url,
-    specialtyLine1: (p.specialty_line_1 ?? '').replace(/\s{2,}/g, ' ').trim(),
-    specialtyLine2: (p.specialty_line_2 ?? '').replace(/\s{2,}/g, ' ').trim(),
+    firstName,
+    lastName,
+    title:        (p.title ?? '').trim(),
+    nameSuffix:   normalizeCredentialSuffix(getProfileField(p, 'name_suffix', 'field_name_suffix')),
+    lastNameKey:  lastName.toLowerCase(),
+    bio:          stripHtml(bio),
+    photoUrl,
+    specialtyLine1,
+    specialtyLine2,
     spotlightCardTag: (p.spotlight_card_tag ?? '').replace(/\s{2,}/g, ' ').trim(),
   };
 }
