@@ -21,33 +21,6 @@ function getInitials(name: string): string {
   return filtered[0][0].toUpperCase();
 }
 
-function stripCredentialSuffix(name: string): string {
-  return name
-    .replace(/\s*,?\s*(MD|M\.D\.|PhD|Ph\.D\.|MS|M\.S\.|CGC|BSN|RN|FNP-C|NP)\s*$/i, '')
-    .trim();
-}
-
-function formatClinicianName(
-  clinician: Clinician,
-  apiProfile?: NormalizedProfile,
-  apiPresenterName?: string,
-): string {
-  if (apiProfile?.displayName) return apiProfile.displayName;
-  if (apiPresenterName?.trim()) return apiPresenterName.trim();
-  return stripCredentialSuffix(clinician.name);
-}
-
-function formatProfileDisplayName(
-  fallbackName: string,
-  fallbackCredentials: string,
-  apiProfile?: NormalizedProfile,
-): string {
-  if (apiProfile?.displayName) {
-    return apiProfile.displayName;
-  }
-  return fallbackCredentials ? `${fallbackName} ${fallbackCredentials}` : fallbackName;
-}
-
 interface AppointmentActionProps {
   appointmentUrl?: string;
 }
@@ -115,8 +88,8 @@ const AppointmentAction: React.FC<AppointmentActionProps> = ({ appointmentUrl })
 interface BioModalProps {
   clinician: Clinician;
   name: string;                   // resolved name — profile API preferred
-  photoUrl: string;              // resolved photo — API live URL preferred, data.ts as fallback
-  bio: string;                   // resolved bio — API profile bio preferred, data.ts as fallback
+  photoUrl: string;              // profile API photo only
+  bio: string;                   // profile API bio only
   specialtyLine1: string;        // resolved specialty line 1 — profile API preferred
   specialtyLine2: string;        // resolved specialty line 2 — profile API preferred for Meet the Team
   sessionDate?: string;          // session date from sessions API
@@ -208,12 +181,16 @@ const BioModal: React.FC<BioModalProps> = ({
             <div style={{ fontSize: '17px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
               {name}
             </div>
-            <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
-              {specialtyLine1}
-            </div>
-            <div style={{ fontSize: '13px', color: '#006E8E', fontFamily: FONT, marginTop: '2px' }}>
-              {specialtyLine2}
-            </div>
+            {specialtyLine1 && (
+              <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '2px' }}>
+                {specialtyLine1}
+              </div>
+            )}
+            {specialtyLine2 && (
+              <div style={{ fontSize: '13px', color: '#006E8E', fontFamily: FONT, marginTop: '2px' }}>
+                {specialtyLine2}
+              </div>
+            )}
           </div>
 
           {/* Close button */}
@@ -390,8 +367,7 @@ const VideoModal: React.FC<VideoModalProps> = ({ title, videoUrl, onClose }) => 
 interface CompactCardProps {
   clinician: Clinician;
   regLink?: string;
-  apiProfile?: NormalizedProfile; // live profile API — preferred over sessions/data.ts
-  apiPresenterName?: string;      // live presenter name from sessions API
+  apiProfile: NormalizedProfile;
   apiSession?: NormalizedSession; // live session from sessions API
 }
 
@@ -399,7 +375,6 @@ const CompactCard: React.FC<CompactCardProps> = ({
   clinician,
   regLink,
   apiProfile,
-  apiPresenterName,
   apiSession,
 }) => {
   const [imgError, setImgError] = useState(false);
@@ -407,18 +382,15 @@ const CompactCard: React.FC<CompactCardProps> = ({
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
 
-  // Profile API is the source of truth when it has a matching uid.
-  const resolvedName = formatClinicianName(clinician, apiProfile, apiPresenterName);
-  const resolvedPhoto = apiProfile?.photoUrl || clinician.photo;
-  const resolvedBio = apiProfile?.bio || clinician.bio;
+  const resolvedName = apiProfile.displayName;
+  const resolvedPhoto = apiProfile.photoUrl;
+  const resolvedBio = apiProfile.bio;
   const resolvedSessionDate = apiSession
     ? formatApiSessionDate(apiSession.month, apiSession.day)
     : undefined;
   const resolvedSessionTitle = apiSession?.title;
-  const resolvedSpecialtyLine1 = apiProfile?.specialtyLine1 || (
-    clinician.credentials ? `${clinician.credentials} · ${clinician.title}` : clinician.title
-  );
-  const resolvedSpecialtyLine2 = apiProfile?.specialtyLine2 || clinician.specialty;
+  const resolvedSpecialtyLine1 = apiProfile.specialtyLine1;
+  const resolvedSpecialtyLine2 = apiProfile.specialtyLine2;
 
   return (
     <>
@@ -469,30 +441,34 @@ const CompactCard: React.FC<CompactCardProps> = ({
           <div style={{ fontSize: '16px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
             {resolvedName}
           </div>
-          <div
-            style={{
-              fontSize: '13px',
-              fontWeight: 300,
-              color: '#000000',
-              fontFamily: FONT,
-              marginTop: '3px',
-              lineHeight: 1.4,
-            }}
-          >
-            {resolvedSpecialtyLine1}
-          </div>
-          <div
-            style={{
-              fontSize: '14px',
-              fontWeight: 300,
-              color: '#006E8E',
-              fontFamily: FONT,
-              marginTop: '4px',
-              lineHeight: 1.4,
-            }}
-          >
-            {resolvedSpecialtyLine2}
-          </div>
+          {resolvedSpecialtyLine1 && (
+            <div
+              style={{
+                fontSize: '13px',
+                fontWeight: 300,
+                color: '#000000',
+                fontFamily: FONT,
+                marginTop: '3px',
+                lineHeight: 1.4,
+              }}
+            >
+              {resolvedSpecialtyLine1}
+            </div>
+          )}
+          {resolvedSpecialtyLine2 && (
+            <div
+              style={{
+                fontSize: '14px',
+                fontWeight: 300,
+                color: '#006E8E',
+                fontFamily: FONT,
+                marginTop: '4px',
+                lineHeight: 1.4,
+              }}
+            >
+              {resolvedSpecialtyLine2}
+            </div>
+          )}
           {resolvedSessionDate && (
             <div style={{ fontSize: '12px', color: '#006E8E', fontFamily: FONT, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Calendar size={11} color="#006E8E" />
@@ -512,24 +488,25 @@ const CompactCard: React.FC<CompactCardProps> = ({
             alignItems: 'flex-end',
           }}
         >
-          {/* View bio modal */}
-          <button
-            onClick={() => setModalOpen(true)}
-            style={{
-              fontSize: '12px',
-              fontWeight: 300,
-              color: '#005EB8',
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              fontFamily: FONT,
-              textDecoration: 'underline',
-              whiteSpace: 'nowrap' as const,
-            }}
-          >
-            View more
-          </button>
+          {resolvedBio && (
+            <button
+              onClick={() => setModalOpen(true)}
+              style={{
+                fontSize: '12px',
+                fontWeight: 300,
+                color: '#005EB8',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: FONT,
+                textDecoration: 'underline',
+                whiteSpace: 'nowrap' as const,
+              }}
+            >
+              View more
+            </button>
+          )}
 
           {/* Register CTA — only if has session and regLink available */}
           {apiSession && regLink && (
@@ -591,7 +568,7 @@ const CompactCard: React.FC<CompactCardProps> = ({
       </div>
 
       {/* Bio modal */}
-      {modalOpen && (
+      {modalOpen && resolvedBio && (
         <BioModal
           clinician={clinician}
           name={resolvedName}
@@ -620,13 +597,13 @@ const CompactCard: React.FC<CompactCardProps> = ({
 // ─── Support Staff Card ───────────────────────────────────────────────────────
 interface SupportStaffCardProps {
   staff: SupportStaff;
-  apiProfile?: NormalizedProfile;
+  apiProfile: NormalizedProfile;
   regLink?: string;
 }
 
 interface SupportStaffModalProps {
   name: string;
-  role: string;
+  role?: string;
   note: string;
   photoUrl?: string;
   onClose: () => void;
@@ -705,9 +682,11 @@ const SupportStaffModal: React.FC<SupportStaffModalProps> = ({
             <div style={{ fontSize: '17px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
               {name}
             </div>
-            <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '3px' }}>
-              {role}
-            </div>
+            {role && (
+              <div style={{ fontSize: '13px', color: '#374151', fontFamily: FONT, marginTop: '3px' }}>
+                {role}
+              </div>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -750,10 +729,10 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile, 
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [registerHovered, setRegisterHovered] = useState(false);
-  const resolvedName = formatProfileDisplayName(staff.name, staff.credentials, apiProfile);
-  const resolvedRole = apiProfile?.specialtyLine1 || staff.role;
-  const resolvedNote = apiProfile?.bio || staff.note;
-  const resolvedPhoto = apiProfile?.photoUrl || staff.photo;
+  const resolvedName = apiProfile.displayName;
+  const resolvedRole = apiProfile.specialtyLine1;
+  const resolvedNote = apiProfile.bio;
+  const resolvedPhoto = apiProfile.photoUrl;
 
   return (
     <>
@@ -804,9 +783,11 @@ const SupportStaffCard: React.FC<SupportStaffCardProps> = ({ staff, apiProfile, 
           <div style={{ fontSize: '16px', fontWeight: 700, color: '#000000', fontFamily: FONT, lineHeight: 1.3 }}>
             {resolvedName}
           </div>
-          <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '3px', lineHeight: 1.4 }}>
-            {resolvedRole}
-          </div>
+          {resolvedRole && (
+            <div style={{ fontSize: '13px', fontWeight: 300, color: '#000000', fontFamily: FONT, marginTop: '3px', lineHeight: 1.4 }}>
+              {resolvedRole}
+            </div>
+          )}
         </div>
         {(resolvedNote || regLink) && (
           <div
@@ -934,16 +915,20 @@ export const TeamSection: React.FC = () => {
 
       {/* Compact card list */}
       <div style={{ display: 'flex', flexDirection: 'column' as const, gap: '12px' }}>
-        {clinicians.map((clinician) => (
-          <CompactCard
-            key={clinician.id}
-            clinician={clinician}
-            regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
-            apiProfile={clinician.profileUid ? profileMap.get(clinician.profileUid) : undefined}
-            apiPresenterName={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid)?.presenter : undefined}
-            apiSession={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid) : undefined}
-          />
-        ))}
+        {clinicians.map((clinician) => {
+          const apiProfile = clinician.profileUid ? profileMap.get(clinician.profileUid) : undefined;
+          if (!apiProfile) return null;
+
+          return (
+            <CompactCard
+              key={clinician.id}
+              clinician={clinician}
+              regLink={clinician.sessionUuid ? regUrlMap.get(clinician.sessionUuid) : undefined}
+              apiProfile={apiProfile}
+              apiSession={clinician.sessionUuid ? sessionMap.get(clinician.sessionUuid) : undefined}
+            />
+          );
+        })}
       </div>
 
       {/* ── Support Staff ── */}
@@ -978,14 +963,19 @@ export const TeamSection: React.FC = () => {
             gap: '18px',
           }}
         >
-          {supportStaff.map((staff) => (
-            <SupportStaffCard
-              key={staff.id}
-              staff={staff}
-              apiProfile={staff.profileUid ? profileMap.get(staff.profileUid) : undefined}
-              regLink={staff.sessionUuid ? regUrlMap.get(staff.sessionUuid) : undefined}
-            />
-          ))}
+          {supportStaff.map((staff) => {
+            const apiProfile = staff.profileUid ? profileMap.get(staff.profileUid) : undefined;
+            if (!apiProfile) return null;
+
+            return (
+              <SupportStaffCard
+                key={staff.id}
+                staff={staff}
+                apiProfile={apiProfile}
+                regLink={staff.sessionUuid ? regUrlMap.get(staff.sessionUuid) : undefined}
+              />
+            );
+          })}
         </div>
       </div>
 

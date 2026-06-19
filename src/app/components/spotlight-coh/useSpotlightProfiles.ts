@@ -6,8 +6,7 @@
 // because two presenters share the last name "Lee" (Lisa Lee uid=277, Sarah Lee uid=279).
 // Consumers look up via clinician.profileUid.
 //
-// Strips HTML bios so TeamSection can render profile API bios with data.ts as
-// fallback when the API is unavailable or incomplete.
+// Strips HTML bios so TeamSection can render profile API bios directly.
 
 import { useState, useEffect } from 'react';
 
@@ -152,8 +151,7 @@ export function useSpotlightProfiles() {
         setProfileMap(map);
       })
       .catch(err => {
-        // Silent fallback — data.ts photos and bios remain in use
-        console.warn('[useSpotlightProfiles/COH] fetch failed, using static data:', err);
+        console.warn('[useSpotlightProfiles/COH] fetch failed:', err);
       });
   }, []);
 
