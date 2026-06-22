@@ -293,75 +293,116 @@ interface VideoModalProps {
   onClose: () => void;
 }
 
-const VideoModal: React.FC<VideoModalProps> = ({ title, videoUrl, onClose }) => (
-  <div
-    style={{
-      position: 'fixed',
-      inset: 0,
-      background: 'rgba(0,0,0,0.72)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      padding: '24px',
-    }}
-    onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-  >
+function getYouTubeEmbedUrl(videoUrl: string): string | undefined {
+  try {
+    const parsed = new URL(videoUrl);
+    const hostname = parsed.hostname.replace(/^www\./, '');
+
+    if (hostname === 'youtube.com' || hostname === 'm.youtube.com') {
+      const id = parsed.searchParams.get('v');
+      return id ? `https://www.youtube.com/embed/${id}` : undefined;
+    }
+
+    if (hostname === 'youtu.be') {
+      const id = parsed.pathname.split('/').filter(Boolean)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : undefined;
+    }
+
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const VideoModal: React.FC<VideoModalProps> = ({ title, videoUrl, onClose }) => {
+  const youtubeEmbedUrl = getYouTubeEmbedUrl(videoUrl);
+
+  return (
     <div
       style={{
-        background: '#ffffff',
-        borderRadius: '12px',
-        maxWidth: '860px',
-        width: '100%',
-        overflow: 'hidden',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.32)',
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.72)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
       }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px',
-          padding: '14px 18px',
-          borderBottom: '1px solid #E8E8E8',
+          background: '#ffffff',
+          borderRadius: '12px',
+          maxWidth: '860px',
+          width: '100%',
+          overflow: 'hidden',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.32)',
         }}
       >
-        <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
-          {title}
-        </div>
-        <button
-          onClick={onClose}
+        <div
           style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px',
-            borderRadius: '4px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            color: '#4B5563',
+            justifyContent: 'space-between',
+            gap: '16px',
+            padding: '14px 18px',
+            borderBottom: '1px solid #E8E8E8',
           }}
-          aria-label="Close video"
         >
-          <X size={20} />
-        </button>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: '#000000', fontFamily: FONT }}>
+            {title}
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#4B5563',
+            }}
+            aria-label="Close video"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        {youtubeEmbedUrl ? (
+          <iframe
+            src={youtubeEmbedUrl}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            style={{
+              display: 'block',
+              width: '100%',
+              aspectRatio: '16 / 9',
+              border: 0,
+              background: '#000000',
+            }}
+          />
+        ) : (
+          <video
+            src={videoUrl}
+            controls
+            autoPlay
+            style={{
+              display: 'block',
+              width: '100%',
+              maxHeight: '72vh',
+              background: '#000000',
+            }}
+          />
+        )}
       </div>
-      <video
-        src={videoUrl}
-        controls
-        autoPlay
-        style={{
-          display: 'block',
-          width: '100%',
-          maxHeight: '72vh',
-          background: '#000000',
-        }}
-      />
     </div>
-  </div>
-);
+  );
+};
 
 // ─── Compact horizontal card ──────────────────────────────────────────────────
 interface CompactCardProps {
