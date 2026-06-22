@@ -143,7 +143,7 @@ export const OverviewSection: React.FC = () => (
             fontFamily: FONT,
           }}
         >
-          The City of Hope Amyloidosis Treatment and Research Program is a nationally recognized center of excellence in amyloidosis care, dedicated to providing patients access to leading-edge diagnostic and treatment options for AL, ATTR, and other forms of the disease across a wide region with locations in Duarte, CA, Irvine, CA, and Phoenix, AZ.
+          From pioneering clinical trials and cellular therapies to comprehensive multidisciplinary care, City of Hope is helping redefine what is possible for patients living with amyloidosis. Recognized nationally for its leadership in AL and ATTR amyloidosis, the program brings together world-class specialists, advanced diagnostics, and breakthrough research to deliver hope when patients need it the most.
         </p>
       </blockquote>
 
