@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { PlayCircle, Calendar, Users, X, ExternalLink } from 'lucide-react';
+import { PlayCircle, Calendar, X, ExternalLink } from 'lucide-react';
 import { clinicians, supportStaff, type Clinician, type SupportStaff } from './data';
 import { useSpotlightSessions, buildRegUrlMap, type NormalizedSession } from './useSpotlightSessions';
 import { useSpotlightProfiles, type NormalizedProfile } from './useSpotlightProfiles';
@@ -945,12 +945,13 @@ export const TeamSection: React.FC = () => {
           style={{
             fontSize: '14px',
             color: '#4B5563',
-            marginTop: '6px',
+            marginTop: '8px',
             marginBottom: 0,
             fontFamily: FONT,
+            lineHeight: 1.5,
           }}
         >
-          City of Hope presenters featured in the July amyloidosis spotlight series
+          City of Hope — the multidisciplinary team behind the Amyloidosis Program
         </p>
       </div>
 
@@ -976,25 +977,31 @@ export const TeamSection: React.FC = () => {
       <div style={{ marginTop: '48px' }}>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
             margin: '0 0 24px 0',
           }}
         >
-          <Users size={22} color="#000000" strokeWidth={2} />
           <h2
             style={{
-              fontSize: '28px',
+              fontSize: '24px',
               fontWeight: 300,
               color: '#000000',
-              margin: 0,
+              margin: '0 0 4px',
               lineHeight: 1.3,
               fontFamily: FONT,
             }}
           >
             Support Staff
           </h2>
+          <p
+            style={{
+              fontSize: '14px',
+              color: '#4B5563',
+              margin: '0 0 20px',
+              fontFamily: FONT,
+            }}
+          >
+            The dedicated clinical and support team for the City of Hope
+          </p>
         </div>
 
         <div
